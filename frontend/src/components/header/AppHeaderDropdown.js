@@ -1,0 +1,92 @@
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import {
+  CAvatar,
+  CBadge,
+  CButton,
+  CDropdown,
+  CDropdownDivider,
+  CDropdownHeader,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
+} from '@coreui/react'
+import { cilCommentSquare, cilLockLocked, cilSettings, cilUser, cilBook } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
+import Settings from './Settings'
+import useToken from 'src/useToken'
+
+import avatar3 from './../../assets/images/avatars/10.jpg'
+
+import packageJson from '../../../package.json'
+const { config } = packageJson
+
+const AppHeaderDropdown = () => {
+  const [user, setUser] = useState()
+  const [visible, setVisible] = useState(false)
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${config.REACT_APP_API_ENDPOINT}/logout`).then((response) => {
+        if (response) {
+          alert(response.data)
+        }
+      })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      sessionStorage.removeItem('token')
+      window.location.reload()
+    }
+  }
+  useEffect(() => {
+    setUser(JSON.parse(sessionStorage.getItem('token')))
+  }, [])
+  return (
+    <div>
+      <CDropdown variant="nav-item">
+        <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
+          <CAvatar src="http://cdn.onlinewebfonts.com/svg/img_332705.png" size="lg" />
+        </CDropdownToggle>
+        <CDropdownMenu className="pt-0" placement="bottom-end">
+          <CDropdownHeader className="bg-light fw-semibold py-2">
+            {/*Account : <span style={{ color: 'blue' }}>{user?.data[0].staff_name}</span>*/}
+          </CDropdownHeader>
+          {/*
+          <CDropdownItem href="#">
+            <CIcon icon={cilUser} className="me-2" />
+            Profile
+          </CDropdownItem>
+          <CDropdownItem href="#">
+            <CIcon icon={cilCommentSquare} className="me-2" />
+            Comments
+            <CBadge color="warning" className="ms-2">
+              42
+            </CBadge>
+          </CDropdownItem>
+          <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
+          <CDropdownItem href="#">
+            <CIcon icon={cilBook} className="me-2" />
+            Guide
+          </CDropdownItem>
+          */}
+          <CDropdownItem>
+            <CButton variant="ghost" style={{ width: '100%' }} onClick={() => setVisible(!visible)}>
+              <CIcon icon={cilSettings} className="me-2" />
+              Settings
+            </CButton>
+          </CDropdownItem>
+          <CDropdownDivider />
+          <CDropdownItem>
+            <CButton variant="ghost" style={{ width: '100%' }} onClick={handleLogout}>
+              <CIcon icon={cilLockLocked} className="me-2" />
+              Sign out
+            </CButton>
+          </CDropdownItem>
+        </CDropdownMenu>
+      </CDropdown>
+      <Settings visible={visible} setVisible={setVisible} />
+    </div>
+  )
+}
+
+export default AppHeaderDropdown
