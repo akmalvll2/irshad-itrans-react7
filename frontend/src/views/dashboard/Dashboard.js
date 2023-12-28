@@ -33,9 +33,6 @@ import {
   Flex,
 } from '@coreui/react'
 
-import FirstSection from './FirstSection'
-import StaffInfo from './StaffInfo'
-
 import { userType } from 'src/userType'
 
 import packageJson from '../../../../frontend/package.json'

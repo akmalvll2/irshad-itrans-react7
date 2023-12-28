@@ -31,9 +31,6 @@ import { cilArrowCircleTop, cilPrint, cilOptions } from '@coreui/icons'
 import img2 from '../../../assets/images/4.png'
 import { userType } from 'src/userType'
 
-import ImportCompetency from './ImportCompetency'
-import EditCompetency from './EditCompetency'
-
 import packageJson from '../../../../package.json'
 const { config } = packageJson
 

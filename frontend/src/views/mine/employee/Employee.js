@@ -1,6 +1,5 @@
 import React from 'react'
 import { CContainer } from '@coreui/react'
-import EmployeeTable from './EmployeeTable'
 
 const Employee = () => {
   return (
