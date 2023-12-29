@@ -8,6 +8,7 @@ const nodemailer = require("nodemailer")
 //import routes from route folder
 const authRoute = require('./route/authRoute')
 const companyRoute = require('./route/companyRoute')
+const departmentRoute = require('./route/departmentRoute')
 
 //initialize to use .env ( process.env.YOUR_ENVIRONMENT_VARIABLE)
 require('dotenv').config()
@@ -20,6 +21,7 @@ app.use(cors())
 
 //main application declaration
 app.use('/company', companyRoute)
+app.use('/department', departmentRoute)
 app.use('/authentication', authRoute)
 
 //connecting port

@@ -1,0 +1,23 @@
+const db = require('../config/db')
+
+//READ ALL DEPARTMENT
+async function getAllDepartment () {
+    try {
+        const [rows] = await db.query('SELECT * FROM department ORDER BY department.department_name')
+        return rows
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+//CREATE DEPARTMENT
+async function createDepartment (departmentname, departmentdescription) {
+    try {
+        const [result] = await db.query('INSERT INTO department WHERE department.department_name = ?, department.department_description = ?', [departmentname,departmentdescription])
+        return result.insertId
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+module.exports = {getAllDepartment,createDepartment}
