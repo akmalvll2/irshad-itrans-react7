@@ -16,6 +16,7 @@ import {
   CCardBody,
   CRow,
   CCol,
+  CAlert,
 } from '@coreui/react'
 
 //path to API call IMPORTANT!
@@ -40,7 +41,7 @@ const DepartmentTable = () => {
       }
     }
     fetchAllDepartment()
-  }, [])
+  }, [departmentlist])
   return (
     <>
       <div>
@@ -60,7 +61,7 @@ const DepartmentTable = () => {
           <CCardBody>
             <CRow>
               <CCol lg={4}>
-                <CCallout color="primary">Total Department : 1</CCallout>
+                <CCallout color="primary">Total Department : {departmentlist.length}</CCallout>
               </CCol>
             </CRow>
           </CCardBody>
@@ -69,19 +70,27 @@ const DepartmentTable = () => {
               <CTableRow>
                 <CTableHeaderCell>No</CTableHeaderCell>
                 <CTableHeaderCell>Department</CTableHeaderCell>
-                <CTableHeaderCell>Number of Occupant</CTableHeaderCell>
+                <CTableHeaderCell>Number of Staff</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {departmentlist?.map((val, key) => {
-                return (
-                  <CTableRow key={key}>
-                    <CTableDataCell>{key + 1}</CTableDataCell>
-                    <CTableDataCell>{val.department_name}</CTableDataCell>
-                    <CTableDataCell>4</CTableDataCell>
-                  </CTableRow>
-                )
-              })}
+              {departmentlist.length > 0 ? (
+                departmentlist?.map((val, key) => {
+                  return (
+                    <CTableRow key={key}>
+                      <CTableDataCell>{key + 1}</CTableDataCell>
+                      <CTableDataCell>{val.department_name}</CTableDataCell>
+                      <CTableDataCell>4</CTableDataCell>
+                    </CTableRow>
+                  )
+                })
+              ) : (
+                <CTableRow>
+                  <CTableDataCell colSpan={3}>
+                    <CAlert color="danger">No Data Availalble</CAlert>
+                  </CTableDataCell>
+                </CTableRow>
+              )}
             </CTableBody>
           </CTable>
         </CCard>
