@@ -13,11 +13,21 @@ async function getAllDepartment () {
 //CREATE DEPARTMENT
 async function createDepartment (departmentname, departmentdescription) {
     try {
-        const [result] = await db.query('INSERT INTO department WHERE department.department_name = ?, department.department_description = ?', [departmentname,departmentdescription])
+        const [result] = await db.query('INSERT INTO department(department_name, department_description) VALUES (?,?)', [departmentname,departmentdescription])
         return result.insertId
     } catch (error) {
         throw new Error(error.message)
     }
 }
 
-module.exports = {getAllDepartment,createDepartment}
+//DELETE DEPARTMENT
+async function deleteDepartment (departmentid) {
+    try {
+        const [result] = await db.query('DELETE FROM department WHERE department.department_id = ?', [departmentid])
+        return "Department Deleted"
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+module.exports = {getAllDepartment,createDepartment,deleteDepartment}

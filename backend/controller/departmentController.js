@@ -21,4 +21,15 @@ async function createDepartment (req,res) {
     }
 }
 
-module.exports = {getAllDepartment,createDepartment}
+//DELETE DEPARTMENT
+async function deleteDepartment (req,res) {
+    const departmentid = req.params.departmentid
+    try {
+        const department = await departmentModel.deleteDepartment(departmentid)
+        res.json(department)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+module.exports = {getAllDepartment,createDepartment,deleteDepartment}

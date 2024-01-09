@@ -70,14 +70,18 @@ const AppHeaderDropdown = () => {
           </CDropdownItem>
           */}
           <CDropdownItem>
-            <CButton variant="ghost" style={{ width: '100%' }} onClick={() => setVisible(!visible)}>
+            <CButton
+              color="transparent"
+              style={{ width: '100%' }}
+              onClick={() => setVisible(!visible)}
+            >
               <CIcon icon={cilSettings} className="me-2" />
               Settings
             </CButton>
           </CDropdownItem>
           <CDropdownDivider />
           <CDropdownItem>
-            <CButton variant="ghost" style={{ width: '100%' }} onClick={handleLogout}>
+            <CButton color="transparent" style={{ width: '100%' }} onClick={handleLogout}>
               <CIcon icon={cilLockLocked} className="me-2" />
               Sign out
             </CButton>

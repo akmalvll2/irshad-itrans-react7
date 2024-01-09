@@ -1,6 +1,6 @@
-import React, { Suspense, useState, useEffect } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import img2 from '../../../assets/images/4.png'
-import axios from 'axios'
 import {
   CSpinner,
   CCard,
@@ -17,31 +17,16 @@ import {
   CRow,
   CCol,
   CAlert,
+  CButtonGroup,
+  CButton,
+  CTooltip,
 } from '@coreui/react'
 
-//path to API call IMPORTANT!
-import packageJson from '../../../../package.json'
-const { config } = packageJson
+//icon
+import CIcon from '@coreui/icons-react'
+import { cilPlus, cilSave, cilTrash, cilMagnifyingGlass, cilPencil } from '@coreui/icons'
 
-const DepartmentTable = () => {
-  const [departmentlist, setDepartmentlist] = useState([])
-
-  useEffect(() => {
-    const fetchAllDepartment = async () => {
-      try {
-        await axios
-          .get(`${config.REACT_APP_API_ENDPOINT}/department/getalldepartment`)
-          .then((response) => {
-            if (response) {
-              setDepartmentlist(response.data)
-            }
-          })
-      } catch (error) {
-        console.log('Error: '.error)
-      }
-    }
-    fetchAllDepartment()
-  }, [departmentlist])
+const DepartmentTable = ({ departmentlist, setToggleCreateDepartment, deleteDepartment }) => {
   return (
     <>
       <div>
@@ -57,6 +42,14 @@ const DepartmentTable = () => {
             <center>
               <h4>DEPARTMENT LIST</h4>
             </center>
+            <CButtonGroup className="float-end">
+              <CButton size="sm" color="secondary" onClick={() => setToggleCreateDepartment(true)}>
+                <CIcon icon={cilPlus} />
+              </CButton>
+              <CButton size="sm" color="secondary">
+                <CIcon icon={cilSave} />
+              </CButton>
+            </CButtonGroup>
           </CCardHeader>
           <CCardBody>
             <CRow>
@@ -71,6 +64,7 @@ const DepartmentTable = () => {
                 <CTableHeaderCell>No</CTableHeaderCell>
                 <CTableHeaderCell>Department</CTableHeaderCell>
                 <CTableHeaderCell>Number of Staff</CTableHeaderCell>
+                <CTableHeaderCell></CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -81,6 +75,24 @@ const DepartmentTable = () => {
                       <CTableDataCell>{key + 1}</CTableDataCell>
                       <CTableDataCell>{val.department_name}</CTableDataCell>
                       <CTableDataCell>4</CTableDataCell>
+                      <CTableDataCell>
+                        <CButtonGroup className=" d-flex justify-content-center">
+                          <CButton size="sm" color="secondary" variant="outline">
+                            <CIcon icon={cilMagnifyingGlass} />
+                          </CButton>
+                          <CButton size="sm" color="secondary" variant="outline">
+                            <CIcon icon={cilPencil} />
+                          </CButton>
+                          <CButton
+                            size="sm"
+                            color="danger"
+                            variant="outline"
+                            onClick={(e) => deleteDepartment(val.department_id)}
+                          >
+                            <CIcon icon={cilTrash} />
+                          </CButton>
+                        </CButtonGroup>
+                      </CTableDataCell>
                     </CTableRow>
                   )
                 })
@@ -97,6 +109,12 @@ const DepartmentTable = () => {
       </div>
     </>
   )
+}
+
+DepartmentTable.propTypes = {
+  departmentlist: PropTypes.array.isRequired,
+  setToggleCreateDepartment: PropTypes.func.isRequired,
+  deleteDepartment: PropTypes.func.isRequired,
 }
 
 export default DepartmentTable
