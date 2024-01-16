@@ -8,21 +8,20 @@ const { config } = packageJson
 const AppFooter = () => {
   const [setting, setSetting] = useState([])
 
-  const fetchSetting = async () => {
-    try {
-      axios.get(`${config.REACT_APP_API_ENDPOINT}/company/getallcompany`).then((response) => {
-        if (response) {
-          setSetting(response.data)
-        }
-      })
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   useEffect(() => {
+    const fetchSetting = async () => {
+      try {
+        axios.get(`${config.REACT_APP_API_ENDPOINT}/company/getallcompany`).then((response) => {
+          if (response) {
+            setSetting(response.data)
+          }
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    }
     fetchSetting()
-  }, [setting])
+  }, [])
   return (
     <CFooter>
       <div>

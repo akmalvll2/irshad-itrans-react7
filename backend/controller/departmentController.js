@@ -12,9 +12,9 @@ async function getAllDepartment (req,res) {
 
 //CREATE DEPARTMENT
 async function createDepartment (req,res) {
-    const { departmentname, departmentdescription } = req.body
+    const { departmentdata } = req.body
     try {
-        const department = await departmentModel.createDepartment(departmentname, departmentdescription)
+        const department = await departmentModel.createDepartment(departmentdata)
         res.json(department)
     } catch (error) {
         res.status(500).json({ error: error.message })
@@ -32,4 +32,16 @@ async function deleteDepartment (req,res) {
     }
 }
 
-module.exports = {getAllDepartment,createDepartment,deleteDepartment}
+//UPDATE DEPARTMENT
+async function updateDepartment (req,res) {
+    const departmentid = req.params.departmentid
+    const { departmentdata } = req.body
+    try {
+        const department = await departmentModel.updateDepartment(departmentid,departmentdata)
+        res.json(department)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+module.exports = {getAllDepartment,createDepartment,deleteDepartment,updateDepartment}

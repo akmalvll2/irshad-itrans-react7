@@ -27,14 +27,14 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilPlus, cilSave, cilTrash, cilMagnifyingGlass, cilPencil } from '@coreui/icons'
 
-const DepartmentTable = ({
-  departmentlist,
-  setToggleCreateDepartment,
-  deleteDepartment,
-  setToggleDetailDepartment,
-  viewDepartment,
-  setToggleEditDepartment,
-  editDepartment,
+const JobTable = ({
+  joblist,
+  setToggleCreateJob,
+  deleteJob,
+  setToggleDetailJob,
+  viewJob,
+  setToggleEditJob,
+  editJob,
 }) => {
   return (
     <>
@@ -49,10 +49,10 @@ const DepartmentTable = ({
             }}
           >
             <center>
-              <h4>DEPARTMENT</h4>
+              <h4>POSITION</h4>
             </center>
             <CButtonGroup className="float-end">
-              <CButton size="sm" color="secondary" onClick={() => setToggleCreateDepartment(true)}>
+              <CButton size="sm" color="secondary" onClick={() => setToggleCreateJob(true)}>
                 <CIcon icon={cilPlus} />
               </CButton>
               <CButton size="sm" color="secondary">
@@ -67,26 +67,26 @@ const DepartmentTable = ({
                   className="mb-3"
                   color="primary"
                   //icon={<CIcon icon={cilChartPie} height={24} />}
-                  title="TOTAL DEPARTMENT"
-                  value={departmentlist.length}
+                  title="TOTAL POSITION"
+                  value={joblist.length}
                 />
               </CCol>
             </CRow>
-            {departmentlist.length > 0 ? (
+            {joblist.length > 0 ? (
               <CTable small bordered striped responsive>
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell>No</CTableHeaderCell>
-                    <CTableHeaderCell>Department</CTableHeaderCell>
+                    <CTableHeaderCell>Position</CTableHeaderCell>
                     <CTableHeaderCell>Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {departmentlist?.map((val, key) => {
+                  {joblist?.map((val, key) => {
                     return (
                       <CTableRow key={key}>
                         <CTableDataCell>{key + 1}</CTableDataCell>
-                        <CTableDataCell>{val.department_name}</CTableDataCell>
+                        <CTableDataCell>{val.position_name}</CTableDataCell>
                         <CTableDataCell>
                           <CButtonGroup className=" d-flex justify-content-center">
                             <CButton
@@ -94,8 +94,8 @@ const DepartmentTable = ({
                               color="secondary"
                               variant="outline"
                               onClick={() => {
-                                setToggleDetailDepartment(true)
-                                viewDepartment(val.department_id)
+                                setToggleDetailJob(true)
+                                viewJob(val.position_id)
                               }}
                             >
                               <CIcon icon={cilMagnifyingGlass} />
@@ -105,8 +105,8 @@ const DepartmentTable = ({
                               color="secondary"
                               variant="outline"
                               onClick={() => {
-                                setToggleEditDepartment(true)
-                                editDepartment(val.department_id)
+                                setToggleEditJob(true)
+                                editJob(val.position_id)
                               }}
                             >
                               <CIcon icon={cilPencil} />
@@ -115,7 +115,7 @@ const DepartmentTable = ({
                               size="sm"
                               color="danger"
                               variant="outline"
-                              onClick={() => deleteDepartment(val.department_id)}
+                              onClick={() => deleteJob(val.position_id)}
                             >
                               <CIcon icon={cilTrash} />
                             </CButton>
@@ -128,9 +128,9 @@ const DepartmentTable = ({
               </CTable>
             ) : (
               <CAlert color="danger">
-                No department data available.
-                <CButton color="link" onClick={() => setToggleCreateDepartment(true)}>
-                  Add department
+                No position data available.
+                <CButton color="link" onClick={() => setToggleCreateJob(true)}>
+                  Add position
                 </CButton>
               </CAlert>
             )}
@@ -141,14 +141,14 @@ const DepartmentTable = ({
   )
 }
 
-DepartmentTable.propTypes = {
-  departmentlist: PropTypes.array.isRequired,
-  setToggleCreateDepartment: PropTypes.func.isRequired,
-  setToggleDetailDepartment: PropTypes.func.isRequired,
-  deleteDepartment: PropTypes.func.isRequired,
-  viewDepartment: PropTypes.func.isRequired,
-  setToggleEditDepartment: PropTypes.func.isRequired,
-  editDepartment: PropTypes.func,
+JobTable.propTypes = {
+  joblist: PropTypes.array.isRequired,
+  setToggleCreateJob: PropTypes.func.isRequired,
+  setToggleDetailJob: PropTypes.func.isRequired,
+  deleteJob: PropTypes.func.isRequired,
+  viewJob: PropTypes.func.isRequired,
+  setToggleEditJob: PropTypes.func.isRequired,
+  editJob: PropTypes.func,
 }
 
-export default DepartmentTable
+export default JobTable

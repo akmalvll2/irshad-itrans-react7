@@ -9,6 +9,7 @@ const nodemailer = require("nodemailer")
 const authRoute = require('./route/authRoute')
 const companyRoute = require('./route/companyRoute')
 const departmentRoute = require('./route/departmentRoute')
+const jobRoute =  require('./route/jobRoute')
 
 //initialize to use .env ( process.env.YOUR_ENVIRONMENT_VARIABLE)
 require('dotenv').config()
@@ -20,9 +21,10 @@ app.use(express.json())
 app.use(cors())
 
 //main application declaration
+app.use('/authentication', authRoute)
 app.use('/company', companyRoute)
 app.use('/department', departmentRoute)
-app.use('/authentication', authRoute)
+app.use('/job', jobRoute)
 
 //connecting port
 app.listen(port, () => {

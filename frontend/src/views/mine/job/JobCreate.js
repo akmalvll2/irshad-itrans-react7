@@ -11,17 +11,17 @@ import {
   CFormInput,
 } from '@coreui/react'
 
-const DepartmentCreate = ({ visible, setVisible, createDepartment }) => {
-  const [departmentData, setDepartmentData] = useState({})
+const JobCreate = ({ visible, setVisible, createJob }) => {
+  const [jobData, setJobData] = useState({})
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setDepartmentData({ ...departmentData, [name]: value })
+    setJobData({ ...jobData, [name]: value })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    createDepartment(departmentData)
+    createJob(jobData)
     setVisible(!visible)
   }
   return (
@@ -34,24 +34,33 @@ const DepartmentCreate = ({ visible, setVisible, createDepartment }) => {
       >
         <CForm onSubmit={handleSubmit}>
           <CModalHeader>
-            <CModalTitle id="StaticBackdropExampleLabel">New Department</CModalTitle>
+            <CModalTitle id="StaticBackdropExampleLabel">New Position</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CFormInput
               type="text"
-              name="departmentname"
+              name="jobname"
               className="mb-3"
-              label="Department Name"
-              placeholder="eg. Human Resource"
+              label="Position Title"
+              placeholder="eg. Executive Human Resource"
               onChange={handleInputChange}
               required
             />
             <CFormInput
               type="text"
-              name="departmentdescription"
+              name="jobgrade"
               className="mb-3"
-              label="Department Description"
-              placeholder="eg. Manage staff related administration"
+              label="Position Grade"
+              placeholder="eg. S4"
+              onChange={handleInputChange}
+              required
+            />
+            <CFormInput
+              type="text"
+              name="jobdescription"
+              className="mb-3"
+              label="Position Description"
+              placeholder="eg. Execute task or project based on job scope"
               onChange={handleInputChange}
               required
             />
@@ -70,10 +79,10 @@ const DepartmentCreate = ({ visible, setVisible, createDepartment }) => {
   )
 }
 
-DepartmentCreate.propTypes = {
+JobCreate.propTypes = {
   visible: PropTypes.bool.isRequired,
   setVisible: PropTypes.func.isRequired,
-  createDepartment: PropTypes.func.isRequired,
+  createJob: PropTypes.func.isRequired,
 }
 
-export default DepartmentCreate
+export default JobCreate

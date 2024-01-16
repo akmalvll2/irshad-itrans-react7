@@ -11,9 +11,9 @@ async function getAllDepartment () {
 }
 
 //CREATE DEPARTMENT
-async function createDepartment (departmentname, departmentdescription) {
+async function createDepartment (departmentdata) {
     try {
-        const [result] = await db.query('INSERT INTO department(department_name, department_description) VALUES (?,?)', [departmentname,departmentdescription])
+        const [result] = await db.query('INSERT INTO department(department_name, department_description) VALUES (?,?)', [departmentdata.departmentname,departmentdata.departmentdescription])
         return result.insertId
     } catch (error) {
         throw new Error(error.message)
@@ -30,4 +30,14 @@ async function deleteDepartment (departmentid) {
     }
 }
 
-module.exports = {getAllDepartment,createDepartment,deleteDepartment}
+//UPDATE DEPARTMENT
+async function updateDepartment (departmentid,departmentdata) {
+    try {
+        const [result] = await db.query('UPDATE department SET department.department_name = ? , department.department_description = ? WHERE department.department_id = ?', [departmentdata.departmentname,departmentdata.departmentdescription,departmentid])
+        return "Department Updated"
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+module.exports = {getAllDepartment,createDepartment,deleteDepartment,updateDepartment}
