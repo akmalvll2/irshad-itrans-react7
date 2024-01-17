@@ -9,8 +9,8 @@ const { config } = packageJson
 //import department component
 const JobTable = React.lazy(() => import('./JobTable'))
 const JobCreate = React.lazy(() => import('./JobCreate'))
-//const DepartmentDetail = React.lazy(() => import('./DepartmentDetail'))
-//const DepartmentEdit = React.lazy(() => import('./DepartmentEdit'))
+const JobDetail = React.lazy(() => import('./JobDetail'))
+const JobEdit = React.lazy(() => import('./JobEdit'))
 
 const Job = () => {
   const [joblist, setJoblist] = useState([])
@@ -104,23 +104,22 @@ const Job = () => {
           setVisible={setToggleCreateJob}
           createJob={createNewJob}
         />
-        {/*
-        <DepartmentDetail
-          visible={toggleDetailDepartment}
-          setVisible={setToggleDetailDepartment}
-          departmentdata={departmentlist}
-          viewDepartment={viewDepartment}
-          deleteDepartment={deleteDepartment}
-          setToggleEditDepartment={setToggleEditDepartment}
-          editDepartment={setEditDepartment}
+        <JobDetail
+          visible={toggleDetailJob}
+          setVisible={setToggleDetailJob}
+          jobdata={joblist}
+          viewJob={viewJob}
+          deleteJob={deleteJob}
+          setToggleEditJob={setToggleEditJob}
+          editJob={setEditJob}
         />
-        <DepartmentEdit
-          visible={toggleEditDepartment}
-          setVisible={setToggleEditDepartment}
-          departmentdata={departmentlist}
-          departmentid={editDepartment}
-          updateddepartment={updateDepartment}
-  />*/}
+        <JobEdit
+          visible={toggleEditJob}
+          setVisible={setToggleEditJob}
+          jobdata={joblist}
+          jobid={editJob}
+          updatedjob={updateJob}
+        />
       </Suspense>
     </>
   )

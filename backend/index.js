@@ -10,6 +10,7 @@ const authRoute = require('./route/authRoute')
 const companyRoute = require('./route/companyRoute')
 const departmentRoute = require('./route/departmentRoute')
 const jobRoute =  require('./route/jobRoute')
+const competencyRoute = require('./route/competencyRoute')
 
 //initialize to use .env ( process.env.YOUR_ENVIRONMENT_VARIABLE)
 require('dotenv').config()
@@ -25,6 +26,7 @@ app.use('/authentication', authRoute)
 app.use('/company', companyRoute)
 app.use('/department', departmentRoute)
 app.use('/job', jobRoute)
+app.use('/competency', competencyRoute)
 
 //connecting port
 app.listen(port, () => {

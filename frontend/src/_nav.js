@@ -26,6 +26,11 @@ const _nav = [
     },
   },
   {
+    component: CNavTitle,
+    role: 'both',
+    name: 'Database',
+  },
+  {
     component: CNavGroup,
     role: 'admin',
     name: 'Organization',
@@ -55,45 +60,23 @@ const _nav = [
     ],
   },
   {
-    component: CNavTitle,
-    role: 'both',
-    name: 'Database',
-  },
-  {
-    component: CNavGroup,
+    component: CNavItem,
     role: 'both',
     name: 'Competency',
-    to: '/competency',
+    to: '/mine/competency',
     icon: <CIcon icon={cilArrowCircleTop} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-    },
-    items: [
-      {
-        component: CNavItem,
-        role: 'both',
-        name: 'List',
-        to: '/mine/competency',
-      },
-    ],
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     role: 'both',
     name: 'Training',
-    to: '',
+    to: '/mine/training',
     icon: <CIcon icon={cilObjectUngroup} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-    },
-    items: [
-      {
-        component: CNavItem,
-        role: 'both',
-        name: 'List',
-        to: '/mine/training',
-      },
-    ],
+  },
+  {
+    component: CNavTitle,
+    role: 'both',
+    name: 'Action',
   },
   {
     component: CNavItem,
@@ -101,11 +84,6 @@ const _nav = [
     name: 'Mapping',
     to: '/mine/mapping',
     icon: <CIcon icon={cilFork} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavTitle,
-    role: 'both',
-    name: 'Action',
   },
   {
     component: CNavItem,
