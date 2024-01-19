@@ -9,11 +9,12 @@ const { config } = packageJson
 //import competency component
 const CompetencyTable = React.lazy(() => import('./CompetencyTable'))
 const CompetencyCreate = React.lazy(() => import('./CompetencyCreate'))
-//const CompetencyDetail = React.lazy(() => import('./CompetencyDetail'))
+const CompetencyDetail = React.lazy(() => import('./CompetencyDetail'))
 //const CompetencyEdit = React.lazy(() => import('./CompetencyEdit'))
 
 const Competency = () => {
   const [competencylist, setCompetencylist] = useState([])
+  const [clusterlist, setClusterlist] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [toggleCreateCompetency, setToggleCreateCompetency] = useState(false)
   const [toggleDetailCompetency, setToggleDetailCompetency] = useState(false)
@@ -95,6 +96,15 @@ const Competency = () => {
 
   useEffect(() => {
     //READ CLUSTER API
+    const fetchAllCluster = async () => {
+      try {
+        const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/cluster/getallcluster`)
+        setClusterlist(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllCluster()
   }, [])
   return (
     <>
@@ -112,17 +122,19 @@ const Competency = () => {
           visible={toggleCreateCompetency}
           setVisible={setToggleCreateCompetency}
           createCompetency={createNewCompetency}
+          clusterlist={clusterlist}
+        />
+        <CompetencyDetail
+          visible={toggleDetailCompetency}
+          setVisible={setToggleDetailCompetency}
+          competencydata={competencylist}
+          viewCompetency={viewCompetency}
+          deleteCompetency={deleteCompetency}
+          setToggleEditCompetency={setToggleEditCompetency}
+          editCompetency={setEditCompetency}
+          clusterdata={clusterlist}
         />
         {/*
-        <DepartmentDetail
-          visible={toggleDetailDepartment}
-          setVisible={setToggleDetailDepartment}
-          departmentdata={departmentlist}
-          viewDepartment={viewDepartment}
-          deleteDepartment={deleteDepartment}
-          setToggleEditDepartment={setToggleEditDepartment}
-          editDepartment={setEditDepartment}
-        />
         <DepartmentEdit
           visible={toggleEditDepartment}
           setVisible={setToggleEditDepartment}
