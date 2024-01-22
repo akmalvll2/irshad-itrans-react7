@@ -9,9 +9,11 @@ import {
   CButton,
   CForm,
   CFormInput,
+  CFormLabel,
+  CFormSelect,
 } from '@coreui/react'
 
-const EmployeeCreate = ({ visible, setVisible, createEmployee }) => {
+const EmployeeCreate = ({ visible, setVisible, createEmployee, departmentlist, positionlist }) => {
   const [employeeData, setEmployeeData] = useState({})
 
   const handleInputChange = (e) => {
@@ -47,7 +49,7 @@ const EmployeeCreate = ({ visible, setVisible, createEmployee }) => {
               required
             />
             <CFormInput
-              type="text"
+              type="email"
               name="employeeemail"
               className="mb-3"
               label="Employee Email"
@@ -55,6 +57,38 @@ const EmployeeCreate = ({ visible, setVisible, createEmployee }) => {
               onChange={handleInputChange}
               required
             />
+            <CFormLabel>Department</CFormLabel>
+            <CFormSelect
+              aria-label="Department"
+              size="sm"
+              name="departmentid"
+              onChange={handleInputChange}
+            >
+              <option>..Department..</option>
+              {departmentlist?.map((val, key) => {
+                return (
+                  <option key={key} value={val.department_id}>
+                    {val.department_name}
+                  </option>
+                )
+              })}
+            </CFormSelect>
+            <CFormLabel>Designation</CFormLabel>
+            <CFormSelect
+              aria-label="Position"
+              size="sm"
+              name="positionid"
+              onChange={handleInputChange}
+            >
+              <option>..Designation..</option>
+              {positionlist?.map((val, key) => {
+                return (
+                  <option key={key} value={val.position_id}>
+                    {val.position_name}
+                  </option>
+                )
+              })}
+            </CFormSelect>
           </CModalBody>
           <CModalFooter>
             <CButton size="sm" color="primary" type="submit">
@@ -74,6 +108,8 @@ EmployeeCreate.propTypes = {
   visible: PropTypes.bool.isRequired,
   setVisible: PropTypes.func.isRequired,
   createEmployee: PropTypes.func.isRequired,
+  departmentlist: PropTypes.array.isRequired,
+  positionlist: PropTypes.array.isRequired,
 }
 
 export default EmployeeCreate

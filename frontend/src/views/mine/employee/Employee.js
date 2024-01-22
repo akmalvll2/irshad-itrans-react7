@@ -14,6 +14,8 @@ const EmployeeCreate = React.lazy(() => import('./EmployeeCreate'))
 
 const Employee = () => {
   const [employeelist, setEmployeelist] = useState([])
+  const [departmentlist, setDepartmentlist] = useState([])
+  const [positionlist, setPositionlist] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [toggleCreateEmployee, setToggleCreateEmployee] = useState(false)
   const [toggleDetailEmployee, setToggleDetailEmployee] = useState(false)
@@ -78,6 +80,7 @@ const Employee = () => {
       console.log(err)
     }
   }
+
   useEffect(() => {
     //READ EMPLOYEE API
     const fetchAllEmployee = async () => {
@@ -90,6 +93,34 @@ const Employee = () => {
     }
     fetchAllEmployee()
   }, [isChange])
+
+  useEffect(() => {
+    //READ DEPARTMENT API
+    const fetchAllDepartment = async () => {
+      try {
+        const response = await axios.get(
+          `${config.REACT_APP_API_ENDPOINT}/department/getalldepartment`,
+        )
+        setDepartmentlist(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllDepartment()
+  }, [])
+
+  useEffect(() => {
+    //READ POSITION API
+    const fetchAllJob = async () => {
+      try {
+        const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/job/getalljob`)
+        setPositionlist(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllJob()
+  }, [])
   return (
     <>
       <Suspense fallback={<CSpinner />}>
@@ -106,6 +137,8 @@ const Employee = () => {
           visible={toggleCreateEmployee}
           setVisible={setToggleCreateEmployee}
           createEmployee={createNewEmployee}
+          departmentlist={departmentlist}
+          positionlist={positionlist}
         />
         {/*
         <DepartmentDetail
