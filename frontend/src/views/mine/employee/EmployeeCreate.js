@@ -11,10 +11,21 @@ import {
   CFormInput,
   CFormLabel,
   CFormSelect,
+  CFormCheck,
+  CAlert,
 } from '@coreui/react'
 
-const EmployeeCreate = ({ visible, setVisible, createEmployee, departmentlist, positionlist }) => {
-  const [employeeData, setEmployeeData] = useState({})
+const EmployeeCreate = ({
+  visible,
+  setVisible,
+  createEmployee,
+  departmentlist,
+  positionlist,
+  employeelist,
+}) => {
+  const [employeeData, setEmployeeData] = useState({
+    employeerole: '',
+  })
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -25,6 +36,7 @@ const EmployeeCreate = ({ visible, setVisible, createEmployee, departmentlist, p
     e.preventDefault()
     createEmployee(employeeData)
     setVisible(!visible)
+    console.log(employeeData)
   }
   return (
     <>
@@ -39,61 +51,125 @@ const EmployeeCreate = ({ visible, setVisible, createEmployee, departmentlist, p
             <CModalTitle id="StaticBackdropExampleLabel">New Employee</CModalTitle>
           </CModalHeader>
           <CModalBody>
-            <CFormInput
-              type="text"
-              name="employeename"
-              className="mb-3"
-              label="Employee Name"
-              placeholder="eg. Amirhamzah"
-              onChange={handleInputChange}
-              required
-            />
-            <CFormInput
-              type="email"
-              name="employeeemail"
-              className="mb-3"
-              label="Employee Email"
-              placeholder="eg. user@testmail.com"
-              onChange={handleInputChange}
-              required
-            />
-            <CFormLabel>Department</CFormLabel>
-            <CFormSelect
-              aria-label="Department"
-              size="sm"
-              name="departmentid"
-              onChange={handleInputChange}
-            >
-              <option>..Department..</option>
-              {departmentlist?.map((val, key) => {
-                return (
-                  <option key={key} value={val.department_id}>
-                    {val.department_name}
-                  </option>
-                )
-              })}
-            </CFormSelect>
-            <CFormLabel>Designation</CFormLabel>
-            <CFormSelect
-              aria-label="Position"
-              size="sm"
-              name="positionid"
-              onChange={handleInputChange}
-            >
-              <option>..Designation..</option>
-              {positionlist?.map((val, key) => {
-                return (
-                  <option key={key} value={val.position_id}>
-                    {val.position_name}
-                  </option>
-                )
-              })}
-            </CFormSelect>
+            {departmentlist.length > 0 && positionlist.length > 0 ? (
+              <>
+                <CFormInput
+                  type="text"
+                  name="employeeid"
+                  className="mb-3"
+                  label="Employee ID"
+                  placeholder="eg. A123"
+                  onChange={handleInputChange}
+                  required
+                />
+                <CFormInput
+                  type="text"
+                  name="employeename"
+                  className="mb-3"
+                  label="Employee Name"
+                  placeholder="eg. Amirhamzah"
+                  onChange={handleInputChange}
+                  required
+                />
+                <CFormInput
+                  type="email"
+                  name="employeeemail"
+                  className="mb-3"
+                  label="Employee Email"
+                  placeholder="eg. user@testmail.com"
+                  onChange={handleInputChange}
+                  required
+                />
+                <CFormLabel>Department</CFormLabel>
+                <CFormSelect
+                  aria-label="Department"
+                  size="sm"
+                  name="departmentid"
+                  onChange={handleInputChange}
+                >
+                  <option>..Department..</option>
+                  {departmentlist?.map((val, key) => {
+                    return (
+                      <option key={key} value={val.department_id}>
+                        {val.department_name}
+                      </option>
+                    )
+                  })}
+                </CFormSelect>
+                <CFormLabel>Designation</CFormLabel>
+                <CFormSelect
+                  aria-label="Position"
+                  size="sm"
+                  name="positionid"
+                  onChange={handleInputChange}
+                >
+                  <option>..Designation..</option>
+                  {positionlist?.map((val, key) => {
+                    return (
+                      <option key={key} value={val.position_id}>
+                        {val.position_name}
+                      </option>
+                    )
+                  })}
+                </CFormSelect>
+                <CFormLabel>Supervisor</CFormLabel>
+                <CFormSelect
+                  aria-label="Supervisor"
+                  size="sm"
+                  name="managerid"
+                  onChange={handleInputChange}
+                >
+                  <option>..Supervisor..</option>
+                  {employeelist.length > 0 ? (
+                    employeelist?.map((val, key) => {
+                      return (
+                        <option key={key} value={val.staff_id}>
+                          {val.staff_name}
+                        </option>
+                      )
+                    })
+                  ) : (
+                    <option value="">No Reporting</option>
+                  )}
+                </CFormSelect>
+                <CFormLabel>Role</CFormLabel>
+                <CFormCheck
+                  type="radio"
+                  name="employeerole"
+                  label="User"
+                  value="user"
+                  onChange={handleInputChange}
+                  checked={employeeData.employeerole === 'user'}
+                />
+                <CFormCheck
+                  type="radio"
+                  name="employeerole"
+                  label="Admin"
+                  value="admin"
+                  onChange={handleInputChange}
+                  checked={employeeData.employeerole === 'admin'}
+                />
+                <CFormInput
+                  type="date"
+                  name="employeejoindate"
+                  className="mb-3"
+                  label="Date of Report Duty"
+                  onChange={handleInputChange}
+                  required
+                />
+              </>
+            ) : (
+              <CAlert color="danger">No Department/Position Data Available</CAlert>
+            )}
           </CModalBody>
           <CModalFooter>
-            <CButton size="sm" color="primary" type="submit">
-              Save
-            </CButton>
+            {departmentlist.length > 0 && positionlist.length > 0 ? (
+              <CButton size="sm" color="primary" type="submit">
+                Save
+              </CButton>
+            ) : (
+              ''
+            )}
             <CButton size="sm" color="secondary" onClick={() => setVisible(false)}>
               Close
             </CButton>
@@ -110,6 +186,7 @@ EmployeeCreate.propTypes = {
   createEmployee: PropTypes.func.isRequired,
   departmentlist: PropTypes.array.isRequired,
   positionlist: PropTypes.array.isRequired,
+  employeelist: PropTypes.array.isRequired,
 }
 
 export default EmployeeCreate

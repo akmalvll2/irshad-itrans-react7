@@ -9,8 +9,8 @@ const { config } = packageJson
 //import department component
 const EmployeeTable = React.lazy(() => import('./EmployeeTable'))
 const EmployeeCreate = React.lazy(() => import('./EmployeeCreate'))
-//const DepartmentDetail = React.lazy(() => import('./DepartmentDetail'))
-//const DepartmentEdit = React.lazy(() => import('./DepartmentEdit'))
+const EmployeeDetail = React.lazy(() => import('./EmployeeDetail'))
+const EmployeeEdit = React.lazy(() => import('./EmployeeEdit'))
 
 const Employee = () => {
   const [employeelist, setEmployeelist] = useState([])
@@ -139,24 +139,26 @@ const Employee = () => {
           createEmployee={createNewEmployee}
           departmentlist={departmentlist}
           positionlist={positionlist}
+          employeelist={employeelist}
         />
-        {/*
-        <DepartmentDetail
-          visible={toggleDetailDepartment}
-          setVisible={setToggleDetailDepartment}
+        <EmployeeDetail
+          visible={toggleDetailEmployee}
+          setVisible={setToggleDetailEmployee}
+          employeedata={employeelist}
+          viewEmployee={viewEmployee}
+          deleteEmployee={deleteEmployee}
+          setToggleEditEmployee={setToggleEditEmployee}
+          editEmployee={setEditEmployee}
           departmentdata={departmentlist}
-          viewDepartment={viewDepartment}
-          deleteDepartment={deleteDepartment}
-          setToggleEditDepartment={setToggleEditDepartment}
-          editDepartment={setEditDepartment}
+          positiondata={positionlist}
         />
-        <DepartmentEdit
-          visible={toggleEditDepartment}
-          setVisible={setToggleEditDepartment}
-          departmentdata={departmentlist}
-          departmentid={editDepartment}
-          updateddepartment={updateDepartment}
-  />*/}
+        <EmployeeEdit
+          visible={toggleEditEmployee}
+          setVisible={setToggleEditEmployee}
+          employeedata={employeelist}
+          employeeid={editEmployee}
+          updatedemployee={updateEmployee}
+        />
       </Suspense>
     </>
   )

@@ -86,7 +86,7 @@ const EmployeeTable = ({
                     return (
                       <CTableRow key={key}>
                         <CTableDataCell>{key + 1}</CTableDataCell>
-                        <CTableDataCell>{val.employee_name}</CTableDataCell>
+                        <CTableDataCell>{val.staff_name}</CTableDataCell>
                         <CTableDataCell>
                           <CButtonGroup className=" d-flex justify-content-center">
                             <CButton
@@ -95,7 +95,7 @@ const EmployeeTable = ({
                               variant="outline"
                               onClick={() => {
                                 setToggleDetailEmployee(true)
-                                viewEmployee(val.department_id)
+                                viewEmployee(val.staff_id)
                               }}
                             >
                               <CIcon icon={cilMagnifyingGlass} />
@@ -106,7 +106,7 @@ const EmployeeTable = ({
                               variant="outline"
                               onClick={() => {
                                 setToggleEditEmployee(true)
-                                editEmployee(val.employee_id)
+                                editEmployee(val.staff_id)
                               }}
                             >
                               <CIcon icon={cilPencil} />
@@ -115,7 +115,7 @@ const EmployeeTable = ({
                               size="sm"
                               color="danger"
                               variant="outline"
-                              onClick={() => deleteEmployee(val.employee_id)}
+                              onClick={() => deleteEmployee(val.staff_id)}
                             >
                               <CIcon icon={cilTrash} />
                             </CButton>
