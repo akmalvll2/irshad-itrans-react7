@@ -55,6 +55,7 @@ const EmployeeCreate = ({
               <>
                 <CFormInput
                   type="text"
+                  size="sm"
                   name="employeeid"
                   className="mb-3"
                   label="Employee ID"
@@ -64,6 +65,7 @@ const EmployeeCreate = ({
                 />
                 <CFormInput
                   type="text"
+                  size="sm"
                   name="employeename"
                   className="mb-3"
                   label="Employee Name"
@@ -73,6 +75,7 @@ const EmployeeCreate = ({
                 />
                 <CFormInput
                   type="email"
+                  size="sm"
                   name="employeeemail"
                   className="mb-3"
                   label="Employee Email"
@@ -135,6 +138,7 @@ const EmployeeCreate = ({
                 <CFormLabel>Role</CFormLabel>
                 <CFormCheck
                   type="radio"
+                  size="sm"
                   name="employeerole"
                   label="User"
                   value="user"
@@ -143,6 +147,7 @@ const EmployeeCreate = ({
                 />
                 <CFormCheck
                   type="radio"
+                  size="sm"
                   name="employeerole"
                   label="Admin"
                   value="admin"
@@ -151,6 +156,7 @@ const EmployeeCreate = ({
                 />
                 <CFormInput
                   type="date"
+                  size="sm"
                   name="employeejoindate"
                   className="mb-3"
                   label="Date of Report Duty"

@@ -43,22 +43,23 @@ const DepartmentDetail = ({
             ?.filter((fil) => fil.department_id === viewDepartment)
             .map((val, key) => {
               return (
-                <CTable key={key} small bordered stripedColumns>
-                  <CTableBody>
-                    <CTableRow>
-                      <CTableDataCell>Name:</CTableDataCell>
-                      <CTableDataCell>{val.department_name}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Description:</CTableDataCell>
-                      <CTableDataCell>{val.department_description}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Registered in the system:</CTableDataCell>
-                      <CTableDataCell>{val.department_system_register}</CTableDataCell>
-                    </CTableRow>
-                  </CTableBody>
-                </CTable>
+                <>
+                  <CTable key={key} small bordered stripedColumns>
+                    <CTableBody>
+                      <CTableRow>
+                        <CTableDataCell>Name:</CTableDataCell>
+                        <CTableDataCell>{val.department_name}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Description:</CTableDataCell>
+                        <CTableDataCell>{val.department_description}</CTableDataCell>
+                      </CTableRow>
+                    </CTableBody>
+                  </CTable>
+                  <span className="text-black-50">
+                    Registered in the system on {Date(val.department_system_register)}
+                  </span>
+                </>
               )
             })}
         </CModalBody>

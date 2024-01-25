@@ -38,65 +38,66 @@ const EmployeeDetail = ({
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Department Detail</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Employee Detail</CModalTitle>
         </CModalHeader>
         <CModalBody>
           {employeedata
             ?.filter((fil) => fil.staff_id === viewEmployee)
             .map((val, key) => {
               return (
-                <CTable key={key} small bordered stripedColumns>
-                  <CTableBody>
-                    <CTableRow>
-                      <CTableDataCell>Name:</CTableDataCell>
-                      <CTableDataCell>{val.staff_name}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Email:</CTableDataCell>
-                      <CTableDataCell>{val.staff_email}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Designation:</CTableDataCell>
-                      <CTableDataCell>
-                        {
-                          positiondata.find((fil) => fil.position_id === val.position_id)
-                            ?.position_name
-                        }
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Department:</CTableDataCell>
-                      <CTableDataCell>
-                        {
-                          departmentdata.find((fil) => fil.department_id === val.department_id)
-                            ?.department_name
-                        }
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Superior:</CTableDataCell>
-                      <CTableDataCell>
-                        {employeedata.find((fil) => fil.staff_id === val.manager_id)?.staff_name}
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Role:</CTableDataCell>
-                      <CTableDataCell>{val.staff_role}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Staff Number:</CTableDataCell>
-                      <CTableDataCell>{val.staff_id_number}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Date of Report Duty:</CTableDataCell>
-                      <CTableDataCell>{val.staff_organization_register}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Registered in the system:</CTableDataCell>
-                      <CTableDataCell>{val.staff_system_register}</CTableDataCell>
-                    </CTableRow>
-                  </CTableBody>
-                </CTable>
+                <>
+                  <CTable key={key} small bordered stripedColumns>
+                    <CTableBody>
+                      <CTableRow>
+                        <CTableDataCell>Name:</CTableDataCell>
+                        <CTableDataCell>{val.staff_name}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Email:</CTableDataCell>
+                        <CTableDataCell>{val.staff_email}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Designation:</CTableDataCell>
+                        <CTableDataCell>
+                          {
+                            positiondata.find((fil) => fil.position_id === val.position_id)
+                              ?.position_name
+                          }
+                        </CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Department:</CTableDataCell>
+                        <CTableDataCell>
+                          {
+                            departmentdata.find((fil) => fil.department_id === val.department_id)
+                              ?.department_name
+                          }
+                        </CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Superior:</CTableDataCell>
+                        <CTableDataCell>
+                          {employeedata.find((fil) => fil.staff_id === val.manager_id)?.staff_name}
+                        </CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Role:</CTableDataCell>
+                        <CTableDataCell>{val.staff_role}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Staff Number:</CTableDataCell>
+                        <CTableDataCell>{val.staff_id_number}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Date of Report Duty:</CTableDataCell>
+                        <CTableDataCell>{Date(val.staff_organization_register)}</CTableDataCell>
+                      </CTableRow>
+                    </CTableBody>
+                  </CTable>
+                  <span className=" text-black-50">
+                    Registered in the system on {Date(val.staff_system_register)}
+                  </span>
+                </>
               )
             })}
         </CModalBody>

@@ -16,52 +16,44 @@ import {
 
 //icon
 import CIcon from '@coreui/icons-react'
-import { cilTrash, cilPencil } from '@coreui/icons'
+import { cilPlus, cilSave, cilTrash, cilMagnifyingGlass, cilPencil } from '@coreui/icons'
 
-const JobDetail = ({
+const TrainingDetail = ({
   visible,
   setVisible,
-  jobdata,
-  viewJob,
-  deleteJob,
-  setToggleEditJob,
-  editJob,
+  trainingdata,
+  viewTraining,
+  deleteTraining,
+  setToggleEditTraining,
+  editTraining,
 }) => {
+  console.log(viewTraining)
   return (
     <>
-      <CModal
-        backdrop="static"
-        visible={visible}
-        onClose={() => setVisible(false)}
-        aria-labelledby="StaticBackdropExampleLabel"
-      >
+      <CModal backdrop="static" visible={visible} onClose={() => setVisible(false)}>
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Position Detail</CModalTitle>
+          <CModalTitle>Training Detail</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          {jobdata
-            ?.filter((fil) => fil.position_id === viewJob)
+          {trainingdata
+            ?.filter((fil) => fil.training_id === viewTraining)
             .map((val, key) => {
               return (
                 <>
                   <CTable key={key} small bordered stripedColumns>
                     <CTableBody>
                       <CTableRow>
-                        <CTableDataCell>Title:</CTableDataCell>
-                        <CTableDataCell>{val.position_name}</CTableDataCell>
-                      </CTableRow>
-                      <CTableRow>
-                        <CTableDataCell>Grade:</CTableDataCell>
-                        <CTableDataCell>{val.position_grade}</CTableDataCell>
+                        <CTableDataCell>Name:</CTableDataCell>
+                        <CTableDataCell>{val.training_name}</CTableDataCell>
                       </CTableRow>
                       <CTableRow>
                         <CTableDataCell>Description:</CTableDataCell>
-                        <CTableDataCell>{val.position_description}</CTableDataCell>
+                        <CTableDataCell>{val.training_description}</CTableDataCell>
                       </CTableRow>
                     </CTableBody>
                   </CTable>
-                  <span className=" text-black-50">
-                    Registered in the system on {Date(val.position_system_register)}
+                  <span className="text-black-50">
+                    Registered in the system on {Date(val.training_system_register)}
                   </span>
                 </>
               )
@@ -73,8 +65,8 @@ const JobDetail = ({
               size="sm"
               color="secondary"
               onClick={() => {
-                editJob(viewJob)
-                setToggleEditJob(true)
+                editTraining(viewTraining)
+                setToggleEditTraining(true)
               }}
             >
               <CIcon icon={cilPencil} /> Edit
@@ -83,7 +75,7 @@ const JobDetail = ({
               size="sm"
               color="danger"
               onClick={() => {
-                deleteJob(viewJob)
+                deleteTraining(viewTraining)
                 setVisible(!visible)
               }}
             >
@@ -99,14 +91,14 @@ const JobDetail = ({
   )
 }
 
-JobDetail.propTypes = {
+TrainingDetail.propTypes = {
   visible: PropTypes.bool.isRequired,
   setVisible: PropTypes.func.isRequired,
-  jobdata: PropTypes.array.isRequired,
-  viewJob: PropTypes.number,
-  deleteJob: PropTypes.func.isRequired,
-  setToggleEditJob: PropTypes.func.isRequired,
-  editJob: PropTypes.func,
+  trainingdata: PropTypes.array.isRequired,
+  viewTraining: PropTypes.number,
+  deleteTraining: PropTypes.func.isRequired,
+  setToggleEditTraining: PropTypes.func.isRequired,
+  editTraining: PropTypes.func,
 }
 
-export default JobDetail
+export default TrainingDetail

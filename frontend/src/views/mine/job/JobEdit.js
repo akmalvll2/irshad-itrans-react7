@@ -60,7 +60,7 @@ const JobEdit = ({ visible, setVisible, jobdata, jobid, updatedjob }) => {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CForm onSubmit={onSubmitHandle}>
-          <CModalHeader>
+          <CModalHeader closeButton={false}>
             <CModalTitle id="StaticBackdropExampleLabel">Department Edit</CModalTitle>
           </CModalHeader>
           <CModalBody>

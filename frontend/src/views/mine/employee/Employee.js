@@ -158,6 +158,8 @@ const Employee = () => {
           employeedata={employeelist}
           employeeid={editEmployee}
           updatedemployee={updateEmployee}
+          departmentdata={departmentlist}
+          positiondata={positionlist}
         />
       </Suspense>
     </>

@@ -44,44 +44,45 @@ const CompetencyDetail = ({
             ?.filter((fil) => fil.competency_id === viewCompetency)
             .map((val, key) => {
               return (
-                <CTable key={key} small bordered stripedColumns>
-                  <CTableBody>
-                    <CTableRow>
-                      <CTableDataCell>Name:</CTableDataCell>
-                      <CTableDataCell>{val.competency_name}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Group:</CTableDataCell>
-                      <CTableDataCell>
-                        {clusterdata?.find((fi) => fi.cluster_id === val.cluster_id).cluster_name}
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Description:</CTableDataCell>
-                      <CTableDataCell>{val.competency_description}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Indicator 1:</CTableDataCell>
-                      <CTableDataCell>{val.competency_indicator1}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Indicator 2:</CTableDataCell>
-                      <CTableDataCell>{val.competency_indicator2}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Indicator 3:</CTableDataCell>
-                      <CTableDataCell>{val.competency_indicator3}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Indicator 4:</CTableDataCell>
-                      <CTableDataCell>{val.competency_indicator4}</CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableDataCell>Registered in the system:</CTableDataCell>
-                      <CTableDataCell>{val.competency_system_register}</CTableDataCell>
-                    </CTableRow>
-                  </CTableBody>
-                </CTable>
+                <>
+                  <CTable key={key} small bordered stripedColumns>
+                    <CTableBody>
+                      <CTableRow>
+                        <CTableDataCell>Name:</CTableDataCell>
+                        <CTableDataCell>{val.competency_name}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Group:</CTableDataCell>
+                        <CTableDataCell>
+                          {clusterdata?.find((fi) => fi.cluster_id === val.cluster_id).cluster_name}
+                        </CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Description:</CTableDataCell>
+                        <CTableDataCell>{val.competency_description}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Indicator 1:</CTableDataCell>
+                        <CTableDataCell>{val.competency_indicator1}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Indicator 2:</CTableDataCell>
+                        <CTableDataCell>{val.competency_indicator2}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Indicator 3:</CTableDataCell>
+                        <CTableDataCell>{val.competency_indicator3}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Indicator 4:</CTableDataCell>
+                        <CTableDataCell>{val.competency_indicator4}</CTableDataCell>
+                      </CTableRow>
+                    </CTableBody>
+                  </CTable>
+                  <span className="text-black-50">
+                    Registered in the system on {Date(val.competency_system_register)}
+                  </span>
+                </>
               )
             })}
         </CModalBody>
