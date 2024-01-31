@@ -14,6 +14,7 @@ const competencyRoute = require('./route/competencyRoute')
 const trainingRoute = require('./route/trainingRoute')
 const employeeRoute = require('./route/employeeRoute')
 const clusterRoute = require('./route/clusterRoute')
+const jobCompetencyRoute = require('./route/jobCompetencyRoute')
 
 //initialize to use .env ( process.env.YOUR_ENVIRONMENT_VARIABLE)
 require('dotenv').config()
@@ -33,6 +34,7 @@ app.use('/competency', competencyRoute)
 app.use('/training', trainingRoute)
 app.use('/employee', employeeRoute)
 app.use('/cluster', clusterRoute)
+app.use('/jobcompetency', jobCompetencyRoute)
 
 //connecting port
 app.listen(port, () => {

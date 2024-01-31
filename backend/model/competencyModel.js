@@ -45,7 +45,6 @@ async function deleteCompetency (competencyid) {
 
 //UPDATE COMPETENCY
 async function updateCompetency (competencyid,competencydata) {
-    console.log(competencydata)
     try {
         const [result] = await db.query('UPDATE `competency` SET competency.competency_name = ? , competency.competency_description = ?, competency.cluster_id = ?, competency.competency_level1 = ?, competency.competency_level2 = ?, competency.competency_level3 = ?, competency.competency_level4 = ?, competency.competency_level5 = ?, competency.competency_indicator1 = ?, competency.competency_indicator2 = ?, competency.competency_indicator3 = ?, competency.competency_indicator4 = ? WHERE competency.competency_id = ?', [
             competencydata.competencyname,

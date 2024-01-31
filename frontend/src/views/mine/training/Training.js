@@ -8,12 +8,13 @@ const { config } = packageJson
 
 //import department component
 const TrainingTable = React.lazy(() => import('./TrainingTable'))
-//const DepartmentCreate = React.lazy(() => import('./DepartmentCreate'))
+const TrainingCreate = React.lazy(() => import('./TrainingCreate'))
 const TrainingDetail = React.lazy(() => import('./TrainingDetail'))
-//const DepartmentEdit = React.lazy(() => import('./DepartmentEdit'))
+const TrainingEdit = React.lazy(() => import('./TrainingEdit'))
 
 const Training = () => {
   const [traininglist, setTraininglist] = useState([])
+  const [clusterlist, setClusterlist] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [toggleCreateTraining, setToggleCreateTraining] = useState(false)
   const [toggleDetailTraining, setToggleDetailTraining] = useState(false)
@@ -90,6 +91,19 @@ const Training = () => {
     }
     fetchAllTraining()
   }, [isChange])
+
+  useEffect(() => {
+    //READ CLUSTER API
+    const fetchAllCluster = async () => {
+      try {
+        const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/cluster/getallcluster`)
+        setClusterlist(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllCluster()
+  }, [])
   return (
     <>
       <Suspense fallback={<CSpinner />}>
@@ -110,20 +124,22 @@ const Training = () => {
           deleteTraining={deleteTraining}
           setToggleEditTraining={setToggleEditTraining}
           editTraining={setEditTraining}
+          clusterdata={clusterlist}
         />
-        {/*
-        <DepartmentCreate
-          visible={toggleCreateDepartment}
-          setVisible={setToggleCreateDepartment}
-          createDepartment={createNewDepartment}
+        <TrainingCreate
+          visible={toggleCreateTraining}
+          setVisible={setToggleCreateTraining}
+          createTraining={createNewTraining}
+          clusterlist={clusterlist}
         />
-        <DepartmentEdit
-          visible={toggleEditDepartment}
-          setVisible={setToggleEditDepartment}
-          departmentdata={departmentlist}
-          departmentid={editDepartment}
-          updateddepartment={updateDepartment}
-  />*/}
+        <TrainingEdit
+          visible={toggleEditTraining}
+          setVisible={setToggleEditTraining}
+          trainingdata={traininglist}
+          trainingid={editTraining}
+          updatedtraining={updateTraining}
+          clusterlist={clusterlist}
+        />
       </Suspense>
     </>
   )

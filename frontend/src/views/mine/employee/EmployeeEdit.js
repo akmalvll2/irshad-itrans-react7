@@ -82,7 +82,6 @@ const EmployeeEdit = ({
       })
     }
   }, [employeeid])
-  console.log(updateddata)
   return (
     <>
       <CModal
@@ -127,15 +126,12 @@ const EmployeeEdit = ({
                       size="sm"
                       name="departmentid"
                       onChange={onChangeHandle}
+                      defaultValue={val.department_id}
                     >
                       <option>..Department..</option>
                       {departmentdata?.map((val2, key2) => {
                         return (
-                          <option
-                            key={key2}
-                            value={val2.department_id}
-                            selected={val2.department_id === val.department_id ? true : false}
-                          >
+                          <option key={key2} value={val2.department_id}>
                             {val2.department_name}
                           </option>
                         )
@@ -147,15 +143,12 @@ const EmployeeEdit = ({
                       size="sm"
                       name="positionid"
                       onChange={onChangeHandle}
+                      defaultValue={val.position_id}
                     >
                       <option>..Designation..</option>
                       {positiondata?.map((val2, key2) => {
                         return (
-                          <option
-                            key={key2}
-                            value={val2.position_id}
-                            selected={val2.position_id === val.position_id ? true : false}
-                          >
+                          <option key={key2} value={val2.position_id}>
                             {val2.position_name}
                           </option>
                         )
@@ -167,6 +160,7 @@ const EmployeeEdit = ({
                       size="sm"
                       name="managerid"
                       onChange={onChangeHandle}
+                      defaultValue={val.manager_id === 0 ? 0 : val.manager_id}
                       disabled={val.manager_id === 0 ? true : false}
                     >
                       <option>..Superior..</option>
@@ -174,16 +168,12 @@ const EmployeeEdit = ({
                         ?.filter((fil) => fil.staff_id !== val.staff_id)
                         .map((val2, key2) => {
                           return (
-                            <option
-                              key={key2}
-                              value={val2.staff_id}
-                              selected={val2.staff_id === val.manager_id ? true : false}
-                            >
+                            <option key={key2} value={val2.staff_id}>
                               {val2.staff_name}
                             </option>
                           )
                         })}
-                      {val.manager_id === 0 ? <option selected>No Superior</option> : ''}
+                      {val.manager_id === 0 ? <option value="0">No Superior</option> : ''}
                     </CFormSelect>
                     <CFormLabel>Role</CFormLabel>
                     <CFormCheck

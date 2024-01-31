@@ -10,7 +10,7 @@ const { config } = packageJson
 const CompetencyTable = React.lazy(() => import('./CompetencyTable'))
 const CompetencyCreate = React.lazy(() => import('./CompetencyCreate'))
 const CompetencyDetail = React.lazy(() => import('./CompetencyDetail'))
-//const CompetencyEdit = React.lazy(() => import('./CompetencyEdit'))
+const CompetencyEdit = React.lazy(() => import('./CompetencyEdit'))
 
 const Competency = () => {
   const [competencylist, setCompetencylist] = useState([])
@@ -134,14 +134,14 @@ const Competency = () => {
           editCompetency={setEditCompetency}
           clusterdata={clusterlist}
         />
-        {/*
-        <DepartmentEdit
-          visible={toggleEditDepartment}
-          setVisible={setToggleEditDepartment}
-          departmentdata={departmentlist}
-          departmentid={editDepartment}
-          updateddepartment={updateDepartment}
-  />*/}
+        <CompetencyEdit
+          visible={toggleEditCompetency}
+          setVisible={setToggleEditCompetency}
+          competencydata={competencylist}
+          competencyid={editCompetency}
+          updatedcompetency={updateCompetency}
+          clusterlist={clusterlist}
+        />
       </Suspense>
     </>
   )

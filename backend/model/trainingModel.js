@@ -37,7 +37,7 @@ async function deleteTraining (trainingid) {
 //UPDATE TRAINING
 async function updateTraining (trainingid,trainingdata) {
     try {
-        const [result] = await db.query('UPDATE training SET training.training_name = ? , training.training_description = ? , training.clusterid WHERE training.training_id = ?', [
+        const [result] = await db.query('UPDATE training SET training.training_name = ? , training.training_description = ? , training.cluster_id = ? WHERE training.training_id = ?', [
             trainingdata.trainingname,
             trainingdata.trainingdescription,
             trainingdata.clusterid,

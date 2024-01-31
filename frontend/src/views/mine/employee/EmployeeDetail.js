@@ -45,8 +45,8 @@ const EmployeeDetail = ({
             ?.filter((fil) => fil.staff_id === viewEmployee)
             .map((val, key) => {
               return (
-                <>
-                  <CTable key={key} small bordered stripedColumns>
+                <div key={key}>
+                  <CTable small bordered stripedColumns>
                     <CTableBody>
                       <CTableRow>
                         <CTableDataCell>Name:</CTableDataCell>
@@ -97,7 +97,7 @@ const EmployeeDetail = ({
                   <span className=" text-black-50">
                     Registered in the system on {Date(val.staff_system_register)}
                   </span>
-                </>
+                </div>
               )
             })}
         </CModalBody>

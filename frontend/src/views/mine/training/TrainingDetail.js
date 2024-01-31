@@ -26,8 +26,8 @@ const TrainingDetail = ({
   deleteTraining,
   setToggleEditTraining,
   editTraining,
+  clusterdata,
 }) => {
-  console.log(viewTraining)
   return (
     <>
       <CModal backdrop="static" visible={visible} onClose={() => setVisible(false)}>
@@ -39,8 +39,8 @@ const TrainingDetail = ({
             ?.filter((fil) => fil.training_id === viewTraining)
             .map((val, key) => {
               return (
-                <>
-                  <CTable key={key} small bordered stripedColumns>
+                <div key={key}>
+                  <CTable small bordered stripedColumns>
                     <CTableBody>
                       <CTableRow>
                         <CTableDataCell>Name:</CTableDataCell>
@@ -50,12 +50,21 @@ const TrainingDetail = ({
                         <CTableDataCell>Description:</CTableDataCell>
                         <CTableDataCell>{val.training_description}</CTableDataCell>
                       </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Group:</CTableDataCell>
+                        <CTableDataCell>
+                          {
+                            clusterdata.find((fin) => fin.cluster_id === val.cluster_id)
+                              .cluster_name
+                          }
+                        </CTableDataCell>
+                      </CTableRow>
                     </CTableBody>
                   </CTable>
                   <span className="text-black-50">
                     Registered in the system on {Date(val.training_system_register)}
                   </span>
-                </>
+                </div>
               )
             })}
         </CModalBody>
@@ -99,6 +108,7 @@ TrainingDetail.propTypes = {
   deleteTraining: PropTypes.func.isRequired,
   setToggleEditTraining: PropTypes.func.isRequired,
   editTraining: PropTypes.func,
+  clusterdata: PropTypes.array.isRequired,
 }
 
 export default TrainingDetail
