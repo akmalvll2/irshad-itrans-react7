@@ -23,14 +23,23 @@ import {
   CWidgetStatsF,
   CForm,
   CFormSelect,
+  CModal,
+  CModalBody,
+  CModalHeader,
+  CModalFooter,
+  CModalTitle,
 } from '@coreui/react'
 
-const MapJobCompetency = ({ positiondata, competencydata }) => {
-  const [isPosSelected, setIsPosSelected] = useState(false)
+//icon
+import CIcon from '@coreui/icons-react'
+import { cilPlus, cilMinus, cilSave, cilTrash, cilMagnifyingGlass, cilPencil } from '@coreui/icons'
+
+const MapJobCompetency = ({ visible, setVisible, positiondata, competencydata }) => {
+  const [selectedPosition, setSelectedPosition] = useState('')
   const [tableRows, setTableRows] = useState([{ competency: null, expectedLevel: null }])
 
-  const handleSelectPosition = () => {
-    setIsPosSelected(true)
+  const handleSelectPosition = (e) => {
+    setSelectedPosition(e.target.value)
   }
 
   const handleAddMore = () => {
@@ -56,82 +65,18 @@ const MapJobCompetency = ({ positiondata, competencydata }) => {
   }
   return (
     <>
-      <CCard>
-        <CCardHeader
-          style={{
-            backgroundImage: `url(${img2})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            color: 'navy',
-          }}
-        >
-          <center>
-            <h6>POSITION TO COMPETENCY MAPPING</h6>
-          </center>
-        </CCardHeader>
-        <CCardBody>
-          <CFormSelect size="sm" onChange={() => handleSelectPosition()}>
-            <option>..Select Position..</option>
-            {positiondata?.map((val, key) => {
-              return (
-                <option key={key} value={val.position_id}>
-                  {val.position_name}
-                </option>
-              )
-            })}
-          </CFormSelect>
-          {isPosSelected ? (
+      <CModal
+        backdrop="static"
+        visible={visible}
+        onClose={() => setVisible(false)}
+        aria-labelledby="StaticBackdropExampleLabel"
+      >
+        <CForm>
+          <CModalHeader>
+            <CModalTitle id="StaticBackdropExampleLabel">Position Competency Mapping</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
             <>
-              {/*<CForm>
-              <CTable small responsive borderless>
-                <CTableHead>
-                  <CTableRow>
-                    <CTableHeaderCell>No</CTableHeaderCell>
-                    <CTableHeaderCell>Competency</CTableHeaderCell>
-                    <CTableHeaderCell>Expected Level</CTableHeaderCell>
-                    <CTableHeaderCell></CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  <CTableRow>
-                    <CTableDataCell>1</CTableDataCell>
-                    <CTableDataCell>
-                      <CFormSelect size="sm">
-                        <option>..Competency..</option>
-                        {competencydata?.map((val, key) => {
-                          return (
-                            <option key={key} value={val.competency_id}>
-                              {val.competency_name}
-                            </option>
-                          )
-                        })}
-                      </CFormSelect>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CFormSelect size="sm">
-                        <option>..Expected Level..</option>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                      </CFormSelect>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CButton size="sm" color="secondary">
-                        Remove
-                      </CButton>
-                    </CTableDataCell>
-                  </CTableRow>
-                </CTableBody>
-              </CTable>
-              <CButtonGroup>
-                <CButton size="sm" color="secondary">
-                  Add More
-                </CButton>
-                <CButton size="sm">Save</CButton>
-              </CButtonGroup>
-                      </CForm>*/}
               <CForm>
                 <CTable small responsive borderless>
                   <CTableHead>
@@ -178,7 +123,7 @@ const MapJobCompetency = ({ positiondata, competencydata }) => {
                         </CTableDataCell>
                         <CTableDataCell>
                           <CButton size="sm" color="secondary" onClick={() => handleRemove(index)}>
-                            Remove
+                            <CIcon size="sm" icon={cilMinus} />
                           </CButton>
                         </CTableDataCell>
                       </CTableRow>
@@ -187,22 +132,29 @@ const MapJobCompetency = ({ positiondata, competencydata }) => {
                 </CTable>
                 <CButtonGroup>
                   <CButton size="sm" color="secondary" onClick={handleAddMore}>
-                    Add More
+                    <CIcon size="sm" icon={cilPlus} />
                   </CButton>
-                  <CButton size="sm">Save</CButton>
                 </CButtonGroup>
               </CForm>
             </>
-          ) : (
-            ''
-          )}
-        </CCardBody>
-      </CCard>
+          </CModalBody>
+          <CModalFooter>
+            <CButton size="sm" color="primary" type="submit">
+              Save
+            </CButton>
+            <CButton size="sm" color="secondary" onClick={() => setVisible(false)}>
+              Close
+            </CButton>
+          </CModalFooter>
+        </CForm>
+      </CModal>
     </>
   )
 }
 
 MapJobCompetency.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  setVisible: PropTypes.func.isRequired,
   positiondata: PropTypes.array.isRequired,
   competencydata: PropTypes.array.isRequired,
 }

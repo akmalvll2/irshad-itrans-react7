@@ -8,7 +8,7 @@ const { config } = packageJson
 
 //import department component
 const MapJobCompetency = React.lazy(() => import('./MapJobCompetency'))
-//const EmployeeCreate = React.lazy(() => import('./EmployeeCreate'))
+const MapTable = React.lazy(() => import('./MapTable'))
 //const EmployeeDetail = React.lazy(() => import('./EmployeeDetail'))
 //const EmployeeEdit = React.lazy(() => import('./EmployeeEdit'))
 
@@ -18,6 +18,7 @@ const Map = () => {
   const [clusterdata, setClusterdata] = useState([])
   const [positioncompetencydata, setPositioncompetencydata] = useState([])
   const [isChange, setIsChange] = useState(false)
+  const [openJobCompetency, setOpenJobCompetency] = useState(false)
 
   useEffect(() => {
     //READ POSITION API
@@ -61,7 +62,18 @@ const Map = () => {
   }, [isChange])
   return (
     <>
-      <MapJobCompetency positiondata={positiondata} competencydata={competencydata} />
+      <MapTable
+        positiondata={positiondata}
+        competencydata={competencydata}
+        positioncompetencydata={positioncompetencydata}
+        setOpenJobCompetency={setOpenJobCompetency}
+      />
+      <MapJobCompetency
+        positiondata={positiondata}
+        competencydata={competencydata}
+        visible={openJobCompetency}
+        setVisible={setOpenJobCompetency}
+      />
     </>
   )
 }
