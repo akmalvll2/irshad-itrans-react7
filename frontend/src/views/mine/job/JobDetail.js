@@ -43,8 +43,8 @@ const JobDetail = ({
             ?.filter((fil) => fil.position_id === viewJob)
             .map((val, key) => {
               return (
-                <>
-                  <CTable key={key} small bordered stripedColumns>
+                <div key={key}>
+                  <CTable small bordered stripedColumns>
                     <CTableBody>
                       <CTableRow>
                         <CTableDataCell>Title:</CTableDataCell>
@@ -63,7 +63,7 @@ const JobDetail = ({
                   <span className=" text-black-50">
                     Registered in the system on {Date(val.position_system_register)}
                   </span>
-                </>
+                </div>
               )
             })}
         </CModalBody>

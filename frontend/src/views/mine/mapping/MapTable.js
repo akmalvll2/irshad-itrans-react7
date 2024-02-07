@@ -30,11 +30,16 @@ import {
   CTabPane,
 } from '@coreui/react'
 
+//icon
+import CIcon from '@coreui/icons-react'
+import { cilLink } from '@coreui/icons'
+
 const MapTable = ({
   positiondata,
   competencydata,
   positioncompetencydata,
   setOpenJobCompetency,
+  setPositionid,
 }) => {
   const [activeKey, setActiveKey] = useState(1)
   const [selectedPosition, setSelectedPosition] = useState('')
@@ -142,9 +147,12 @@ const MapTable = ({
                           <CButton
                             size="sm"
                             variant="outline"
-                            onClick={() => setOpenJobCompetency(true)}
+                            onClick={() => {
+                              setOpenJobCompetency(true)
+                              setPositionid(val.position_id)
+                            }}
                           >
-                            Map
+                            <CIcon icon={cilLink} size="sm" /> Map Training
                           </CButton>
                         </CTableDataCell>
                       </CTableRow>
@@ -173,6 +181,7 @@ MapTable.propTypes = {
   competencydata: PropTypes.array.isRequired,
   positioncompetencydata: PropTypes.array.isRequired,
   setOpenJobCompetency: PropTypes.func.isRequired,
+  setPositionid: PropTypes.func.isRequired,
 }
 
 export default MapTable
