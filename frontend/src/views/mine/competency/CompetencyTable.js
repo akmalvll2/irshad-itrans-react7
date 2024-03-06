@@ -49,7 +49,7 @@ const CompetencyTable = ({
             }}
           >
             <center>
-              <h4>COMPETENCY</h4>
+              <h6>COMPETENCY</h6>
             </center>
             <CButtonGroup className="float-end">
               <CButton size="sm" color="secondary" onClick={() => setToggleCreateCompetency(true)}>

@@ -49,7 +49,7 @@ const DepartmentTable = ({
             }}
           >
             <center>
-              <h4>DEPARTMENT</h4>
+              <h6>DEPARTMENT</h6>
             </center>
             <CButtonGroup className="float-end">
               <CButton size="sm" color="secondary" onClick={() => setToggleCreateDepartment(true)}>

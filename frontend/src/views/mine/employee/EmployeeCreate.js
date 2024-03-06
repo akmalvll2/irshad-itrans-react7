@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   CModal,
@@ -15,6 +15,8 @@ import {
   CAlert,
 } from '@coreui/react'
 
+import defaultImage from '../../../assets/images/avatars/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png'
+
 const EmployeeCreate = ({
   visible,
   setVisible,
@@ -23,20 +25,52 @@ const EmployeeCreate = ({
   positionlist,
   employeelist,
 }) => {
+  const convertFileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = (error) => reject(error)
+      reader.readAsDataURL(file)
+    })
+  }
+
   const [employeeData, setEmployeeData] = useState({
     employeerole: '',
+    employeeimage: null,
+    employeesendmail: 'false',
   })
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
+  const handleInputChange = async (e) => {
+    const { name, value, type, checked } = e.target
+    if (type === 'file') {
+      var file = e.target.files[0]
+      file = await convertFileToBase64(file)
+      setEmployeeData({ ...employeeData, [name]: file })
+      return
+    }
+    if (name === 'employeesendmail') {
+      checked
+        ? setEmployeeData({ ...employeeData, [name]: 'true' })
+        : setEmployeeData({ ...employeeData, [name]: 'false' })
+      return
+    }
     setEmployeeData({ ...employeeData, [name]: value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    if (employeeData.employeeimage === null) {
+      const defaultImageResponse = await fetch(defaultImage) // Fetch the default image file
+      if (defaultImageResponse.ok) {
+        const defaultImageBlob = await defaultImageResponse.blob() // Get the response body as a Blob object
+        employeeData.employeeimage = await convertFileToBase64(defaultImageBlob) // Convert Blob to base64
+      } else {
+        console.error('Failed to fetch default image')
+        return
+      }
+    }
     createEmployee(employeeData)
     setVisible(!visible)
-    console.log(employeeData)
   }
   return (
     <>
@@ -82,6 +116,24 @@ const EmployeeCreate = ({
                   placeholder="eg. user@testmail.com"
                   onChange={handleInputChange}
                   required
+                />
+                <CFormCheck
+                  //type="checkbox"
+                  size="sm"
+                  name="employeesendmail"
+                  label="Send Email Notification"
+                  value={'true'}
+                  onChange={handleInputChange}
+                  defaultChecked={employeeData.employeesendmail === 'true'}
+                />
+                <CFormInput
+                  type="file"
+                  size="sm"
+                  accept="image/jpg"
+                  name="employeeimage"
+                  className="mb-3"
+                  label="Employee Image"
+                  onChange={handleInputChange}
                 />
                 <CFormLabel>Department</CFormLabel>
                 <CFormSelect

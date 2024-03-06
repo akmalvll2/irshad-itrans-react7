@@ -49,7 +49,7 @@ const TrainingTable = ({
             }}
           >
             <center>
-              <h4>TRAINING</h4>
+              <h6>TRAINING</h6>
             </center>
             <CButtonGroup className="float-end">
               <CButton size="sm" color="secondary" onClick={() => setToggleCreateTraining(true)}>

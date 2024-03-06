@@ -2,6 +2,9 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { CSpinner } from '@coreui/react'
 import axios from 'axios'
 
+// FETCH USER ROLE
+import { userType } from 'src/userType'
+
 //path to API call IMPORTANT!
 import packageJson from '../../../../package.json'
 const { config } = packageJson
@@ -16,6 +19,8 @@ const Employee = () => {
   const [employeelist, setEmployeelist] = useState([])
   const [departmentlist, setDepartmentlist] = useState([])
   const [positionlist, setPositionlist] = useState([])
+  const [postcompetency, setpostcompetency] = useState([])
+  const [assessors, setassessors] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [toggleCreateEmployee, setToggleCreateEmployee] = useState(false)
   const [toggleDetailEmployee, setToggleDetailEmployee] = useState(false)
@@ -41,6 +46,24 @@ const Employee = () => {
     }
   }
 
+  //CREATE ASSESSOR API
+  const createNewAssessor = async (assessordata) => {
+    try {
+      await axios
+        .post(`${config.REACT_APP_API_ENDPOINT}/assessor/createassessor`, {
+          assessordata: assessordata,
+        })
+        .then((response) => {
+          if (response) {
+            alert('Assessor data saved.')
+            setIsChange(!isChange)
+          }
+        })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   //DELETE EMPLOYEE API
   const deleteEmployee = async (employeeid) => {
     const deleteconfirm = window.confirm('Delete employee?')
@@ -57,6 +80,24 @@ const Employee = () => {
       } catch (err) {
         console.log(err)
       }
+    }
+  }
+
+  //MAIL GENERATED PASSWORD
+  const mailPassword = async (employeeid, employeeemail) => {
+    try {
+      await axios
+        .put(`${config.REACT_APP_API_ENDPOINT}/employee/mailpasswordemployee/${employeeid}`, {
+          employeeemail: employeeemail,
+        })
+        .then((response) => {
+          if (response) {
+            alert('Password Generated and Sent')
+            setIsChange(!isChange)
+          }
+        })
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -107,7 +148,7 @@ const Employee = () => {
       }
     }
     fetchAllDepartment()
-  }, [])
+  }, [isChange])
 
   useEffect(() => {
     //READ POSITION API
@@ -120,18 +161,55 @@ const Employee = () => {
       }
     }
     fetchAllJob()
-  }, [])
+  }, [isChange])
+
+  useEffect(() => {
+    //READ JOB COMPETENCY
+    const fetchAllJobCompetency = async () => {
+      try {
+        const response = await axios.get(
+          `${config.REACT_APP_API_ENDPOINT}/jobcompetency/getalljobcompetency`,
+        )
+        setpostcompetency(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllJobCompetency()
+  }, [isChange])
+
+  useEffect(() => {
+    //READ ASSESSOR
+    const fetchAllAssessor = async () => {
+      try {
+        const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/assessor/getallassessor`)
+        setassessors(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllAssessor()
+  }, [isChange])
   return (
     <>
       <Suspense fallback={<CSpinner />}>
         <EmployeeTable
-          employeelist={employeelist}
+          employeelist={
+            userType.role === 'admin'
+              ? employeelist
+              : employeelist.filter(
+                  (i) =>
+                    i.manager_id.toString() === userType.id ||
+                    i.staff_id.toString() === userType.id,
+                )
+          }
           setToggleCreateEmployee={setToggleCreateEmployee}
           setToggleDetailEmployee={setToggleDetailEmployee}
           deleteEmployee={deleteEmployee}
           viewEmployee={setViewEmployee}
           setToggleEditEmployee={setToggleEditEmployee}
           editEmployee={setEditEmployee}
+          assessors={assessors}
         />
         <EmployeeCreate
           visible={toggleCreateEmployee}
@@ -151,6 +229,9 @@ const Employee = () => {
           editEmployee={setEditEmployee}
           departmentdata={departmentlist}
           positiondata={positionlist}
+          mailpassword={mailPassword}
+          positioncompetency={postcompetency}
+          assessors={assessors}
         />
         <EmployeeEdit
           visible={toggleEditEmployee}

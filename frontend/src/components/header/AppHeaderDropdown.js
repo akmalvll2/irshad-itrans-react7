@@ -15,6 +15,7 @@ import { cilCommentSquare, cilLockLocked, cilSettings, cilUser, cilBook } from '
 import CIcon from '@coreui/icons-react'
 import Settings from './Settings'
 import useToken from 'src/useToken'
+import { userType } from 'src/userType'
 
 import avatar3 from './../../assets/images/avatars/10.jpg'
 
@@ -22,7 +23,7 @@ import packageJson from '../../../package.json'
 const { config } = packageJson
 
 const AppHeaderDropdown = () => {
-  const [user, setUser] = useState()
+  const [users, setUsers] = useState()
   const [visible, setVisible] = useState(false)
   const handleLogout = async () => {
     try {
@@ -38,18 +39,37 @@ const AppHeaderDropdown = () => {
       window.location.reload()
     }
   }
+
   useEffect(() => {
-    setUser(JSON.parse(sessionStorage.getItem('token')))
+    //READ EMPLOYEE API
+    const fetchAllEmployee = async () => {
+      try {
+        const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/employee/getallemployee`)
+        setUsers(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllEmployee()
   }, [])
   return (
     <div>
       <CDropdown variant="nav-item">
         <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-          <CAvatar src="http://cdn.onlinewebfonts.com/svg/img_332705.png" size="lg" />
+          <CAvatar
+            src={
+              users?.find((i) => i.staff_id.toString() === userType.id)?.staff_image
+                ? users?.find((i) => i.staff_id.toString() === userType.id)?.staff_image
+                : 'http://cdn.onlinewebfonts.com/svg/img_332705.png'
+            }
+            size="lg"
+          />
+          {/*<CAvatar src="http://cdn.onlinewebfonts.com/svg/img_332705.png" size="lg" />*/}
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
           <CDropdownHeader className="bg-light fw-semibold py-2">
-            {/*Account : <span style={{ color: 'blue' }}>{user?.data[0].staff_name}</span>*/}
+            Account : <span style={{ color: 'blue' }}>{userType.name}</span>{' '}
+            <span>( {userType.role} )</span>
           </CDropdownHeader>
           {/*
           <CDropdownItem href="#">

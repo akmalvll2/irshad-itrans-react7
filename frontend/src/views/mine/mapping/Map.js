@@ -16,6 +16,7 @@ const Map = () => {
   const [competencydata, setCompetencydata] = useState([])
   const [positiondata, setPositiondata] = useState([])
   const [clusterdata, setClusterdata] = useState([])
+  const [stafflist, setstafflist] = useState([])
   const [positioncompetencydata, setPositioncompetencydata] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [openJobCompetency, setOpenJobCompetency] = useState(false)

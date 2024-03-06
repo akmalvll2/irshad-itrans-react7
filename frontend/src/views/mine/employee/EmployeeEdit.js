@@ -17,6 +17,9 @@ import {
   CFormSelect,
   CFormLabel,
   CFormCheck,
+  CImage,
+  CRow,
+  CCol,
 } from '@coreui/react'
 
 //icon
@@ -36,6 +39,7 @@ const EmployeeEdit = ({
     employeeid: '',
     employeename: '',
     employeeemail: '',
+    employeeimage: '',
     departmentid: '',
     positionid: '',
     managerid: '',
@@ -44,8 +48,24 @@ const EmployeeEdit = ({
     employeejoindate: '',
   })
 
-  const onChangeHandle = (e) => {
-    const { name, value } = e.target
+  const convertFileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = (error) => reject(error)
+      reader.readAsDataURL(file)
+    })
+  }
+
+  const onChangeHandle = async (e) => {
+    const { name, value, type } = e.target
+    if (type === 'file') {
+      var file = e.target.files[0]
+      file = await convertFileToBase64(file)
+      const newObject = { ...updateddata, [name]: file }
+      setupdateddata(newObject)
+      return
+    }
     const newObject = { ...updateddata, [name]: value }
     setupdateddata(newObject)
   }
@@ -73,6 +93,7 @@ const EmployeeEdit = ({
         employeeid: selectedEmployee?.staff_id,
         employeename: selectedEmployee?.staff_name,
         employeeemail: selectedEmployee?.staff_email,
+        employeeimage: selectedEmployee?.staff_image,
         departmentid: selectedEmployee?.department_id,
         positionid: selectedEmployee?.position_id,
         managerid: selectedEmployee?.manager_id,
@@ -92,7 +113,7 @@ const EmployeeEdit = ({
       >
         <CForm onSubmit={onSubmitHandle}>
           <CModalHeader>
-            <CModalTitle>Department Edit</CModalTitle>
+            <CModalTitle>Employee Edit</CModalTitle>
           </CModalHeader>
           <CModalBody>
             {employeedata
@@ -120,6 +141,23 @@ const EmployeeEdit = ({
                       onChange={onChangeHandle}
                       required
                     />
+                    <CRow>
+                      <CCol lg={2}>
+                        <CImage fluid src={val.staff_image} />
+                      </CCol>
+                      <CCol lg={10}>
+                        <CFormInput
+                          type="file"
+                          size="sm"
+                          accept="image/jpg"
+                          name="employeeimage"
+                          className="mb-3"
+                          label="Employee Image"
+                          onChange={onChangeHandle}
+                        />
+                      </CCol>
+                    </CRow>
+
                     <CFormLabel>Department</CFormLabel>
                     <CFormSelect
                       aria-label="Department"

@@ -42,34 +42,6 @@ const MapTable = ({
   setPositionid,
 }) => {
   const [activeKey, setActiveKey] = useState(1)
-  const [selectedPosition, setSelectedPosition] = useState('')
-  const [tableRows, setTableRows] = useState([{ competency: null, expectedLevel: null }])
-
-  const handleSelectPosition = (e) => {
-    setSelectedPosition(e.target.value)
-  }
-
-  const handleAddMore = () => {
-    setTableRows([...tableRows, { competency: null, expectedLevel: null }])
-  }
-
-  const handleRemove = (index) => {
-    const updatedRows = [...tableRows]
-    updatedRows.splice(index, 1)
-    setTableRows(updatedRows)
-  }
-
-  const handleCompetencyChange = (index, value) => {
-    const updatedRows = [...tableRows]
-    updatedRows[index].competency = value
-    setTableRows(updatedRows)
-  }
-
-  const handleExpectedLevelChange = (index, value) => {
-    const updatedRows = [...tableRows]
-    updatedRows[index].expectedLevel = value
-    setTableRows(updatedRows)
-  }
   return (
     <>
       <CCard>
@@ -83,36 +55,38 @@ const MapTable = ({
           }}
         >
           <center>
-            <h6>COMPETENCY-BASED MAPPING</h6>
+            <h6>MAPPING</h6>
           </center>
         </CCardHeader>
-        <CCardBody>
-          <CNav variant="tabs" role="tablist">
-            <CNavItem role="presentation">
-              <CNavLink
-                active={activeKey === 1}
-                component="button"
-                role="tab"
-                aria-controls="home-tab-pane"
-                aria-selected={activeKey === 1}
-                onClick={() => setActiveKey(1)}
-              >
-                Position
-              </CNavLink>
-            </CNavItem>
-            <CNavItem role="presentation">
-              <CNavLink
-                active={activeKey === 2}
-                component="button"
-                role="tab"
-                aria-controls="profile-tab-pane"
-                aria-selected={activeKey === 2}
-                onClick={() => setActiveKey(2)}
-              >
-                Training
-              </CNavLink>
-            </CNavItem>
-          </CNav>
+        <CCard>
+          <CCardHeader>
+            <CNav variant="tabs" role="tablist" className="card-header-tabs">
+              <CNavItem role="presentation">
+                <CNavLink
+                  active={activeKey === 1}
+                  component="button"
+                  role="tab"
+                  aria-controls="home-tab-pane"
+                  aria-selected={activeKey === 1}
+                  onClick={() => setActiveKey(1)}
+                >
+                  Position
+                </CNavLink>
+              </CNavItem>
+              <CNavItem role="presentation">
+                <CNavLink
+                  active={activeKey === 2}
+                  component="button"
+                  role="tab"
+                  aria-controls="profile-tab-pane"
+                  aria-selected={activeKey === 2}
+                  onClick={() => setActiveKey(2)}
+                >
+                  Training
+                </CNavLink>
+              </CNavItem>
+            </CNav>
+          </CCardHeader>
           <CTabContent>
             <CTabPane
               role="tabpanel"
@@ -170,7 +144,7 @@ const MapTable = ({
               Training Mapping
             </CTabPane>
           </CTabContent>
-        </CCardBody>
+        </CCard>
       </CCard>
     </>
   )

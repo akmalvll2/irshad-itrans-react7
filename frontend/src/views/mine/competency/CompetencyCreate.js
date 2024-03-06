@@ -83,7 +83,6 @@ const CompetencyCreate = ({ visible, setVisible, createCompetency, clusterlist }
                   label="Competency Indicator 1"
                   placeholder="eg. Aware of organizational knowledge"
                   onChange={handleInputChange}
-                  required
                 />
                 <CFormInput
                   type="text"
@@ -92,7 +91,6 @@ const CompetencyCreate = ({ visible, setVisible, createCompetency, clusterlist }
                   label="Competency Indicator 2"
                   placeholder="eg. Aware of organizational knowledge"
                   onChange={handleInputChange}
-                  required
                 />
                 <CFormInput
                   type="text"
@@ -101,7 +99,6 @@ const CompetencyCreate = ({ visible, setVisible, createCompetency, clusterlist }
                   label="Competency Indicator 3"
                   placeholder="eg. Aware of organizational knowledge"
                   onChange={handleInputChange}
-                  required
                 />
                 <CFormInput
                   type="text"
@@ -110,7 +107,6 @@ const CompetencyCreate = ({ visible, setVisible, createCompetency, clusterlist }
                   label="Competency Indicator 4"
                   placeholder="eg. Aware of organizational knowledge"
                   onChange={handleInputChange}
-                  required
                 />
               </>
             ) : (

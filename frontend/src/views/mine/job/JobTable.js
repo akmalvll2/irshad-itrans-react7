@@ -49,7 +49,7 @@ const JobTable = ({
             }}
           >
             <center>
-              <h4>POSITION</h4>
+              <h6>POSITION</h6>
             </center>
             <CButtonGroup className="float-end">
               <CButton size="sm" color="secondary" onClick={() => setToggleCreateJob(true)}>

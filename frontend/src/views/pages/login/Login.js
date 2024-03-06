@@ -48,19 +48,35 @@ const Login = ({ setToken }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await axios
-        .post(`${config.REACT_APP_API_ENDPOINT}/authentication/userauthentication`, {
+      const adminResponse = await axios.post(
+        `${config.REACT_APP_API_ENDPOINT}/authentication/adminauthentication`,
+        {
           id: username,
           password: password,
-        })
-        .then((response) => {
-          //console.log(jwtDecode(response.data))
-          if (response.data.status === 'valid') {
-            setToken(response.data.token)
-          } else if (response.data.status === 'invalid') {
-            setErrLogin(true)
-          }
-        })
+        },
+      )
+
+      if (adminResponse.data.status === 'valid') {
+        setToken(adminResponse.data.token)
+        return // Exit early if admin authentication succeeds
+      }
+
+      console.log('Admin authentication failed, attempting user authentication...')
+
+      const userResponse = await axios.post(
+        `${config.REACT_APP_API_ENDPOINT}/authentication/userauthentication`,
+        {
+          id: username,
+          password: password,
+        },
+      )
+
+      if (userResponse.data.status === 'valid') {
+        setToken(userResponse.data.token)
+      } else {
+        console.log('No data authenticated')
+        setErrLogin(true)
+      }
     } catch (err) {
       alert(err)
     }
@@ -158,7 +174,7 @@ const Login = ({ setToken }) => {
                         visible={errLogin}
                         onClose={() => setErrLogin(false)}
                       >
-                        Wrong username and password
+                        Wrong username or password
                       </CAlert>
                       <CInputGroup className="mb-3">
                         <CInputGroupText>
@@ -200,17 +216,6 @@ const Login = ({ setToken }) => {
                 </CCol>
               </CRow>
             </CCard>
-            {/*<CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
-              <CCardBody className="text-center">
-                <div>
-                  <h2>Sign up</h2>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.
-                  </p>
-                </div>
-              </CCardBody>
-            </CCard>*/}
           </CCol>
         </CRow>
       </CContainer>
