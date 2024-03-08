@@ -176,6 +176,7 @@ const Assessment = () => {
           setVisible={setToggleFormUser}
           stafflist={employeelist}
           jobcompetency={jobcompetency}
+          user={userType}
         />
       </Suspense>
     </>

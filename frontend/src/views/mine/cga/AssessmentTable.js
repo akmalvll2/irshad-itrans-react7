@@ -130,6 +130,23 @@ const AssessmentTable = ({
                         <CTableDataCell>
                           {role === 'admin' ? (
                             <CButtonGroup className=" d-flex justify-content-center">
+                              {moment().isBefore(moment(val.assessment_start_date)) ? (
+                                ''
+                              ) : moment().isBetween(
+                                  moment(val.assessment_start_date),
+                                  moment(val.assessment_end_date),
+                                ) ? (
+                                <CButton
+                                  size="sm"
+                                  color="secondary"
+                                  variant="outline"
+                                  onClick={() => setToggleFormUser(true)}
+                                >
+                                  <CIcon icon={cilClipboard} />
+                                </CButton>
+                              ) : (
+                                ''
+                              )}
                               <CButton
                                 size="sm"
                                 color="secondary"
@@ -172,15 +189,24 @@ const AssessmentTable = ({
                               </CButton>
                             </CButtonGroup>
                           ) : role === 'user' ? (
-                            <CButtonGroup className=" d-flex justify-content-center">
-                              <CButton
-                                size="sm"
-                                color="secondary"
-                                variant="outline"
-                                onClick={() => setToggleFormUser(true)}
-                              >
-                                <CIcon icon={cilClipboard} />
-                              </CButton>
+                            <CButtonGroup>
+                              {moment().isBefore(moment(val.assessment_start_date)) ? (
+                                ''
+                              ) : moment().isBetween(
+                                  moment(val.assessment_start_date),
+                                  moment(val.assessment_end_date),
+                                ) ? (
+                                <CButton
+                                  size="sm"
+                                  color="secondary"
+                                  variant="outline"
+                                  onClick={() => setToggleFormUser(true)}
+                                >
+                                  <CIcon icon={cilClipboard} />
+                                </CButton>
+                              ) : (
+                                ''
+                              )}
                             </CButtonGroup>
                           ) : (
                             ''
