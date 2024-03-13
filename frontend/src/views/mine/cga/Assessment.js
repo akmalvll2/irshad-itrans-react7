@@ -21,6 +21,8 @@ const Assessment = () => {
   const [assessmentlist, setAssessmentlist] = useState([])
   const [employeelist, setEmployeelist] = useState([])
   const [jobcompetency, setjobcompetency] = useState([])
+  const [assessors, setassessors] = useState([])
+  const [assessmentresult, setassessmentresult] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [toggleCreateAssessment, setToggleCreateAssessment] = useState(false)
   const [toggleDetailAssessment, setToggleDetailAssessment] = useState(false)
@@ -87,6 +89,28 @@ const Assessment = () => {
       console.log(err)
     }
   }
+
+  //CREATE ASSESSMENT RESULT API
+  const createAssessmentResult = async (assessmentresultdata) => {
+    try {
+      for (var x = 0; x < assessmentresultdata.length; x++) {
+        await axios
+          .post(`${config.REACT_APP_API_ENDPOINT}/assessmentresult/createassessmentresult`, {
+            assessmentresultdata: assessmentresultdata[x],
+          })
+          .then((response) => {
+            if (response) {
+              console.log('Assessment result data saved.')
+            }
+          })
+      }
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setIsChange(!isChange)
+      alert('Assessment Result Data Saved.')
+    }
+  }
   useEffect(() => {
     //READ ASSESSMENT API
     const fetchAllAssessment = async () => {
@@ -128,6 +152,34 @@ const Assessment = () => {
       }
     }
     fetchAllJobCompetency()
+  }, [isChange])
+
+  useEffect(() => {
+    //READ ASSESSMENT RESULT API
+    const fetchAllAssessmentResult = async () => {
+      try {
+        const response = await axios.get(
+          `${config.REACT_APP_API_ENDPOINT}/assessmentresult/getallassessmentresult`,
+        )
+        setassessmentresult(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllAssessmentResult()
+  }, [isChange])
+
+  useEffect(() => {
+    //READ ASSESSOR
+    const fetchAllAssessor = async () => {
+      try {
+        const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/assessor/getallassessor`)
+        setassessors(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllAssessor()
   }, [isChange])
   return (
     <>
@@ -177,6 +229,11 @@ const Assessment = () => {
           stafflist={employeelist}
           jobcompetency={jobcompetency}
           user={userType}
+          assessmentid={viewAssessment}
+          createAssessmentResult={createAssessmentResult}
+          assessors={assessors}
+          assessmentresult={assessmentresult}
+          assessmentdata={assessmentlist}
         />
       </Suspense>
     </>

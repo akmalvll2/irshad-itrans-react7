@@ -140,7 +140,10 @@ const AssessmentTable = ({
                                   size="sm"
                                   color="secondary"
                                   variant="outline"
-                                  onClick={() => setToggleFormUser(true)}
+                                  onClick={() => {
+                                    setToggleFormUser(true)
+                                    viewAssessment(val.assessment_id)
+                                  }}
                                 >
                                   <CIcon icon={cilClipboard} />
                                 </CButton>
@@ -200,7 +203,10 @@ const AssessmentTable = ({
                                   size="sm"
                                   color="secondary"
                                   variant="outline"
-                                  onClick={() => setToggleFormUser(true)}
+                                  onClick={() => {
+                                    setToggleFormUser(true)
+                                    viewAssessment(val.assessment_id)
+                                  }}
                                 >
                                   <CIcon icon={cilClipboard} />
                                 </CButton>

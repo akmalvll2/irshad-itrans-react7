@@ -18,6 +18,7 @@ const clusterRoute = require('./route/clusterRoute')
 const jobCompetencyRoute = require('./route/jobCompetencyRoute')
 const assessmentRoute = require('./route/assessmentRoute')
 const assessorRoute = require('./route/assessorRoute')
+const assessmentResultRoute = require('./route/assessmentResultRoute')
 
 //initialize to use .env ( process.env.YOUR_ENVIRONMENT_VARIABLE)
 require('dotenv').config()
@@ -40,6 +41,7 @@ app.use('/cluster', clusterRoute)
 app.use('/jobcompetency', jobCompetencyRoute)
 app.use('/assessment', assessmentRoute)
 app.use('/assessor', assessorRoute)
+app.use('/assessmentresult', assessmentResultRoute)
 
 //connecting port
 app.listen(port, () => {

@@ -13,13 +13,12 @@ async function getAllAssessmentResult () {
 //CREATE ASSESSMENT RESULT
 async function createAssessmentResult (assessmentresultdata) {
     try {
-        const [result] = await db.query('INSERT INTO assessment_result(staff_assessor_id, competency_id, assessment_result_score, assessment_result_gap, assessment_result_message, assessment_result_date, assessment_id) VALUES (?,?,?,?,?,?,?)', [
+        const [result] = await db.query('INSERT INTO assessment_result(staff_assessor_id, competency_id, assessment_result_score, assessment_result_gap, assessment_result_message, assessment_id) VALUES (?,?,?,?,?,?)', [
             assessmentresultdata.staffassessorid,
             assessmentresultdata.competencyid,
             assessmentresultdata.assessmentresultscore,
             assessmentresultdata.assessmentresultgap,
             assessmentresultdata.assessmentresultmessage,
-            assessmentresultdata.assessmentresultdate,
             assessmentresultdata.assessmentid,
         ])
         return result.insertId
