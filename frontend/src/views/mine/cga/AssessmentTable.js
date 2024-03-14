@@ -35,6 +35,7 @@ import {
   cilPencil,
   cilAddressBook,
   cilClipboard,
+  cilCalendarCheck,
 } from '@coreui/icons'
 
 const AssessmentTable = ({
@@ -47,6 +48,7 @@ const AssessmentTable = ({
   editAssessment,
   setToggleFormAdmin,
   setToggleFormUser,
+  setToggleSubmissionTable,
   role,
 }) => {
   return (
@@ -155,6 +157,17 @@ const AssessmentTable = ({
                                 color="secondary"
                                 variant="outline"
                                 onClick={() => {
+                                  setToggleSubmissionTable(true)
+                                  viewAssessment(val.assessment_id)
+                                }}
+                              >
+                                <CIcon icon={cilCalendarCheck} />
+                              </CButton>
+                              <CButton
+                                size="sm"
+                                color="secondary"
+                                variant="outline"
+                                onClick={() => {
                                   setToggleFormAdmin(true)
                                 }}
                               >
@@ -248,6 +261,7 @@ AssessmentTable.propTypes = {
   editAssessment: PropTypes.func,
   setToggleFormAdmin: PropTypes.func.isRequired,
   setToggleFormUser: PropTypes.func.isRequired,
+  setToggleSubmissionTable: PropTypes.func.isRequired,
   role: PropTypes.string.isRequired,
 }
 

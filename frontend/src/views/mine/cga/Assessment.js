@@ -16,6 +16,7 @@ const AssessmentDetail = React.lazy(() => import('./AssessmentDetail'))
 const AssessmentEdit = React.lazy(() => import('./AssessmentEdit'))
 const AssessmentFormAdmin = React.lazy(() => import('./AssessmentFormAdmin'))
 const AssessmentFormUser = React.lazy(() => import('./AssessmentFormUser'))
+const AssessmentStatusTable = React.lazy(() => import('./AssessmentStatusTable'))
 
 const Assessment = () => {
   const [assessmentlist, setAssessmentlist] = useState([])
@@ -29,6 +30,7 @@ const Assessment = () => {
   const [toggleEditAssessment, setToggleEditAssessment] = useState(false)
   const [toggleFormAdmin, setToggleFormAdmin] = useState(false)
   const [toggleFormUser, setToggleFormUser] = useState(false)
+  const [toggleSubmissionTable, setToggleSubmissionTable] = useState(false)
   const [viewAssessment, setViewAssessment] = useState()
   const [editAssessment, setEditAssessment] = useState()
 
@@ -194,6 +196,7 @@ const Assessment = () => {
           editAssessment={setEditAssessment}
           setToggleFormAdmin={setToggleFormAdmin}
           setToggleFormUser={setToggleFormUser}
+          setToggleSubmissionTable={setToggleSubmissionTable}
           role={userType.role}
         />
         <AssessmentCreate
@@ -234,6 +237,13 @@ const Assessment = () => {
           assessors={assessors}
           assessmentresult={assessmentresult}
           assessmentdata={assessmentlist}
+        />
+        <AssessmentStatusTable
+          visible={toggleSubmissionTable}
+          setVisible={setToggleSubmissionTable}
+          stafflist={employeelist}
+          assessmentdata={assessmentlist.find((i) => i.assessment_id === viewAssessment)}
+          assessors={assessors}
         />
       </Suspense>
     </>
