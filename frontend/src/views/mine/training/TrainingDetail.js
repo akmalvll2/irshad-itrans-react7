@@ -27,6 +27,7 @@ const TrainingDetail = ({
   setToggleEditTraining,
   editTraining,
   clusterdata,
+  role,
 }) => {
   return (
     <>
@@ -69,28 +70,33 @@ const TrainingDetail = ({
             })}
         </CModalBody>
         <CModalFooter>
-          <CButtonGroup>
-            <CButton
-              size="sm"
-              color="secondary"
-              onClick={() => {
-                editTraining(viewTraining)
-                setToggleEditTraining(true)
-              }}
-            >
-              <CIcon icon={cilPencil} /> Edit
-            </CButton>
-            <CButton
-              size="sm"
-              color="danger"
-              onClick={() => {
-                deleteTraining(viewTraining)
-                setVisible(!visible)
-              }}
-            >
-              <CIcon icon={cilTrash} /> Delete
-            </CButton>
-          </CButtonGroup>
+          {role === 'admin' ? (
+            <CButtonGroup>
+              <CButton
+                size="sm"
+                color="secondary"
+                onClick={() => {
+                  editTraining(viewTraining)
+                  setToggleEditTraining(true)
+                }}
+              >
+                <CIcon icon={cilPencil} /> Edit
+              </CButton>
+              <CButton
+                size="sm"
+                color="danger"
+                onClick={() => {
+                  deleteTraining(viewTraining)
+                  setVisible(!visible)
+                }}
+              >
+                <CIcon icon={cilTrash} /> Delete
+              </CButton>
+            </CButtonGroup>
+          ) : (
+            ''
+          )}
+
           <CButton size="sm" color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
@@ -109,6 +115,7 @@ TrainingDetail.propTypes = {
   setToggleEditTraining: PropTypes.func.isRequired,
   editTraining: PropTypes.func,
   clusterdata: PropTypes.array.isRequired,
+  role: PropTypes.string.isRequired,
 }
 
 export default TrainingDetail

@@ -26,6 +26,7 @@ const DepartmentDetail = ({
   deleteDepartment,
   setToggleEditDepartment,
   editDepartment,
+  role,
 }) => {
   return (
     <>
@@ -64,28 +65,33 @@ const DepartmentDetail = ({
             })}
         </CModalBody>
         <CModalFooter>
-          <CButtonGroup>
-            <CButton
-              size="sm"
-              color="secondary"
-              onClick={() => {
-                editDepartment(viewDepartment)
-                setToggleEditDepartment(true)
-              }}
-            >
-              <CIcon icon={cilPencil} /> Edit
-            </CButton>
-            <CButton
-              size="sm"
-              color="danger"
-              onClick={() => {
-                deleteDepartment(viewDepartment)
-                setVisible(!visible)
-              }}
-            >
-              <CIcon icon={cilTrash} /> Delete
-            </CButton>
-          </CButtonGroup>
+          {role === 'admin' ? (
+            <CButtonGroup>
+              <CButton
+                size="sm"
+                color="secondary"
+                onClick={() => {
+                  editDepartment(viewDepartment)
+                  setToggleEditDepartment(true)
+                }}
+              >
+                <CIcon icon={cilPencil} /> Edit
+              </CButton>
+              <CButton
+                size="sm"
+                color="danger"
+                onClick={() => {
+                  deleteDepartment(viewDepartment)
+                  setVisible(!visible)
+                }}
+              >
+                <CIcon icon={cilTrash} /> Delete
+              </CButton>
+            </CButtonGroup>
+          ) : (
+            ''
+          )}
+
           <CButton size="sm" color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
@@ -103,6 +109,7 @@ DepartmentDetail.propTypes = {
   deleteDepartment: PropTypes.func.isRequired,
   setToggleEditDepartment: PropTypes.func.isRequired,
   editDepartment: PropTypes.func,
+  role: PropTypes.string.isRequired,
 }
 
 export default DepartmentDetail

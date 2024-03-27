@@ -2,6 +2,9 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { CSpinner } from '@coreui/react'
 import axios from 'axios'
 
+// FETCH USER ROLE
+import { userType } from 'src/userType'
+
 //path to API call IMPORTANT!
 import packageJson from '../../../../package.json'
 const { config } = packageJson
@@ -115,6 +118,7 @@ const Training = () => {
           viewTraining={setViewTraining}
           setToggleEditTraining={setToggleEditTraining}
           editTraining={setEditTraining}
+          role={userType.role}
         />
         <TrainingDetail
           visible={toggleDetailTraining}
@@ -125,6 +129,7 @@ const Training = () => {
           setToggleEditTraining={setToggleEditTraining}
           editTraining={setEditTraining}
           clusterdata={clusterlist}
+          role={userType.role}
         />
         <TrainingCreate
           visible={toggleCreateTraining}

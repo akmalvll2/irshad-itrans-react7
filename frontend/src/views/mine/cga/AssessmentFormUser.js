@@ -35,7 +35,7 @@ import {
 
 //icon
 import CIcon from '@coreui/icons-react'
-import { cilCheckAlt, cilInfo, cilCheck } from '@coreui/icons'
+import { cilCheckAlt, cilInfo, cilMinus, cilXCircle, cilX, cilCheck } from '@coreui/icons'
 
 const AssessmentFormUser = ({
   visible,
@@ -277,11 +277,13 @@ const AssessmentFormUser = ({
                                               i.assessment_id === assessmentid &&
                                               i.competency_id === val2.competency_id,
                                           )?.assessment_result_score === 1 ? (
-                                            <CButton color="transparent" disabled>
+                                            <CButton color="success" disabled>
                                               <CIcon icon={cilCheckAlt} />
                                             </CButton>
                                           ) : (
-                                            ''
+                                            <CButton color="secondary" disabled>
+                                              <CIcon icon={cilXCircle} />
+                                            </CButton>
                                           )}
                                         </CTableDataCell>
                                         <CTableDataCell className=" text-center">
@@ -292,11 +294,13 @@ const AssessmentFormUser = ({
                                               i.assessment_id === assessmentid &&
                                               i.competency_id === val2.competency_id,
                                           )?.assessment_result_score === 2 ? (
-                                            <CButton color="transparent" disabled>
+                                            <CButton color="success" disabled>
                                               <CIcon icon={cilCheckAlt} />
                                             </CButton>
                                           ) : (
-                                            ''
+                                            <CButton color="secondary" disabled>
+                                              <CIcon icon={cilXCircle} />
+                                            </CButton>
                                           )}
                                         </CTableDataCell>
                                         <CTableDataCell className=" text-center">
@@ -307,11 +311,13 @@ const AssessmentFormUser = ({
                                               i.assessment_id === assessmentid &&
                                               i.competency_id === val2.competency_id,
                                           )?.assessment_result_score === 3 ? (
-                                            <CButton color="transparent" disabled>
+                                            <CButton color="success" disabled>
                                               <CIcon icon={cilCheckAlt} />
                                             </CButton>
                                           ) : (
-                                            ''
+                                            <CButton color="secondary" disabled>
+                                              <CIcon icon={cilXCircle} />
+                                            </CButton>
                                           )}
                                         </CTableDataCell>
                                         <CTableDataCell className=" text-center">
@@ -322,11 +328,13 @@ const AssessmentFormUser = ({
                                               i.assessment_id === assessmentid &&
                                               i.competency_id === val2.competency_id,
                                           )?.assessment_result_score === 4 ? (
-                                            <CButton color="transparent" disabled>
+                                            <CButton color="success" disabled>
                                               <CIcon icon={cilCheckAlt} />
                                             </CButton>
                                           ) : (
-                                            ''
+                                            <CButton color="secondary" disabled>
+                                              <CIcon icon={cilXCircle} />
+                                            </CButton>
                                           )}
                                         </CTableDataCell>
                                         <CTableDataCell className=" text-center">
@@ -337,11 +345,13 @@ const AssessmentFormUser = ({
                                               i.assessment_id === assessmentid &&
                                               i.competency_id === val2.competency_id,
                                           )?.assessment_result_score === 5 ? (
-                                            <CButton color="transparent" disabled>
+                                            <CButton color="success" disabled>
                                               <CIcon icon={cilCheckAlt} />
                                             </CButton>
                                           ) : (
-                                            ''
+                                            <CButton color="secondary" disabled>
+                                              <CIcon icon={cilXCircle} />
+                                            </CButton>
                                           )}
                                         </CTableDataCell>
                                         <CTableDataCell>

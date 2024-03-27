@@ -2,6 +2,9 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { CSpinner } from '@coreui/react'
 import axios from 'axios'
 
+// FETCH USER ROLE
+import { userType } from 'src/userType'
+
 //path to API call IMPORTANT!
 import packageJson from '../../../../package.json'
 const { config } = packageJson
@@ -117,6 +120,7 @@ const Competency = () => {
           viewCompetency={setViewCompetency}
           setToggleEditCompetency={setToggleEditCompetency}
           editCompetency={setEditCompetency}
+          role={userType.role}
         />
         <CompetencyCreate
           visible={toggleCreateCompetency}
@@ -133,6 +137,7 @@ const Competency = () => {
           setToggleEditCompetency={setToggleEditCompetency}
           editCompetency={setEditCompetency}
           clusterdata={clusterlist}
+          role={userType.role}
         />
         <CompetencyEdit
           visible={toggleEditCompetency}

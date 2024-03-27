@@ -84,11 +84,11 @@ const Employee = () => {
   }
 
   //MAIL GENERATED PASSWORD
-  const mailPassword = async (employeeid, employeeemail) => {
+  const mailPassword = async (employeeid, employeedata) => {
     try {
       await axios
         .put(`${config.REACT_APP_API_ENDPOINT}/employee/mailpasswordemployee/${employeeid}`, {
-          employeeemail: employeeemail,
+          employeedata: employeedata,
         })
         .then((response) => {
           if (response) {
@@ -210,6 +210,7 @@ const Employee = () => {
           setToggleEditEmployee={setToggleEditEmployee}
           editEmployee={setEditEmployee}
           assessors={assessors}
+          role={userType.role}
         />
         <EmployeeCreate
           visible={toggleCreateEmployee}
@@ -232,6 +233,7 @@ const Employee = () => {
           mailpassword={mailPassword}
           positioncompetency={postcompetency}
           assessors={assessors}
+          role={userType.role}
         />
         <EmployeeEdit
           visible={toggleEditEmployee}

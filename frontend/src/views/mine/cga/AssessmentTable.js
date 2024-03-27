@@ -157,18 +157,8 @@ const AssessmentTable = ({
                                 color="secondary"
                                 variant="outline"
                                 onClick={() => {
-                                  setToggleSubmissionTable(true)
-                                  viewAssessment(val.assessment_id)
-                                }}
-                              >
-                                <CIcon icon={cilCalendarCheck} />
-                              </CButton>
-                              <CButton
-                                size="sm"
-                                color="secondary"
-                                variant="outline"
-                                onClick={() => {
                                   setToggleFormAdmin(true)
+                                  viewAssessment(val.assessment_id)
                                 }}
                               >
                                 <CIcon icon={cilAddressBook} />

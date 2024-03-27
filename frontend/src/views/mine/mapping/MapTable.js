@@ -40,6 +40,9 @@ const MapTable = ({
   positioncompetencydata,
   setOpenJobCompetency,
   setPositionid,
+  stafflist,
+  setToggleMapAssessor,
+  setstaffid,
 }) => {
   const [activeKey, setActiveKey] = useState(1)
   return (
@@ -83,6 +86,18 @@ const MapTable = ({
                   onClick={() => setActiveKey(2)}
                 >
                   Training
+                </CNavLink>
+              </CNavItem>
+              <CNavItem role="presentation">
+                <CNavLink
+                  active={activeKey === 3}
+                  component="button"
+                  role="tab"
+                  aria-controls="profile-tab-pane"
+                  aria-selected={activeKey === 3}
+                  onClick={() => setActiveKey(3)}
+                >
+                  Assessor
                 </CNavLink>
               </CNavItem>
             </CNav>
@@ -143,6 +158,44 @@ const MapTable = ({
             >
               Training Mapping
             </CTabPane>
+            <CTabPane
+              role="tabpanel"
+              className="p-2"
+              aria-labelledby="home-tab-pane"
+              visible={activeKey === 3}
+            >
+              <CTable small responsive bordered striped className="my-0">
+                <CTableHead color="dark">
+                  <CTableRow>
+                    <CTableHeaderCell>No</CTableHeaderCell>
+                    <CTableHeaderCell>Staff</CTableHeaderCell>
+                    <CTableHeaderCell>Actions</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {stafflist?.map((val, key) => {
+                    return (
+                      <CTableRow key={key}>
+                        <CTableDataCell>{key + 1}</CTableDataCell>
+                        <CTableDataCell>{val.staff_name}</CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setToggleMapAssessor(true)
+                              setstaffid(val.staff_id)
+                            }}
+                          >
+                            <CIcon icon={cilLink} size="sm" /> Assessor
+                          </CButton>
+                        </CTableDataCell>
+                      </CTableRow>
+                    )
+                  })}
+                </CTableBody>
+              </CTable>
+            </CTabPane>
           </CTabContent>
         </CCard>
       </CCard>
@@ -156,6 +209,9 @@ MapTable.propTypes = {
   positioncompetencydata: PropTypes.array.isRequired,
   setOpenJobCompetency: PropTypes.func.isRequired,
   setPositionid: PropTypes.func.isRequired,
+  stafflist: PropTypes.array.isRequired,
+  setToggleMapAssessor: PropTypes.func.isRequired,
+  setstaffid: PropTypes.func,
 }
 
 export default MapTable

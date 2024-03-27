@@ -35,6 +35,7 @@ const DepartmentTable = ({
   viewDepartment,
   setToggleEditDepartment,
   editDepartment,
+  role,
 }) => {
   return (
     <>
@@ -51,14 +52,26 @@ const DepartmentTable = ({
             <center>
               <h6>DEPARTMENT</h6>
             </center>
-            <CButtonGroup className="float-end">
-              <CButton size="sm" color="secondary" onClick={() => setToggleCreateDepartment(true)}>
-                <CIcon icon={cilPlus} />
-              </CButton>
-              <CButton size="sm" color="secondary">
-                <CIcon icon={cilSave} />
-              </CButton>
-            </CButtonGroup>
+            {role === 'admin' ? (
+              <CButtonGroup className="float-end">
+                <CTooltip content="Add" placement="auto">
+                  <CButton
+                    size="sm"
+                    color="secondary"
+                    onClick={() => setToggleCreateDepartment(true)}
+                  >
+                    <CIcon icon={cilPlus} />
+                  </CButton>
+                </CTooltip>
+                <CTooltip content="PDF" placement="auto">
+                  <CButton size="sm" color="secondary">
+                    <CIcon icon={cilSave} />
+                  </CButton>
+                </CTooltip>
+              </CButtonGroup>
+            ) : (
+              ''
+            )}
           </CCardHeader>
           <CCardBody>
             <CRow>
@@ -89,36 +102,62 @@ const DepartmentTable = ({
                         <CTableDataCell>{val.department_name}</CTableDataCell>
                         <CTableDataCell>
                           <CButtonGroup className=" d-flex justify-content-center">
-                            <CButton
-                              size="sm"
-                              color="secondary"
-                              variant="outline"
-                              onClick={() => {
-                                setToggleDetailDepartment(true)
-                                viewDepartment(val.department_id)
-                              }}
+                            <CTooltip
+                              content="Details"
+                              placement="auto"
+                              //style={customTooltipStyle}
                             >
-                              <CIcon icon={cilMagnifyingGlass} />
-                            </CButton>
-                            <CButton
-                              size="sm"
-                              color="secondary"
-                              variant="outline"
-                              onClick={() => {
-                                setToggleEditDepartment(true)
-                                editDepartment(val.department_id)
-                              }}
-                            >
-                              <CIcon icon={cilPencil} />
-                            </CButton>
-                            <CButton
-                              size="sm"
-                              color="danger"
-                              variant="outline"
-                              onClick={() => deleteDepartment(val.department_id)}
-                            >
-                              <CIcon icon={cilTrash} />
-                            </CButton>
+                              <CButton
+                                size="sm"
+                                color="secondary"
+                                variant="outline"
+                                onClick={() => {
+                                  setToggleDetailDepartment(true)
+                                  viewDepartment(val.department_id)
+                                }}
+                              >
+                                <CIcon icon={cilMagnifyingGlass} />
+                              </CButton>
+                            </CTooltip>
+
+                            {role === 'admin' ? (
+                              <>
+                                <CTooltip
+                                  content="Edit"
+                                  placement="auto"
+                                  //style={customTooltipStyle}
+                                >
+                                  <CButton
+                                    size="sm"
+                                    color="secondary"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setToggleEditDepartment(true)
+                                      editDepartment(val.department_id)
+                                    }}
+                                  >
+                                    <CIcon icon={cilPencil} />
+                                  </CButton>
+                                </CTooltip>
+
+                                <CTooltip
+                                  content="Delete"
+                                  placement="auto"
+                                  //style={customTooltipStyle}
+                                >
+                                  <CButton
+                                    size="sm"
+                                    color="danger"
+                                    variant="outline"
+                                    onClick={() => deleteDepartment(val.department_id)}
+                                  >
+                                    <CIcon icon={cilTrash} />
+                                  </CButton>
+                                </CTooltip>
+                              </>
+                            ) : (
+                              ''
+                            )}
                           </CButtonGroup>
                         </CTableDataCell>
                       </CTableRow>
@@ -149,6 +188,7 @@ DepartmentTable.propTypes = {
   viewDepartment: PropTypes.func.isRequired,
   setToggleEditDepartment: PropTypes.func.isRequired,
   editDepartment: PropTypes.func,
+  role: PropTypes.string.isRequired,
 }
 
 export default DepartmentTable

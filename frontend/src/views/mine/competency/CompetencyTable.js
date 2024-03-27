@@ -35,6 +35,7 @@ const CompetencyTable = ({
   viewCompetency,
   setToggleEditCompetency,
   editCompetency,
+  role,
 }) => {
   return (
     <>
@@ -51,14 +52,26 @@ const CompetencyTable = ({
             <center>
               <h6>COMPETENCY</h6>
             </center>
-            <CButtonGroup className="float-end">
-              <CButton size="sm" color="secondary" onClick={() => setToggleCreateCompetency(true)}>
-                <CIcon icon={cilPlus} />
-              </CButton>
-              <CButton size="sm" color="secondary">
-                <CIcon icon={cilSave} />
-              </CButton>
-            </CButtonGroup>
+            {role === 'admin' ? (
+              <CButtonGroup className="float-end">
+                <CTooltip content="Add" placement="auto">
+                  <CButton
+                    size="sm"
+                    color="secondary"
+                    onClick={() => setToggleCreateCompetency(true)}
+                  >
+                    <CIcon icon={cilPlus} />
+                  </CButton>
+                </CTooltip>
+                <CTooltip content="PDF" placement="auto">
+                  <CButton size="sm" color="secondary">
+                    <CIcon icon={cilSave} />
+                  </CButton>
+                </CTooltip>
+              </CButtonGroup>
+            ) : (
+              ''
+            )}
           </CCardHeader>
           <CCardBody>
             <CRow>
@@ -89,36 +102,49 @@ const CompetencyTable = ({
                         <CTableDataCell>{val.competency_name}</CTableDataCell>
                         <CTableDataCell>
                           <CButtonGroup className=" d-flex justify-content-center">
-                            <CButton
-                              size="sm"
-                              color="secondary"
-                              variant="outline"
-                              onClick={() => {
-                                setToggleDetailCompetency(true)
-                                viewCompetency(val.competency_id)
-                              }}
-                            >
-                              <CIcon icon={cilMagnifyingGlass} />
-                            </CButton>
-                            <CButton
-                              size="sm"
-                              color="secondary"
-                              variant="outline"
-                              onClick={() => {
-                                setToggleEditCompetency(true)
-                                editCompetency(val.competency_id)
-                              }}
-                            >
-                              <CIcon icon={cilPencil} />
-                            </CButton>
-                            <CButton
-                              size="sm"
-                              color="danger"
-                              variant="outline"
-                              onClick={() => deleteCompetency(val.competency_id)}
-                            >
-                              <CIcon icon={cilTrash} />
-                            </CButton>
+                            <CTooltip content="Details" placement="auto">
+                              <CButton
+                                size="sm"
+                                color="secondary"
+                                variant="outline"
+                                onClick={() => {
+                                  setToggleDetailCompetency(true)
+                                  viewCompetency(val.competency_id)
+                                }}
+                              >
+                                <CIcon icon={cilMagnifyingGlass} />
+                              </CButton>
+                            </CTooltip>
+
+                            {role === 'admin' ? (
+                              <>
+                                <CTooltip content="Edit" placement="auto">
+                                  <CButton
+                                    size="sm"
+                                    color="secondary"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setToggleEditCompetency(true)
+                                      editCompetency(val.competency_id)
+                                    }}
+                                  >
+                                    <CIcon icon={cilPencil} />
+                                  </CButton>
+                                </CTooltip>
+                                <CTooltip content="Delete" placement="auto">
+                                  <CButton
+                                    size="sm"
+                                    color="danger"
+                                    variant="outline"
+                                    onClick={() => deleteCompetency(val.competency_id)}
+                                  >
+                                    <CIcon icon={cilTrash} />
+                                  </CButton>
+                                </CTooltip>
+                              </>
+                            ) : (
+                              ''
+                            )}
                           </CButtonGroup>
                         </CTableDataCell>
                       </CTableRow>
@@ -149,6 +175,7 @@ CompetencyTable.propTypes = {
   viewCompetency: PropTypes.func.isRequired,
   setToggleEditCompetency: PropTypes.func.isRequired,
   editCompetency: PropTypes.func,
+  role: PropTypes.string.isRequired,
 }
 
 export default CompetencyTable

@@ -9,7 +9,7 @@ const { config } = packageJson
 //import department component
 const MapJobCompetency = React.lazy(() => import('./MapJobCompetency'))
 const MapTable = React.lazy(() => import('./MapTable'))
-//const EmployeeDetail = React.lazy(() => import('./EmployeeDetail'))
+const MapAssessor = React.lazy(() => import('./MapAssessor'))
 //const EmployeeEdit = React.lazy(() => import('./EmployeeEdit'))
 
 const Map = () => {
@@ -17,10 +17,13 @@ const Map = () => {
   const [positiondata, setPositiondata] = useState([])
   const [clusterdata, setClusterdata] = useState([])
   const [stafflist, setstafflist] = useState([])
+  const [assessorlist, setassessorlist] = useState([])
   const [positioncompetencydata, setPositioncompetencydata] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [openJobCompetency, setOpenJobCompetency] = useState(false)
+  const [toggleMapAssessor, setToggleMapAssessor] = useState(false)
   const [positionid, setPositionid] = useState()
+  const [staffid, setstaffid] = useState()
 
   //CREATE JOB COMPETENCY API
   const createNewJobCompetency = async (jobcompetencydata) => {
@@ -87,6 +90,32 @@ const Map = () => {
     }
     fetchAllCompetency()
   }, [isChange])
+
+  useEffect(() => {
+    //READ ASSESSOR API
+    const fetchAllAssessor = async () => {
+      try {
+        const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/assessor/getallassessor`)
+        setassessorlist(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllAssessor()
+  }, [isChange])
+
+  useEffect(() => {
+    //READ EMPLOYEE API
+    const fetchAllEmployee = async () => {
+      try {
+        const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/employee/getallemployee`)
+        setstafflist(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllEmployee()
+  }, [isChange])
   useEffect(() => {
     //READ JOB COMPETENCY API
     const fetchAllJobCompetency = async () => {
@@ -109,6 +138,10 @@ const Map = () => {
         positioncompetencydata={positioncompetencydata}
         setOpenJobCompetency={setOpenJobCompetency}
         setPositionid={setPositionid}
+        stafflist={stafflist}
+        assessorlist={assessorlist}
+        setToggleMapAssessor={setToggleMapAssessor}
+        setstaffid={setstaffid}
       />
       <MapJobCompetency
         positiondata={positiondata}
@@ -119,6 +152,13 @@ const Map = () => {
         positioncompetencydata={positioncompetencydata}
         createnewjobcompetency={createNewJobCompetency}
         deleteJobCompetency={deleteJobCompetency}
+      />
+      <MapAssessor
+        visible={toggleMapAssessor}
+        setVisible={setToggleMapAssessor}
+        staffid={staffid}
+        stafflist={stafflist}
+        assessorlist={assessorlist}
       />
     </>
   )

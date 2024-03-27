@@ -1,5 +1,14 @@
 const assessorModel = require('../model/assessorModel')
 
+//function to convert blob data from database to an image URL
+const createImageUrl = (bufferData) => {
+    // Convert the Buffer data to a Base64 string
+    const base64String = Buffer.from(bufferData).toString('base64')
+    // Create a data URL
+    const imageUrl = `data:image/png;base64,${base64String}`
+    return imageUrl
+}
+
 //READ ALL ASSESSOR
 async function getAllAssessor (req,res) {
     try {

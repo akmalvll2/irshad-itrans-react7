@@ -2,6 +2,9 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { CSpinner } from '@coreui/react'
 import axios from 'axios'
 
+// FETCH USER ROLE
+import { userType } from 'src/userType'
+
 //path to API call IMPORTANT!
 import packageJson from '../../../../package.json'
 const { config } = packageJson
@@ -103,6 +106,7 @@ const Department = () => {
           viewDepartment={setViewDepartment}
           setToggleEditDepartment={setToggleEditDepartment}
           editDepartment={setEditDepartment}
+          role={userType.role}
         />
         <DepartmentCreate
           visible={toggleCreateDepartment}
@@ -117,6 +121,7 @@ const Department = () => {
           deleteDepartment={deleteDepartment}
           setToggleEditDepartment={setToggleEditDepartment}
           editDepartment={setEditDepartment}
+          role={userType.role}
         />
         <DepartmentEdit
           visible={toggleEditDepartment}

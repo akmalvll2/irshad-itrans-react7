@@ -27,6 +27,7 @@ const CompetencyDetail = ({
   setToggleEditCompetency,
   editCompetency,
   clusterdata,
+  role,
 }) => {
   return (
     <>
@@ -87,28 +88,33 @@ const CompetencyDetail = ({
             })}
         </CModalBody>
         <CModalFooter>
-          <CButtonGroup>
-            <CButton
-              size="sm"
-              color="secondary"
-              onClick={() => {
-                editCompetency(viewCompetency)
-                setToggleEditCompetency(true)
-              }}
-            >
-              <CIcon icon={cilPencil} /> Edit
-            </CButton>
-            <CButton
-              size="sm"
-              color="danger"
-              onClick={() => {
-                deleteCompetency(viewCompetency)
-                setVisible(!visible)
-              }}
-            >
-              <CIcon icon={cilTrash} /> Delete
-            </CButton>
-          </CButtonGroup>
+          {role === 'admin' ? (
+            <CButtonGroup>
+              <CButton
+                size="sm"
+                color="secondary"
+                onClick={() => {
+                  editCompetency(viewCompetency)
+                  setToggleEditCompetency(true)
+                }}
+              >
+                <CIcon icon={cilPencil} /> Edit
+              </CButton>
+              <CButton
+                size="sm"
+                color="danger"
+                onClick={() => {
+                  deleteCompetency(viewCompetency)
+                  setVisible(!visible)
+                }}
+              >
+                <CIcon icon={cilTrash} /> Delete
+              </CButton>
+            </CButtonGroup>
+          ) : (
+            ''
+          )}
+
           <CButton size="sm" color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
@@ -127,6 +133,7 @@ CompetencyDetail.propTypes = {
   setToggleEditCompetency: PropTypes.func.isRequired,
   editCompetency: PropTypes.func,
   clusterdata: PropTypes.array.isRequired,
+  role: PropTypes.string.isRequired,
 }
 
 export default CompetencyDetail

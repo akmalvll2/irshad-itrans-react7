@@ -35,6 +35,7 @@ const JobTable = ({
   viewJob,
   setToggleEditJob,
   editJob,
+  role,
 }) => {
   return (
     <>
@@ -51,14 +52,22 @@ const JobTable = ({
             <center>
               <h6>POSITION</h6>
             </center>
-            <CButtonGroup className="float-end">
-              <CButton size="sm" color="secondary" onClick={() => setToggleCreateJob(true)}>
-                <CIcon icon={cilPlus} />
-              </CButton>
-              <CButton size="sm" color="secondary">
-                <CIcon icon={cilSave} />
-              </CButton>
-            </CButtonGroup>
+            {role === 'admin' ? (
+              <CButtonGroup className="float-end">
+                <CTooltip content="Add" placement="auto">
+                  <CButton size="sm" color="secondary" onClick={() => setToggleCreateJob(true)}>
+                    <CIcon icon={cilPlus} />
+                  </CButton>
+                </CTooltip>
+                <CTooltip content="PDF" placement="auto">
+                  <CButton size="sm" color="secondary">
+                    <CIcon icon={cilSave} />
+                  </CButton>
+                </CTooltip>
+              </CButtonGroup>
+            ) : (
+              ''
+            )}
           </CCardHeader>
           <CCardBody>
             <CRow>
@@ -89,36 +98,49 @@ const JobTable = ({
                         <CTableDataCell>{val.position_name}</CTableDataCell>
                         <CTableDataCell>
                           <CButtonGroup className=" d-flex justify-content-center">
-                            <CButton
-                              size="sm"
-                              color="secondary"
-                              variant="outline"
-                              onClick={() => {
-                                setToggleDetailJob(true)
-                                viewJob(val.position_id)
-                              }}
-                            >
-                              <CIcon icon={cilMagnifyingGlass} />
-                            </CButton>
-                            <CButton
-                              size="sm"
-                              color="secondary"
-                              variant="outline"
-                              onClick={() => {
-                                setToggleEditJob(true)
-                                editJob(val.position_id)
-                              }}
-                            >
-                              <CIcon icon={cilPencil} />
-                            </CButton>
-                            <CButton
-                              size="sm"
-                              color="danger"
-                              variant="outline"
-                              onClick={() => deleteJob(val.position_id)}
-                            >
-                              <CIcon icon={cilTrash} />
-                            </CButton>
+                            <CTooltip content="Details" placement="auto">
+                              <CButton
+                                size="sm"
+                                color="secondary"
+                                variant="outline"
+                                onClick={() => {
+                                  setToggleDetailJob(true)
+                                  viewJob(val.position_id)
+                                }}
+                              >
+                                <CIcon icon={cilMagnifyingGlass} />
+                              </CButton>
+                            </CTooltip>
+
+                            {role === 'admin' ? (
+                              <>
+                                <CTooltip content="Edit" placement="auto">
+                                  <CButton
+                                    size="sm"
+                                    color="secondary"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setToggleEditJob(true)
+                                      editJob(val.position_id)
+                                    }}
+                                  >
+                                    <CIcon icon={cilPencil} />
+                                  </CButton>
+                                </CTooltip>
+                                <CTooltip content="Delete" placement="auto">
+                                  <CButton
+                                    size="sm"
+                                    color="danger"
+                                    variant="outline"
+                                    onClick={() => deleteJob(val.position_id)}
+                                  >
+                                    <CIcon icon={cilTrash} />
+                                  </CButton>
+                                </CTooltip>
+                              </>
+                            ) : (
+                              ''
+                            )}
                           </CButtonGroup>
                         </CTableDataCell>
                       </CTableRow>
@@ -149,6 +171,7 @@ JobTable.propTypes = {
   viewJob: PropTypes.func.isRequired,
   setToggleEditJob: PropTypes.func.isRequired,
   editJob: PropTypes.func,
+  role: PropTypes.string.isRequired,
 }
 
 export default JobTable

@@ -53,9 +53,9 @@ const EmployeeDetail = ({
   mailpassword,
   positioncompetency,
   assessors,
+  role,
 }) => {
   const [activeKey, setActiveKey] = useState(1)
-  console.log(positioncompetency.length)
   return (
     <>
       <CModal backdrop="static" visible={visible} onClose={() => setVisible(false)} size="xl">
@@ -400,9 +400,9 @@ const EmployeeDetail = ({
                                 )
                                 .map((a) => {
                                   return (
-                                    <ui key={a.key} className="p-md-0 m-0">
-                                      <li>{a.staff_name}</li>
-                                    </ui>
+                                    <div key={a.staff_id} className="p-md-0 m-0">
+                                      <h6>{a.staff_name}</h6>
+                                    </div>
                                   )
                                 })
                             ) : (
@@ -431,42 +431,47 @@ const EmployeeDetail = ({
             })}
         </CModalBody>
         <CModalFooter>
-          <CButtonGroup>
-            <CButton
-              size="sm"
-              color="secondary"
-              onClick={() => {
-                if (window.confirm('Generate Password and Sent Notification?')) {
-                  mailpassword(
-                    viewEmployee,
-                    employeedata.find((fin) => fin.staff_id === viewEmployee).staff_email,
-                  )
-                }
-              }}
-            >
-              <CIcon icon={cilInbox} /> Generate Password
-            </CButton>
-            <CButton
-              size="sm"
-              color="secondary"
-              onClick={() => {
-                editEmployee(viewEmployee)
-                setToggleEditEmployee(true)
-              }}
-            >
-              <CIcon icon={cilPencil} /> Edit
-            </CButton>
-            <CButton
-              size="sm"
-              color="danger"
-              onClick={() => {
-                deleteEmployee(viewEmployee)
-                setVisible(!visible)
-              }}
-            >
-              <CIcon icon={cilTrash} /> Delete
-            </CButton>
-          </CButtonGroup>
+          {role === 'admin' ? (
+            <CButtonGroup>
+              <CButton
+                size="sm"
+                color="secondary"
+                onClick={() => {
+                  if (window.confirm('Generate Password and Sent Notification?')) {
+                    mailpassword(
+                      viewEmployee,
+                      employeedata.find((fin) => fin.staff_id === viewEmployee),
+                    )
+                  }
+                }}
+              >
+                <CIcon icon={cilInbox} /> Generate Password
+              </CButton>
+              <CButton
+                size="sm"
+                color="secondary"
+                onClick={() => {
+                  editEmployee(viewEmployee)
+                  setToggleEditEmployee(true)
+                }}
+              >
+                <CIcon icon={cilPencil} /> Edit
+              </CButton>
+              <CButton
+                size="sm"
+                color="danger"
+                onClick={() => {
+                  deleteEmployee(viewEmployee)
+                  setVisible(!visible)
+                }}
+              >
+                <CIcon icon={cilTrash} /> Delete
+              </CButton>
+            </CButtonGroup>
+          ) : (
+            ''
+          )}
+
           <CButton size="sm" color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
@@ -489,6 +494,7 @@ EmployeeDetail.propTypes = {
   mailpassword: PropTypes.func.isRequired,
   positioncompetency: PropTypes.array.isRequired,
   assessors: PropTypes.array.isRequired,
+  role: PropTypes.string.isRequired,
 }
 
 export default EmployeeDetail

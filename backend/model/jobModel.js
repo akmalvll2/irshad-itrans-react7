@@ -3,7 +3,7 @@ const db = require('../config/db')
 //READ ALL JOB
 async function getAllJob () {
     try {
-        const [rows] = await db.query('SELECT * FROM `position` ORDER BY position.position_name')
+        const [rows] = await db.query('SELECT * FROM `position` ORDER BY position.position_grade')
         return rows
     } catch (error) {
         throw new Error(error.message)

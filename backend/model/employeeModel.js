@@ -32,7 +32,8 @@ const splitBase64 = async (imageUrl) => {
 }
 
 //SEND GENERATE PASSWORD MAIL TO EMPLOYEE
-async function mailPasswordEmployee(employeeid,employeeemail) {
+async function mailPasswordEmployee(employeeid,employeedata) {
+    console.log(employeedata)
     try {
         const password = await createPassword()
         const hashedpassword = await hashPassword(password)
@@ -41,13 +42,15 @@ async function mailPasswordEmployee(employeeid,employeeemail) {
             employeeid,
         ])
         mail.sendEmail(
-            employeeemail,
+            employeedata.staff_email,
             '',
-            'ITrans Generated Password',
+            'Dev: ITRANS GENERATED PASSWORD NOTIFICATION',
             `
                 <h4>Integrated Training Need Analysis System</h4>
-                <h5>This is your login information</h5>
+                <p style="color: red">This email are generated only for testing purposes. If you receive this email, please remove or ignore.</p>
+                <h6>This is your login information</h6>
                 <div>
+                    Name : ${employeedata.staff_name} <br />
                     ID : ${employeeid} <br />
                     Password : ${password} <br />
                     Link : http://localhost:3000
@@ -62,7 +65,7 @@ async function mailPasswordEmployee(employeeid,employeeemail) {
 //READ ALL EMPLOYEE
 async function getAllEmployee() {
     try {
-        const [rows] = await db.query('SELECT * FROM staff JOIN department ON department.department_id = staff.department_id JOIN position ON position.position_id = staff.position_id ORDER BY staff.staff_name')
+        const [rows] = await db.query('SELECT staff.*, m.staff_name AS manager_name FROM staff JOIN department ON department.department_id = staff.department_id JOIN position ON position.position_id = staff.position_id JOIN staff m ON m.staff_id = staff.manager_id ORDER BY staff.staff_name')
         return rows
     } catch (error) {
         throw new Error(error.message)

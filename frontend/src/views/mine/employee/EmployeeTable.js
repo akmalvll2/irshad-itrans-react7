@@ -49,6 +49,7 @@ const EmployeeTable = ({
   setToggleEditEmployee,
   editEmployee,
   assessors,
+  role,
 }) => {
   const [activeKey, setActiveKey] = useState(1)
   return (
@@ -66,14 +67,26 @@ const EmployeeTable = ({
             <center>
               <h6>EMPLOYEE</h6>
             </center>
-            <CButtonGroup className="float-end">
-              <CButton size="sm" color="secondary" onClick={() => setToggleCreateEmployee(true)}>
-                <CIcon icon={cilPlus} />
-              </CButton>
-              <CButton size="sm" color="secondary">
-                <CIcon icon={cilSave} />
-              </CButton>
-            </CButtonGroup>
+            {role === 'admin' ? (
+              <CButtonGroup className="float-end">
+                <CTooltip content="Add" placement="auto">
+                  <CButton
+                    size="sm"
+                    color="secondary"
+                    onClick={() => setToggleCreateEmployee(true)}
+                  >
+                    <CIcon icon={cilPlus} />
+                  </CButton>
+                </CTooltip>
+                <CTooltip content="PDF" placement="auto">
+                  <CButton size="sm" color="secondary">
+                    <CIcon icon={cilSave} />
+                  </CButton>
+                </CTooltip>
+              </CButtonGroup>
+            ) : (
+              ''
+            )}
           </CCardHeader>
           <CCardBody>
             <CRow>
@@ -107,21 +120,9 @@ const EmployeeTable = ({
                       active={activeKey === 2}
                       component="button"
                       role="tab"
-                      aria-controls="home-tab-pane"
+                      aria-controls="profile-tab-pane"
                       aria-selected={activeKey === 2}
                       onClick={() => setActiveKey(2)}
-                    >
-                      ASSESSOR
-                    </CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink
-                      active={activeKey === 3}
-                      component="button"
-                      role="tab"
-                      aria-controls="profile-tab-pane"
-                      aria-selected={activeKey === 3}
-                      onClick={() => setActiveKey(3)}
                     >
                       CHART
                     </CNavLink>
@@ -158,36 +159,49 @@ const EmployeeTable = ({
                                 </CTableDataCell>
                                 <CTableDataCell>
                                   <CButtonGroup className=" d-flex justify-content-center">
-                                    <CButton
-                                      size="sm"
-                                      color="secondary"
-                                      variant="outline"
-                                      onClick={() => {
-                                        setToggleDetailEmployee(true)
-                                        viewEmployee(val.staff_id)
-                                      }}
-                                    >
-                                      <CIcon icon={cilMagnifyingGlass} />
-                                    </CButton>
-                                    <CButton
-                                      size="sm"
-                                      color="secondary"
-                                      variant="outline"
-                                      onClick={() => {
-                                        setToggleEditEmployee(true)
-                                        editEmployee(val.staff_id)
-                                      }}
-                                    >
-                                      <CIcon icon={cilPencil} />
-                                    </CButton>
-                                    <CButton
-                                      size="sm"
-                                      color="danger"
-                                      variant="outline"
-                                      onClick={() => deleteEmployee(val.staff_id)}
-                                    >
-                                      <CIcon icon={cilTrash} />
-                                    </CButton>
+                                    <CTooltip content="Details" placement="auto">
+                                      <CButton
+                                        size="sm"
+                                        color="secondary"
+                                        variant="outline"
+                                        onClick={() => {
+                                          setToggleDetailEmployee(true)
+                                          viewEmployee(val.staff_id)
+                                        }}
+                                      >
+                                        <CIcon icon={cilMagnifyingGlass} />
+                                      </CButton>
+                                    </CTooltip>
+
+                                    {role === 'admin' ? (
+                                      <>
+                                        <CTooltip content="Edit" placement="auto">
+                                          <CButton
+                                            size="sm"
+                                            color="secondary"
+                                            variant="outline"
+                                            onClick={() => {
+                                              setToggleEditEmployee(true)
+                                              editEmployee(val.staff_id)
+                                            }}
+                                          >
+                                            <CIcon icon={cilPencil} />
+                                          </CButton>
+                                        </CTooltip>
+                                        <CTooltip content="Delete" placement="auto">
+                                          <CButton
+                                            size="sm"
+                                            color="danger"
+                                            variant="outline"
+                                            onClick={() => deleteEmployee(val.staff_id)}
+                                          >
+                                            <CIcon icon={cilTrash} />
+                                          </CButton>
+                                        </CTooltip>
+                                      </>
+                                    ) : (
+                                      ''
+                                    )}
                                   </CButtonGroup>
                                 </CTableDataCell>
                               </CTableRow>
@@ -209,121 +223,6 @@ const EmployeeTable = ({
                   role="tabpanel"
                   aria-labelledby="profile-tab-pane"
                   visible={activeKey === 2}
-                >
-                  <CCardBody>
-                    {employeelist.length > 0 ? (
-                      <CTable small bordered striped responsive>
-                        <CTableHead color="dark">
-                          <CTableRow>
-                            <CTableHeaderCell>No</CTableHeaderCell>
-                            <CTableHeaderCell>Employee ( Self )</CTableHeaderCell>
-                            <CTableHeaderCell>Superior</CTableHeaderCell>
-                            <CTableHeaderCell>Subordinate/Peer</CTableHeaderCell>
-                            <CTableHeaderCell>Actions</CTableHeaderCell>
-                          </CTableRow>
-                        </CTableHead>
-                        <CTableBody>
-                          {employeelist?.map((val, key) => {
-                            return (
-                              <CTableRow key={key}>
-                                <CTableDataCell>{key + 1}</CTableDataCell>
-                                <CTableDataCell>
-                                  <CAvatar className="m-2 float-start" src={val.staff_image} />
-                                  {val.staff_name}
-                                  <br />
-                                  <CBadge className="mx-1" size="sm" color="secondary">
-                                    {val.position_name}
-                                  </CBadge>
-                                  <CBadge className="mx-1" size="sm" color="info">
-                                    {val.department_name}
-                                  </CBadge>
-                                </CTableDataCell>
-                                <CTableDataCell>
-                                  {/* ASSESSOR : SUPERIOR */}
-                                  {employeelist.filter((i) =>
-                                    assessors.some(
-                                      (u) =>
-                                        u.staff_id === val.staff_id &&
-                                        u.assessor_id === i.staff_id &&
-                                        u.staff_assessor_type === 'superior',
-                                    ),
-                                  ).length > 0 ? (
-                                    employeelist
-                                      .filter((i) =>
-                                        assessors.some(
-                                          (u) =>
-                                            u.staff_id === val.staff_id &&
-                                            u.assessor_id === i.staff_id &&
-                                            u.staff_assessor_type === 'superior',
-                                        ),
-                                      )
-                                      .map((a) => {
-                                        return (
-                                          <CCallout key={a.key} className="p-md-2 m-0">
-                                            <CAvatar className="m-2" src={a.staff_image} />
-                                            {a.staff_name}
-                                          </CCallout>
-                                        )
-                                      })
-                                  ) : (
-                                    <CAlert color="danger" className="m-1">
-                                      No employee data available.
-                                    </CAlert>
-                                  )}
-                                </CTableDataCell>
-                                <CTableDataCell>
-                                  {/* ASSESSOR : SUBORDINATE */}
-                                  {employeelist.filter((i) =>
-                                    assessors.some(
-                                      (u) =>
-                                        u.staff_id === val.staff_id &&
-                                        u.assessor_id === i.staff_id &&
-                                        u.staff_assessor_type === 'subordinate',
-                                    ),
-                                  ).length > 0 ? (
-                                    employeelist
-                                      .filter((i) =>
-                                        assessors.some(
-                                          (u) =>
-                                            u.staff_id === val.staff_id &&
-                                            u.assessor_id === i.staff_id &&
-                                            u.staff_assessor_type === 'subordinate',
-                                        ),
-                                      )
-                                      .map((a) => {
-                                        return (
-                                          <CCallout key={a.key} className=" p-md-2 m-0">
-                                            <CAvatar className="m-2" src={a.staff_image} />
-                                            {a.staff_name}
-                                          </CCallout>
-                                        )
-                                      })
-                                  ) : (
-                                    <CAlert color="danger" className="m-1">
-                                      No employee data available.
-                                    </CAlert>
-                                  )}
-                                </CTableDataCell>
-                                <CTableDataCell></CTableDataCell>
-                              </CTableRow>
-                            )
-                          })}
-                        </CTableBody>
-                      </CTable>
-                    ) : (
-                      <CAlert color="danger">
-                        No employee data available.
-                        <CButton color="link" onClick={() => setToggleCreateEmployee(true)}>
-                          Add employee
-                        </CButton>
-                      </CAlert>
-                    )}
-                  </CCardBody>
-                </CTabPane>
-                <CTabPane
-                  role="tabpanel"
-                  aria-labelledby="profile-tab-pane"
-                  visible={activeKey === 3}
                 >
                   <CCardBody>
                     <EmployeeChart
@@ -355,6 +254,7 @@ EmployeeTable.propTypes = {
   setToggleEditEmployee: PropTypes.func.isRequired,
   editEmployee: PropTypes.func,
   assessors: PropTypes.array.isRequired,
+  role: PropTypes.string.isRequired,
 }
 
 export default EmployeeTable

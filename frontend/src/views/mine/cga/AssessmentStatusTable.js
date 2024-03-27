@@ -122,7 +122,7 @@ AssessmentStatusTable.propTypes = {
   visible: PropTypes.bool.isRequired,
   setVisible: PropTypes.func.isRequired,
   stafflist: PropTypes.array.isRequired,
-  assessmentdata: PropTypes.object.isRequired,
+  assessmentdata: PropTypes.object,
   assessors: PropTypes.array.isRequired,
 }
 

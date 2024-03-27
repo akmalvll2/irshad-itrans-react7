@@ -12,9 +12,9 @@ const createImageUrl = (bufferData) => {
 //SEND GENERATE PASSWORD MAIL TO EMPLOYEE
 async function mailPasswordEmployee (req,res) {
     const employeeid = req.params.employeeid
-    const { employeeemail } = req.body
+    const { employeedata } = req.body
     try {
-        const employee = await employeeModel.mailPasswordEmployee(employeeid,employeeemail)
+        const employee = await employeeModel.mailPasswordEmployee(employeeid,employeedata)
         res.json(employee)
     } catch (error) {
         res.status(500).json({ error: error.message })

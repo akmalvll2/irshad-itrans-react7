@@ -26,6 +26,7 @@ const JobDetail = ({
   deleteJob,
   setToggleEditJob,
   editJob,
+  role,
 }) => {
   return (
     <>
@@ -68,28 +69,33 @@ const JobDetail = ({
             })}
         </CModalBody>
         <CModalFooter>
-          <CButtonGroup>
-            <CButton
-              size="sm"
-              color="secondary"
-              onClick={() => {
-                editJob(viewJob)
-                setToggleEditJob(true)
-              }}
-            >
-              <CIcon icon={cilPencil} /> Edit
-            </CButton>
-            <CButton
-              size="sm"
-              color="danger"
-              onClick={() => {
-                deleteJob(viewJob)
-                setVisible(!visible)
-              }}
-            >
-              <CIcon icon={cilTrash} /> Delete
-            </CButton>
-          </CButtonGroup>
+          {role === 'admin' ? (
+            <CButtonGroup>
+              <CButton
+                size="sm"
+                color="secondary"
+                onClick={() => {
+                  editJob(viewJob)
+                  setToggleEditJob(true)
+                }}
+              >
+                <CIcon icon={cilPencil} /> Edit
+              </CButton>
+              <CButton
+                size="sm"
+                color="danger"
+                onClick={() => {
+                  deleteJob(viewJob)
+                  setVisible(!visible)
+                }}
+              >
+                <CIcon icon={cilTrash} /> Delete
+              </CButton>
+            </CButtonGroup>
+          ) : (
+            ''
+          )}
+
           <CButton size="sm" color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
@@ -107,6 +113,7 @@ JobDetail.propTypes = {
   deleteJob: PropTypes.func.isRequired,
   setToggleEditJob: PropTypes.func.isRequired,
   editJob: PropTypes.func,
+  role: PropTypes.string.isRequired,
 }
 
 export default JobDetail

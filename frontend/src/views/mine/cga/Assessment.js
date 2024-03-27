@@ -225,6 +225,9 @@ const Assessment = () => {
           setVisible={setToggleFormAdmin}
           stafflist={employeelist}
           jobcompetency={jobcompetency}
+          assessmentresultlist={assessmentresult}
+          assessmentid={viewAssessment}
+          assessors={assessors}
         />
         <AssessmentFormUser
           visible={toggleFormUser}

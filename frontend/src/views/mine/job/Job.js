@@ -2,6 +2,9 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { CSpinner } from '@coreui/react'
 import axios from 'axios'
 
+// FETCH USER ROLE
+import { userType } from 'src/userType'
+
 //path to API call IMPORTANT!
 import packageJson from '../../../../package.json'
 const { config } = packageJson
@@ -98,6 +101,7 @@ const Job = () => {
           viewJob={setViewJob}
           setToggleEditJob={setToggleEditJob}
           editJob={setEditJob}
+          role={userType.role}
         />
         <JobCreate
           visible={toggleCreateJob}
@@ -112,6 +116,7 @@ const Job = () => {
           deleteJob={deleteJob}
           setToggleEditJob={setToggleEditJob}
           editJob={setEditJob}
+          role={userType.role}
         />
         <JobEdit
           visible={toggleEditJob}
