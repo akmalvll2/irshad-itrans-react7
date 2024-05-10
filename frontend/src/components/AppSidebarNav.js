@@ -4,13 +4,13 @@ import PropTypes from 'prop-types'
 
 import { CBadge } from '@coreui/react'
 
-//import { userType } from 'src/userType'
+import { userType } from 'src/userType'
 
-const userType = [
+/*const userType = [
   {
     data: { type: 'admin' },
   },
-]
+]*/
 
 export const AppSidebarNav = ({ items }) => {
   const location = useLocation()
@@ -31,9 +31,9 @@ export const AppSidebarNav = ({ items }) => {
   const navItem = (item, index) => {
     const { component, name, badge, icon, ...rest } = item
     const Component = component
-    return userType[0]?.data.type === 'admin' ||
-      (userType[0]?.data.type === 'user' && item.role === 'both') ? (
+    return userType?.role === 'admin' || (userType?.role === 'user' && item.role === 'both') ? (
       <Component
+        style={name === 'Assessment' ? { backgroundColor: `steelblue` } : null}
         {...(rest.to &&
           !rest.items && {
             component: NavLink,
@@ -50,8 +50,7 @@ export const AppSidebarNav = ({ items }) => {
   const navGroup = (item, index) => {
     const { component, name, icon, to, ...rest } = item
     const Component = component
-    return userType[0]?.data.type === 'admin' ||
-      (userType[0]?.data.type === 'user' && item.role === 'both') ? (
+    return userType?.role === 'admin' || (userType?.role === 'user' && item.role === 'both') ? (
       <Component
         idx={String(index)}
         key={index}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import {
   CModal,
   CModalHeader,
@@ -99,7 +100,9 @@ const EmployeeEdit = ({
         managerid: selectedEmployee?.manager_id,
         employeerole: selectedEmployee?.staff_role,
         employeeidnumber: selectedEmployee?.staff_id_number,
-        employeejoindate: selectedEmployee?.staff_organization_register,
+        employeejoindate: moment(selectedEmployee?.staff_organization_register).format(
+          'YYYY-MM-DD',
+        ),
       })
     }
   }, [employeeid])

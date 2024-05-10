@@ -24,6 +24,7 @@ const EmployeeCreate = ({
   departmentlist,
   positionlist,
   employeelist,
+  createNewAssessor,
 }) => {
   const convertFileToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -71,6 +72,11 @@ const EmployeeCreate = ({
     }
     createEmployee(employeeData)
     setVisible(!visible)
+    setEmployeeData({
+      employeerole: '',
+      employeeimage: null,
+      employeesendmail: 'false',
+    })
   }
   return (
     <>
@@ -184,7 +190,7 @@ const EmployeeCreate = ({
                       )
                     })
                   ) : (
-                    <option value="">No Reporting</option>
+                    <option value="0">No Reporting</option>
                   )}
                 </CFormSelect>
                 <CFormLabel>Role</CFormLabel>
@@ -245,6 +251,7 @@ EmployeeCreate.propTypes = {
   departmentlist: PropTypes.array.isRequired,
   positionlist: PropTypes.array.isRequired,
   employeelist: PropTypes.array.isRequired,
+  createNewAssessor: PropTypes.func,
 }
 
 export default EmployeeCreate

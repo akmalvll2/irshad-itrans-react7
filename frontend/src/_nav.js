@@ -85,6 +85,7 @@ const _nav = [
     name: 'Mapping',
     to: '/mine/mapping',
     icon: <CIcon icon={cilFork} customClassName="nav-icon" />,
+    color: 'navy',
   },
   {
     component: CNavItem,
@@ -95,12 +96,12 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    role: 'both',
+    role: 'admin',
     name: 'Stat',
   },
   {
     component: CNavItem,
-    role: 'both',
+    role: 'admin',
     name: 'IDP',
     to: '/mine/idp',
     icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,

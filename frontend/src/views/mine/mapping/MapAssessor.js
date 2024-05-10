@@ -35,11 +35,25 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilPlus, cilMinus, cilSave, cilTrash, cilMagnifyingGlass, cilPencil } from '@coreui/icons'
 
-const MapAssessor = ({ visible, setVisible, staffid, stafflist, assessorlist }) => {
+const MapAssessor = ({
+  visible,
+  setVisible,
+  staffid,
+  stafflist,
+  assessorlist,
+  deleteAssessor,
+  createNewAssessor,
+}) => {
   const selectedStaff = stafflist.find((i) => i.staff_id === staffid)
+  const [assessormap, setassessormap] = useState({})
 
-  const handleSubmit = () => {
-    alert('Assessor Mapping Submit Function')
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    createNewAssessor(assessormap)
+  }
+
+  const handleSetAssessor = (assessorid) => {
+    setassessormap({ staffid: staffid, assessorid: assessorid, assessortype: 'subordinate' })
   }
   return (
     <>
@@ -99,6 +113,13 @@ const MapAssessor = ({ visible, setVisible, staffid, stafflist, assessorlist }) 
                             size="sm"
                             color="danger"
                             variant="outline"
+                            onClick={() =>
+                              deleteAssessor(
+                                assessorlist.find(
+                                  (i) => i.staff_id === staffid && i.assessor_id === val.staff_id,
+                                )?.staff_assessor_id,
+                              )
+                            }
                           >
                             <CIcon icon={cilTrash} />
                             Delete
@@ -118,7 +139,11 @@ const MapAssessor = ({ visible, setVisible, staffid, stafflist, assessorlist }) 
           <CForm onSubmit={handleSubmit}>
             <CRow>
               <CCol>
-                <CFormSelect className="float-start" size="sm">
+                <CFormSelect
+                  className="float-start"
+                  size="sm"
+                  onChange={(e) => handleSetAssessor(e.target.value)}
+                >
                   <option value="">...Choose Staff...</option>
                   {stafflist
                     .filter(
@@ -158,6 +183,8 @@ MapAssessor.propTypes = {
   staffid: PropTypes.number,
   stafflist: PropTypes.array,
   assessorlist: PropTypes.array,
+  deleteAssessor: PropTypes.func,
+  createNewAssessor: PropTypes.func,
 }
 
 export default MapAssessor

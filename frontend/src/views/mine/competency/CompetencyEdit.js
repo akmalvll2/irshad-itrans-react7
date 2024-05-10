@@ -16,6 +16,8 @@ import {
   CFormInput,
   CFormLabel,
   CFormSelect,
+  CRow,
+  CCol,
 } from '@coreui/react'
 
 //icon
@@ -29,17 +31,16 @@ const CompetencyEdit = ({
   competencyid,
   updatedcompetency,
   clusterlist,
+  indicatorlist,
+  updateindicator,
 }) => {
   const [updateddata, setupdateddata] = useState({
     competencyid: '',
     competencyname: '',
     clusterid: '',
     competencydescription: '',
-    competencyindicator1: '',
-    competencyindicator2: '',
-    competencyindicator3: '',
-    competencyindicator4: '',
   })
+  const [updateddata2, setupdateddata2] = useState([])
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target
@@ -47,30 +48,50 @@ const CompetencyEdit = ({
     setupdateddata(newObject)
   }
 
+  const onChangeHandle2 = (e, index) => {
+    const { name, value } = e.target
+    const newObject = [...updateddata2]
+    newObject[index] = { ...updateddata2[index], [name]: value }
+    setupdateddata2(newObject)
+  }
+
   const onSubmitHandle = (e) => {
     e.preventDefault()
-    updatedcompetency(updateddata)
-    setVisible(!visible)
+    try {
+      updatedcompetency(updateddata)
+      updateddata2.forEach((i) => updateindicator(i))
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setVisible(!visible)
+      alert('Competency Information Updated')
+    }
   }
 
   useEffect(() => {
     const selectedCompetency = competencydata.find((fil) => fil.competency_id === competencyid)
+    const selectedIndicator = indicatorlist.filter((fil) => fil.competency_id === competencyid)
     if (selectedCompetency) {
       setupdateddata({
         competencyid: selectedCompetency?.competency_id,
         competencyname: selectedCompetency?.competency_name,
         clusterid: selectedCompetency?.cluster_id,
         competencydescription: selectedCompetency?.competency_description,
-        competencyindicator1: selectedCompetency?.competency_indicator1,
-        competencyindicator2: selectedCompetency?.competency_indicator2,
-        competencyindicator3: selectedCompetency?.competency_indicator3,
-        competencyindicator4: selectedCompetency?.competency_indicator4,
       })
+    }
+    if (selectedIndicator) {
+      setupdateddata2(
+        selectedIndicator?.map((i) => ({
+          indicatorid: i.indicator_id,
+          competencyid: i.competency_id,
+          indicatordescription: i.indicator_description,
+        })),
+      )
     }
   }, [competencyid])
   return (
     <>
-      <CModal backdrop="static" visible={visible} onClose={() => setVisible(false)}>
+      <CModal backdrop="static" size="lg" visible={visible} onClose={() => setVisible(false)}>
         <CForm onSubmit={onSubmitHandle}>
           <CModalHeader>
             <CModalTitle>Competency Edit</CModalTitle>
@@ -81,31 +102,38 @@ const CompetencyEdit = ({
               .map((val, key) => {
                 return (
                   <div key={key}>
-                    <CFormInput
-                      type="text"
-                      name="competencyname"
-                      className="mb-3"
-                      label="Competency Name"
-                      defaultValue={val.competency_name}
-                      onChange={onChangeHandle}
-                      required
-                    />
-                    <CFormLabel>Group</CFormLabel>
-                    <CFormSelect
-                      size="sm"
-                      name="clusterid"
-                      onChange={onChangeHandle}
-                      defaultValue={val.cluster_id}
-                    >
-                      <option>..Choose Group</option>
-                      {clusterlist?.map((val2, key2) => {
-                        return (
-                          <option key={key2} value={val2.cluster_id}>
-                            {val2.cluster_name}
-                          </option>
-                        )
-                      })}
-                    </CFormSelect>
+                    <CRow>
+                      <CCol>
+                        <CFormInput
+                          type="text"
+                          name="competencyname"
+                          className="mb-3"
+                          label="Competency Name"
+                          defaultValue={val.competency_name}
+                          onChange={onChangeHandle}
+                          required
+                        />
+                      </CCol>
+                      <CCol>
+                        <CFormLabel>Group</CFormLabel>
+                        <CFormSelect
+                          size="sm"
+                          name="clusterid"
+                          onChange={onChangeHandle}
+                          defaultValue={val.cluster_id}
+                        >
+                          <option>..Choose Group</option>
+                          {clusterlist?.map((val2, key2) => {
+                            return (
+                              <option key={key2} value={val2.cluster_id}>
+                                {val2.cluster_name}
+                              </option>
+                            )
+                          })}
+                        </CFormSelect>
+                      </CCol>
+                    </CRow>
+
                     <CFormInput
                       type="text"
                       name="competencydescription"
@@ -115,42 +143,23 @@ const CompetencyEdit = ({
                       onChange={onChangeHandle}
                       required
                     />
-                    <CFormInput
-                      type="text"
-                      name="competencyindicator1"
-                      className="mb-3"
-                      label="Competency Indicator 1"
-                      defaultValue={val.competency_indicator1}
-                      onChange={onChangeHandle}
-                      required
-                    />
-                    <CFormInput
-                      type="text"
-                      name="competencyindicator2"
-                      className="mb-3"
-                      label="Competency Indicator 2"
-                      defaultValue={val.competency_indicator2}
-                      onChange={onChangeHandle}
-                      required
-                    />
-                    <CFormInput
-                      type="text"
-                      name="competencyindicator3"
-                      className="mb-3"
-                      label="Competency Indicator 3"
-                      defaultValue={val.competency_indicator3}
-                      onChange={onChangeHandle}
-                      required
-                    />
-                    <CFormInput
-                      type="text"
-                      name="competencyindicator4"
-                      className="mb-3"
-                      label="Competency Indicator 4"
-                      defaultValue={val.competency_indicator4}
-                      onChange={onChangeHandle}
-                      required
-                    />
+
+                    {indicatorlist
+                      .filter((i) => i.competency_id === val.competency_id)
+                      .map((val2, key2) => {
+                        return (
+                          <CFormInput
+                            key={key2}
+                            type="text"
+                            name="indicatordescription"
+                            className="mb-3"
+                            label={'Competency Indicator ' + (key2 + 1)}
+                            defaultValue={val2.indicator_description}
+                            onChange={(e) => onChangeHandle2(e, key2)}
+                            required
+                          />
+                        )
+                      })}
                   </div>
                 )
               })}
@@ -176,6 +185,8 @@ CompetencyEdit.propTypes = {
   competencyid: PropTypes.number,
   updatedcompetency: PropTypes.func.isRequired,
   clusterlist: PropTypes.array.isRequired,
+  indicatorlist: PropTypes.array.isRequired,
+  updateindicator: PropTypes.func.isRequired,
 }
 
 export default CompetencyEdit

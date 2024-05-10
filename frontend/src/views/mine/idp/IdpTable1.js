@@ -237,22 +237,22 @@ const IdpTable1 = ({
                                           val.staff_id,
                                           jc.competency_id,
                                           val.position_id,
-                                        ),
+                                        ) ?? 0,
                                       ) +
                                         parseFloat(
                                           superiorAssessment(
                                             val.staff_id,
                                             jc.competency_id,
                                             val.position_id,
-                                          ),
-                                        ) +
+                                          ) ?? 0,
+                                        ) /* +
                                         parseFloat(
                                           subordinateAssessment(
                                             val.staff_id,
                                             jc.competency_id,
                                             val.position_id,
-                                          ),
-                                        ),
+                                          ) ?? 0.1,
+                                        )*/,
                                     )}
                                   </CTableDataCell>
                                   <CTableDataCell className="text-center">
@@ -269,14 +269,14 @@ const IdpTable1 = ({
                                           jc.competency_id,
                                           val.position_id,
                                         ),
-                                      ) +
+                                      ) /*+
                                       parseFloat(
                                         subordinateAssessment(
                                           val.staff_id,
                                           jc.competency_id,
                                           val.position_id,
                                         ),
-                                      ) >
+                                      )*/ >
                                     1.4 ? (
                                       <CIcon className=" text-success" icon={cilCheckAlt} />
                                     ) : (
@@ -297,14 +297,14 @@ const IdpTable1 = ({
                                           jc.competency_id,
                                           val.position_id,
                                         ),
-                                      ) +
+                                      ) /*+
                                       parseFloat(
                                         subordinateAssessment(
                                           val.staff_id,
                                           jc.competency_id,
                                           val.position_id,
                                         ),
-                                      ) >
+                                      )*/ >
                                     0.5 ? (
                                       <CIcon className=" text-success" icon={cilCheckAlt} />
                                     ) : (
@@ -325,14 +325,14 @@ const IdpTable1 = ({
                                           jc.competency_id,
                                           val.position_id,
                                         ),
-                                      ) +
+                                      ) /*+
                                       parseFloat(
                                         subordinateAssessment(
                                           val.staff_id,
                                           jc.competency_id,
                                           val.position_id,
                                         ),
-                                      ) >
+                                      )*/ >
                                     0 ? (
                                       <CIcon className=" text-success" icon={cilCheckAlt} />
                                     ) : (

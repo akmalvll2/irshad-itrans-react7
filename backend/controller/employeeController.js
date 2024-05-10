@@ -25,6 +25,7 @@ async function mailPasswordEmployee (req,res) {
 async function getAllEmployee (req,res) {
     try {
         const employee = await employeeModel.getAllEmployee()
+        
         employee.forEach((employee) => {
             employee.staff_image = createImageUrl(employee.staff_image)
         })

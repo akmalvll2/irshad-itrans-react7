@@ -3,7 +3,7 @@ const db = require('../config/db')
 //READ ALL TRAINING
 async function getAllTraining () {
     try {
-        const [rows] = await db.query('SELECT * FROM training ORDER BY training.training_name')
+        const [rows] = await db.query('SELECT * FROM training JOIN cluster ON cluster.cluster_id = training.cluster_id ORDER BY training.training_name')
         return rows
     } catch (error) {
         throw new Error(error.message)

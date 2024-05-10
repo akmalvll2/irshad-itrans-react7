@@ -18,6 +18,7 @@ const Map = () => {
   const [clusterdata, setClusterdata] = useState([])
   const [stafflist, setstafflist] = useState([])
   const [assessorlist, setassessorlist] = useState([])
+  const [traininglist, settraininglist] = useState([])
   const [positioncompetencydata, setPositioncompetencydata] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [openJobCompetency, setOpenJobCompetency] = useState(false)
@@ -43,6 +44,24 @@ const Map = () => {
     }
   }
 
+  //CREATE ASSESSOR API
+  const createNewAssessor = async (assessordata) => {
+    try {
+      await axios
+        .post(`${config.REACT_APP_API_ENDPOINT}/assessor/createassessor`, {
+          assessordata: assessordata,
+        })
+        .then((response) => {
+          if (response) {
+            console.log('Successfully set assessor')
+            setIsChange(!isChange)
+          }
+        })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   //DELETE JOB COMPETENCY API
   const deleteJobCompetency = async (jobcompetencyid) => {
     const deleteconfirm = window.confirm('Delete Mapping?')
@@ -55,6 +74,25 @@ const Map = () => {
           .then((response) => {
             if (response) {
               alert('Mapping deleted')
+              setIsChange(!isChange)
+            }
+          })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  //DELETE ASSESSOR API
+  const deleteAssessor = async (staffassessorid) => {
+    const deleteconfirm = window.confirm('Delete Assessor? ')
+    if (deleteconfirm) {
+      try {
+        await axios
+          .delete(`${config.REACT_APP_API_ENDPOINT}/assessor/deleteassessor/${staffassessorid}`)
+          .then((response) => {
+            if (response) {
+              alert('Assessor deleted')
               setIsChange(!isChange)
             }
           })
@@ -130,6 +168,19 @@ const Map = () => {
     }
     fetchAllJobCompetency()
   }, [isChange])
+
+  useEffect(() => {
+    //READ TRAINING API
+    const fetchAllTraining = async () => {
+      try {
+        const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/training/getalltraining`)
+        settraininglist(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllTraining()
+  }, [isChange])
   return (
     <>
       <MapTable
@@ -140,6 +191,7 @@ const Map = () => {
         setPositionid={setPositionid}
         stafflist={stafflist}
         assessorlist={assessorlist}
+        traininglist={traininglist}
         setToggleMapAssessor={setToggleMapAssessor}
         setstaffid={setstaffid}
       />
@@ -159,6 +211,8 @@ const Map = () => {
         staffid={staffid}
         stafflist={stafflist}
         assessorlist={assessorlist}
+        deleteAssessor={deleteAssessor}
+        createNewAssessor={createNewAssessor}
       />
     </>
   )

@@ -129,7 +129,8 @@ const Employee = () => {
         const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/employee/getallemployee`)
         setEmployeelist(response.data)
       } catch (error) {
-        console.log('Error: '.error)
+        console.log('Error: Cannot execute')
+        console.log('Test')
       }
     }
     fetchAllEmployee()
@@ -210,6 +211,8 @@ const Employee = () => {
           setToggleEditEmployee={setToggleEditEmployee}
           editEmployee={setEditEmployee}
           assessors={assessors}
+          departmentlist={departmentlist}
+          positionlist={positionlist}
           role={userType.role}
         />
         <EmployeeCreate
@@ -219,6 +222,7 @@ const Employee = () => {
           departmentlist={departmentlist}
           positionlist={positionlist}
           employeelist={employeelist}
+          createNewAssessor={createNewAssessor}
         />
         <EmployeeDetail
           visible={toggleDetailEmployee}

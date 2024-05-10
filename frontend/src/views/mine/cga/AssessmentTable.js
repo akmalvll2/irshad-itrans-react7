@@ -140,14 +140,14 @@ const AssessmentTable = ({
                                 ) ? (
                                 <CButton
                                   size="sm"
-                                  color="secondary"
-                                  variant="outline"
+                                  color="success"
+                                  //variant="outline"
                                   onClick={() => {
                                     setToggleFormUser(true)
                                     viewAssessment(val.assessment_id)
                                   }}
                                 >
-                                  <CIcon icon={cilClipboard} />
+                                  <CIcon icon={cilClipboard} /> Start Assessment
                                 </CButton>
                               ) : (
                                 ''
@@ -204,14 +204,14 @@ const AssessmentTable = ({
                                 ) ? (
                                 <CButton
                                   size="sm"
-                                  color="secondary"
-                                  variant="outline"
+                                  color="success"
+                                  //variant="outline"
                                   onClick={() => {
                                     setToggleFormUser(true)
                                     viewAssessment(val.assessment_id)
                                   }}
                                 >
-                                  <CIcon icon={cilClipboard} />
+                                  <CIcon icon={cilClipboard} /> Start Assessment
                                 </CButton>
                               ) : (
                                 ''
@@ -229,9 +229,13 @@ const AssessmentTable = ({
             ) : (
               <CAlert color="danger">
                 No assessment data available.
-                <CButton color="link" onClick={() => setToggleCreateAssessment(true)}>
-                  Add assessment
-                </CButton>
+                {role === 'admin' ? (
+                  <CButton color="link" onClick={() => setToggleCreateAssessment(true)}>
+                    Add assessment
+                  </CButton>
+                ) : (
+                  ''
+                )}
               </CAlert>
             )}
           </CCardBody>

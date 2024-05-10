@@ -28,6 +28,10 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
+  CAccordion,
+  CAccordionBody,
+  CAccordionItem,
+  CAccordionHeader,
 } from '@coreui/react'
 
 //icon
@@ -41,6 +45,7 @@ const MapTable = ({
   setOpenJobCompetency,
   setPositionid,
   stafflist,
+  traininglist,
   setToggleMapAssessor,
   setstaffid,
 }) => {
@@ -109,7 +114,7 @@ const MapTable = ({
               aria-labelledby="home-tab-pane"
               visible={activeKey === 1}
             >
-              {/* POSITION LIST */}
+              {/* POSITION MAPPING TABLE */}
               <CTable small responsive bordered striped>
                 <CTableHead color="dark">
                   <CTableRow>
@@ -141,7 +146,7 @@ const MapTable = ({
                               setPositionid(val.position_id)
                             }}
                           >
-                            <CIcon icon={cilLink} size="sm" /> Map Training
+                            <CIcon icon={cilLink} size="sm" /> Set Competency
                           </CButton>
                         </CTableDataCell>
                       </CTableRow>
@@ -156,7 +161,37 @@ const MapTable = ({
               aria-labelledby="profile-tab-pane"
               visible={activeKey === 2}
             >
-              Training Mapping
+              {/* TRAINING MAPPING TABLE */}
+              {traininglist.length > 0 ? (
+                <CTable small responsive bordered striped>
+                  <CTableHead color="dark">
+                    <CTableRow>
+                      <CTableHeaderCell>No</CTableHeaderCell>
+                      <CTableHeaderCell>Training</CTableHeaderCell>
+                      <CTableHeaderCell>No of Competencies</CTableHeaderCell>
+                      <CTableHeaderCell>Action</CTableHeaderCell>
+                    </CTableRow>
+                  </CTableHead>
+                  <CTableBody>
+                    {traininglist?.map((val, key) => (
+                      <CTableRow key={key}>
+                        <CTableDataCell>{key + 1}</CTableDataCell>
+                        <CTableDataCell>{val.training_name}</CTableDataCell>
+                        <CTableDataCell>2</CTableDataCell>
+                        <CTableDataCell>
+                          <CButtonGroup>
+                            <CButton size="sm" variant="outline">
+                              <CIcon icon={cilLink} size="sm" /> Set Competency
+                            </CButton>
+                          </CButtonGroup>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))}
+                  </CTableBody>
+                </CTable>
+              ) : (
+                <CAlert color="info">No Training Data Available</CAlert>
+              )}
             </CTabPane>
             <CTabPane
               role="tabpanel"
@@ -164,6 +199,7 @@ const MapTable = ({
               aria-labelledby="home-tab-pane"
               visible={activeKey === 3}
             >
+              {/* ASSESSOR MAPPING TABLE */}
               <CTable small responsive bordered striped className="my-0">
                 <CTableHead color="dark">
                   <CTableRow>
@@ -210,6 +246,7 @@ MapTable.propTypes = {
   setOpenJobCompetency: PropTypes.func.isRequired,
   setPositionid: PropTypes.func.isRequired,
   stafflist: PropTypes.array.isRequired,
+  traininglist: PropTypes.array.isRequired,
   setToggleMapAssessor: PropTypes.func.isRequired,
   setstaffid: PropTypes.func,
 }

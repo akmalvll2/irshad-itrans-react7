@@ -151,9 +151,11 @@ const JobTable = ({
             ) : (
               <CAlert color="danger">
                 No position data available.
-                <CButton color="link" onClick={() => setToggleCreateJob(true)}>
-                  Add position
-                </CButton>
+                {role === 'admin' ? (
+                  <CButton color="link" onClick={() => setToggleCreateJob(true)}>
+                    Add position
+                  </CButton>
+                ) : null}
               </CAlert>
             )}
           </CCardBody>

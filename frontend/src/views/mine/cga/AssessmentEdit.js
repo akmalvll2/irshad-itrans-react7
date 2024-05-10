@@ -39,7 +39,7 @@ const AssessmentEdit = ({
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target
-    const newObject = { ...updateddata, [name]: value }
+    var newObject = { ...updateddata, [name]: value }
     setupdateddata(newObject)
   }
 
@@ -55,8 +55,8 @@ const AssessmentEdit = ({
       setupdateddata({
         assessmentid: selectedAssessment?.assessment_id,
         assessmentname: selectedAssessment?.assessment_name,
-        assessmentstartdate: selectedAssessment?.assessment_start_date,
-        assessmentenddate: selectedAssessment?.assessment_end_date,
+        assessmentstartdate: moment(selectedAssessment?.assessment_start_date).format('YYYY-MM-DD'),
+        assessmentenddate: moment(selectedAssessment?.assessment_end_date).format('YYYY-MM-DD'),
       })
     }
   }, [assessmentid])

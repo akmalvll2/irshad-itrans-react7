@@ -99,7 +99,9 @@ const DepartmentTable = ({
                     return (
                       <CTableRow key={key}>
                         <CTableDataCell>{key + 1}</CTableDataCell>
-                        <CTableDataCell>{val.department_name}</CTableDataCell>
+                        <CTableDataCell className="text-uppercase">
+                          {val.department_name}
+                        </CTableDataCell>
                         <CTableDataCell>
                           <CButtonGroup className=" d-flex justify-content-center">
                             <CTooltip
@@ -168,9 +170,11 @@ const DepartmentTable = ({
             ) : (
               <CAlert color="danger">
                 No department data available.
-                <CButton color="link" onClick={() => setToggleCreateDepartment(true)}>
-                  Add department
-                </CButton>
+                {role === 'admin' ? (
+                  <CButton color="link" onClick={() => setToggleCreateDepartment(true)}>
+                    Add department
+                  </CButton>
+                ) : null}
               </CAlert>
             )}
           </CCardBody>

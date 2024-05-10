@@ -17,12 +17,14 @@ const AssessmentEdit = React.lazy(() => import('./AssessmentEdit'))
 const AssessmentFormAdmin = React.lazy(() => import('./AssessmentFormAdmin'))
 const AssessmentFormUser = React.lazy(() => import('./AssessmentFormUser'))
 const AssessmentStatusTable = React.lazy(() => import('./AssessmentStatusTable'))
+const AssessmentFormLeadership = React.lazy(() => import('./AssessmentFormLeadership'))
 
 const Assessment = () => {
   const [assessmentlist, setAssessmentlist] = useState([])
   const [employeelist, setEmployeelist] = useState([])
   const [jobcompetency, setjobcompetency] = useState([])
   const [assessors, setassessors] = useState([])
+  const [indicators, setindicators] = useState([])
   const [assessmentresult, setassessmentresult] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [toggleCreateAssessment, setToggleCreateAssessment] = useState(false)
@@ -30,6 +32,7 @@ const Assessment = () => {
   const [toggleEditAssessment, setToggleEditAssessment] = useState(false)
   const [toggleFormAdmin, setToggleFormAdmin] = useState(false)
   const [toggleFormUser, setToggleFormUser] = useState(false)
+  const [toggleFormLeadership, setToggleFormLeadership] = useState(false)
   const [toggleSubmissionTable, setToggleSubmissionTable] = useState(false)
   const [viewAssessment, setViewAssessment] = useState()
   const [editAssessment, setEditAssessment] = useState()
@@ -126,6 +129,21 @@ const Assessment = () => {
       }
     }
     fetchAllAssessment()
+  }, [isChange])
+
+  useEffect(() => {
+    //READ INDICATOR API
+    const fetchAllIndicator = async () => {
+      try {
+        const response = await axios.get(
+          `${config.REACT_APP_API_ENDPOINT}/indicator/getallindicator`,
+        )
+        setindicators(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllIndicator()
   }, [isChange])
 
   useEffect(() => {
@@ -240,6 +258,7 @@ const Assessment = () => {
           assessors={assessors}
           assessmentresult={assessmentresult}
           assessmentdata={assessmentlist}
+          indicators={indicators}
         />
         <AssessmentStatusTable
           visible={toggleSubmissionTable}
@@ -248,6 +267,10 @@ const Assessment = () => {
           assessmentdata={assessmentlist.find((i) => i.assessment_id === viewAssessment)}
           assessors={assessors}
         />
+        {/*<AssessmentFormLeadership
+          visible={toggleFormLeadership}
+          setVisible={setToggleFormLeadership}
+  />*/}
       </Suspense>
     </>
   )

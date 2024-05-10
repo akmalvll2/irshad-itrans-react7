@@ -23,7 +23,7 @@ async function userAuthentication (req,res) {
     try {
         const user = await employeeModel.userAuthentication(id,password)
         if (user.length > 0) {
-            const token = jwt.sign({id: user[0]?.staff_id_number, name: user[0]?.staff_name, role: user[0]?.staff_role}, 'irshadhrconsultingkey')
+            const token = jwt.sign({id: user[0]?.staff_id.toString(), name: user[0]?.staff_name, role: user[0]?.staff_role}, 'irshadhrconsultingkey')
             res.json({status: 'valid', token: token})
         } else {
             res.json({status: 'invalid', token: 'No token available', message: 'Wrong username or password'})

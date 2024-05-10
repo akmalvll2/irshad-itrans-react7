@@ -67,6 +67,35 @@ const AssessmentFormAdmin = ({
             <CModalTitle>Assessment Form Review</CModalTitle>
           </CModalHeader>
           <CModalBody>
+            <CAlert color="secondary">
+              <h6>Submission Summary</h6>
+              <div>
+                Self Submission:{' '}
+                {
+                  stafflist.filter((i) =>
+                    assessmentresultlist.some(
+                      (u) =>
+                        u.staff_id === i.staff_id &&
+                        u.assessor_id === i.staff_id &&
+                        u.assessment_id === assessmentid,
+                    ),
+                  ).length
+                }
+              </div>
+              <div>
+                Superior Submission:{' '}
+                {
+                  stafflist.filter((i) =>
+                    assessmentresultlist.some(
+                      (u) =>
+                        u.staff_id === i.staff_id &&
+                        u.assessor_id === i.manager_id &&
+                        u.assessment_id === assessmentid,
+                    ),
+                  ).length
+                }
+              </div>
+            </CAlert>
             <CFormSelect
               label="Please choose assessed individual"
               size="sm"
@@ -84,7 +113,7 @@ const AssessmentFormAdmin = ({
             </CFormSelect>
 
             {stafflist
-              ?.filter((fil) => fil.staff_id.toString() === selectedStaff)
+              ?.filter((fil) => fil.staff_id?.toString() === selectedStaff)
               .map((val, key) => {
                 return (
                   <CCard key={key} className="my-2">
@@ -227,7 +256,7 @@ const AssessmentFormAdmin = ({
                         >
                           {assessmentresultlist.filter(
                             (i) =>
-                              i.staff_id.toString() === selectedStaff &&
+                              i.staff_id?.toString() === selectedStaff &&
                               i.staff_assessor_type === 'self' &&
                               i.assessment_id === assessmentid,
                           ).length > 0 ? (
@@ -239,7 +268,7 @@ const AssessmentFormAdmin = ({
                                       .filter((i) =>
                                         assessors.some(
                                           (u) =>
-                                            u.staff_id.toString() === selectedStaff &&
+                                            u.staff_id?.toString() === selectedStaff &&
                                             u.assessor_id === i.staff_id &&
                                             u.staff_assessor_type === 'self',
                                         ),
@@ -267,7 +296,7 @@ const AssessmentFormAdmin = ({
                                 {assessmentresultlist
                                   .filter(
                                     (i) =>
-                                      i.staff_id.toString() === selectedStaff &&
+                                      i.staff_id?.toString() === selectedStaff &&
                                       i.staff_assessor_type === 'self' &&
                                       i.assessment_id === assessmentid,
                                   )
@@ -317,7 +346,7 @@ const AssessmentFormAdmin = ({
                         >
                           {assessmentresultlist.filter(
                             (i) =>
-                              i.staff_id.toString() === selectedStaff &&
+                              i.staff_id?.toString() === selectedStaff &&
                               i.staff_assessor_type === 'superior' &&
                               i.assessment_id === assessmentid,
                           ).length > 0 ? (
@@ -329,7 +358,7 @@ const AssessmentFormAdmin = ({
                                       .filter((i) =>
                                         assessors.some(
                                           (u) =>
-                                            u.staff_id.toString() === selectedStaff &&
+                                            u.staff_id?.toString() === selectedStaff &&
                                             u.assessor_id === i.staff_id &&
                                             u.staff_assessor_type === 'superior',
                                         ),
@@ -357,7 +386,7 @@ const AssessmentFormAdmin = ({
                                 {assessmentresultlist
                                   .filter(
                                     (i) =>
-                                      i.staff_id.toString() === selectedStaff &&
+                                      i.staff_id?.toString() === selectedStaff &&
                                       i.staff_assessor_type === 'superior' &&
                                       i.assessment_id === assessmentid,
                                   )
@@ -408,7 +437,7 @@ const AssessmentFormAdmin = ({
                           {stafflist.filter((i) =>
                             assessors.some(
                               (u) =>
-                                u.staff_id.toString() === selectedStaff &&
+                                u.staff_id?.toString() === selectedStaff &&
                                 u.assessor_id === i.staff_id &&
                                 u.staff_assessor_type === 'subordinate',
                             ),
@@ -417,7 +446,7 @@ const AssessmentFormAdmin = ({
                               .filter((i) =>
                                 assessors.some(
                                   (u) =>
-                                    u.staff_id.toString() === selectedStaff &&
+                                    u.staff_id?.toString() === selectedStaff &&
                                     u.assessor_id === i.staff_id &&
                                     u.staff_assessor_type === 'subordinate',
                                 ),
@@ -445,7 +474,7 @@ const AssessmentFormAdmin = ({
                                         .filter(
                                           (i) =>
                                             i.assessment_id === assessmentid &&
-                                            i.staff_id.toString() === selectedStaff &&
+                                            i.staff_id?.toString() === selectedStaff &&
                                             i.assessor_id === val2.staff_id,
                                         )
                                         .map((val3, key3) => {
@@ -504,16 +533,16 @@ const AssessmentFormAdmin = ({
                                   <CTableHeaderCell rowSpan={2}>Expected Level</CTableHeaderCell>
                                   <CTableHeaderCell colSpan={2}>Self</CTableHeaderCell>
                                   <CTableHeaderCell colSpan={2}>Superior</CTableHeaderCell>
-                                  <CTableHeaderCell colSpan={2}>Subordinate/Peers</CTableHeaderCell>
+                                  {/*<CTableHeaderCell colSpan={2}>Subordinate/Peers</CTableHeaderCell>*/}
                                   <CTableHeaderCell rowSpan={2}>Total Average</CTableHeaderCell>
                                 </CTableRow>
                                 <CTableRow>
                                   <CTableDataCell>Score</CTableDataCell>
                                   <CTableDataCell>30%</CTableDataCell>
                                   <CTableDataCell>Score</CTableDataCell>
-                                  <CTableDataCell>60%</CTableDataCell>
-                                  <CTableDataCell>Score</CTableDataCell>
-                                  <CTableDataCell>10%</CTableDataCell>
+                                  <CTableDataCell>70%</CTableDataCell>
+                                  {/*<CTableDataCell>Score</CTableDataCell>
+                                  <CTableDataCell>10%</CTableDataCell>*/}
                                 </CTableRow>
                               </CTableHead>
                               <CTableBody>
@@ -532,14 +561,14 @@ const AssessmentFormAdmin = ({
                                             assessmentresultlist.find(
                                               (i) =>
                                                 i.assessment_id === assessmentid &&
-                                                i.staff_id.toString() === selectedStaff &&
+                                                i.staff_id?.toString() === selectedStaff &&
                                                 i.staff_assessor_type === 'self' &&
                                                 i.competency_id === val2.competency_id,
                                             )?.assessment_result_score
                                               ? assessmentresultlist.find(
                                                   (i) =>
                                                     i.assessment_id === assessmentid &&
-                                                    i.staff_id.toString() === selectedStaff &&
+                                                    i.staff_id?.toString() === selectedStaff &&
                                                     i.staff_assessor_type === 'self' &&
                                                     i.competency_id === val2.competency_id,
                                                 )?.assessment_result_score
@@ -552,18 +581,24 @@ const AssessmentFormAdmin = ({
                                             assessmentresultlist.find(
                                               (i) =>
                                                 i.assessment_id === assessmentid &&
-                                                i.staff_id.toString() === selectedStaff &&
+                                                i.staff_id?.toString() === selectedStaff &&
                                                 i.staff_assessor_type === 'self' &&
                                                 i.competency_id === val2.competency_id,
                                             )?.assessment_result_score
                                               ? roundedNumber(
-                                                  assessmentresultlist.find(
+                                                  (jobcompetency.find(
                                                     (i) =>
-                                                      i.assessment_id === assessmentid &&
-                                                      i.staff_id.toString() === selectedStaff &&
-                                                      i.staff_assessor_type === 'self' &&
+                                                      i.position_id === val.position_id &&
                                                       i.competency_id === val2.competency_id,
-                                                  )?.assessment_result_score * 0.3,
+                                                  )?.position_competency_expected_level -
+                                                    assessmentresultlist.find(
+                                                      (i) =>
+                                                        i.assessment_id === assessmentid &&
+                                                        i.staff_id?.toString() === selectedStaff &&
+                                                        i.staff_assessor_type === 'self' &&
+                                                        i.competency_id === val2.competency_id,
+                                                    )?.assessment_result_score) *
+                                                    0.3,
                                                 )
                                               : 'N/A'
                                           }
@@ -574,14 +609,14 @@ const AssessmentFormAdmin = ({
                                             assessmentresultlist.find(
                                               (i) =>
                                                 i.assessment_id === assessmentid &&
-                                                i.staff_id.toString() === selectedStaff &&
+                                                i.staff_id?.toString() === selectedStaff &&
                                                 i.staff_assessor_type === 'superior' &&
                                                 i.competency_id === val2.competency_id,
                                             )?.assessment_result_score
                                               ? assessmentresultlist.find(
                                                   (i) =>
                                                     i.assessment_id === assessmentid &&
-                                                    i.staff_id.toString() === selectedStaff &&
+                                                    i.staff_id?.toString() === selectedStaff &&
                                                     i.staff_assessor_type === 'superior' &&
                                                     i.competency_id === val2.competency_id,
                                                 )?.assessment_result_score
@@ -594,29 +629,35 @@ const AssessmentFormAdmin = ({
                                             assessmentresultlist.find(
                                               (i) =>
                                                 i.assessment_id === assessmentid &&
-                                                i.staff_id.toString() === selectedStaff &&
+                                                i.staff_id?.toString() === selectedStaff &&
                                                 i.staff_assessor_type === 'superior' &&
                                                 i.competency_id === val2.competency_id,
                                             )?.assessment_result_score
                                               ? roundedNumber(
-                                                  assessmentresultlist.find(
+                                                  (jobcompetency.find(
                                                     (i) =>
-                                                      i.assessment_id === assessmentid &&
-                                                      i.staff_id.toString() === selectedStaff &&
-                                                      i.staff_assessor_type === 'superior' &&
+                                                      i.position_id === val.position_id &&
                                                       i.competency_id === val2.competency_id,
-                                                  )?.assessment_result_score * 0.6,
+                                                  )?.position_competency_expected_level -
+                                                    assessmentresultlist.find(
+                                                      (i) =>
+                                                        i.assessment_id === assessmentid &&
+                                                        i.staff_id?.toString() === selectedStaff &&
+                                                        i.staff_assessor_type === 'superior' &&
+                                                        i.competency_id === val2.competency_id,
+                                                    )?.assessment_result_score) *
+                                                    0.7,
                                                 )
                                               : 'N/A'
                                           }
                                         </CTableDataCell>
-                                        <CTableDataCell>
+                                        {/*<CTableDataCell>
                                           {
                                             //SUBORDINATE SCORE
                                             assessmentresultlist.filter(
                                               (i) =>
                                                 i.assessment_id === assessmentid &&
-                                                i.staff_id.toString() === selectedStaff &&
+                                                i.staff_id?.toString() === selectedStaff &&
                                                 i.staff_assessor_type === 'subordinate' &&
                                                 i.competency_id === val2.competency_id,
                                             ).length > 0
@@ -624,7 +665,7 @@ const AssessmentFormAdmin = ({
                                                   .filter(
                                                     (i) =>
                                                       i.assessment_id === assessmentid &&
-                                                      i.staff_id.toString() === selectedStaff &&
+                                                      i.staff_id?.toString() === selectedStaff &&
                                                       i.staff_assessor_type === 'subordinate' &&
                                                       i.competency_id === val2.competency_id,
                                                   )
@@ -636,7 +677,7 @@ const AssessmentFormAdmin = ({
                                                 assessmentresultlist.filter(
                                                   (i) =>
                                                     i.assessment_id === assessmentid &&
-                                                    i.staff_id.toString() === selectedStaff &&
+                                                    i.staff_id?.toString() === selectedStaff &&
                                                     i.staff_assessor_type === 'subordinate' &&
                                                     i.competency_id === val2.competency_id,
                                                 ).length
@@ -649,7 +690,7 @@ const AssessmentFormAdmin = ({
                                             assessmentresultlist.filter(
                                               (i) =>
                                                 i.assessment_id === assessmentid &&
-                                                i.staff_id.toString() === selectedStaff &&
+                                                i.staff_id?.toString() === selectedStaff &&
                                                 i.staff_assessor_type === 'subordinate' &&
                                                 i.competency_id === val2.competency_id,
                                             ).length > 0
@@ -658,7 +699,7 @@ const AssessmentFormAdmin = ({
                                                     .filter(
                                                       (i) =>
                                                         i.assessment_id === assessmentid &&
-                                                        i.staff_id.toString() === selectedStaff &&
+                                                        i.staff_id?.toString() === selectedStaff &&
                                                         i.staff_assessor_type === 'subordinate' &&
                                                         i.competency_id === val2.competency_id,
                                                     )
@@ -670,7 +711,7 @@ const AssessmentFormAdmin = ({
                                                     assessmentresultlist.filter(
                                                       (i) =>
                                                         i.assessment_id === assessmentid &&
-                                                        i.staff_id.toString() === selectedStaff &&
+                                                        i.staff_id?.toString() === selectedStaff &&
                                                         i.staff_assessor_type === 'subordinate' &&
                                                         i.competency_id === val2.competency_id,
                                                     ).length) *
@@ -678,27 +719,37 @@ const AssessmentFormAdmin = ({
                                                 )
                                               : 'N/A'
                                           }
-                                        </CTableDataCell>
+                                        </CTableDataCell>*/}
                                         <CTableDataCell>
                                           {
                                             //TOTAL AVERAGE SCORE
                                             roundedNumber(
-                                              (assessmentresultlist.find(
+                                              (jobcompetency.find(
                                                 (i) =>
-                                                  i.assessment_id === assessmentid &&
-                                                  i.staff_id.toString() === selectedStaff &&
-                                                  i.staff_assessor_type === 'self' &&
+                                                  i.position_id === val.position_id &&
                                                   i.competency_id === val2.competency_id,
-                                              )?.assessment_result_score || 0) *
-                                                0.3 +
-                                                (assessmentresultlist.find(
+                                              )?.position_competency_expected_level -
+                                                assessmentresultlist.find(
                                                   (i) =>
                                                     i.assessment_id === assessmentid &&
-                                                    i.staff_id.toString() === selectedStaff &&
-                                                    i.staff_assessor_type === 'superior' &&
+                                                    i.staff_id?.toString() === selectedStaff &&
+                                                    i.staff_assessor_type === 'self' &&
                                                     i.competency_id === val2.competency_id,
                                                 )?.assessment_result_score || 0) *
-                                                  0.6,
+                                                0.3 +
+                                                (jobcompetency.find(
+                                                  (i) =>
+                                                    i.position_id === val.position_id &&
+                                                    i.competency_id === val2.competency_id,
+                                                )?.position_competency_expected_level -
+                                                  assessmentresultlist.find(
+                                                    (i) =>
+                                                      i.assessment_id === assessmentid &&
+                                                      i.staff_id?.toString() === selectedStaff &&
+                                                      i.staff_assessor_type === 'superior' &&
+                                                      i.competency_id === val2.competency_id,
+                                                  )?.assessment_result_score || 0) *
+                                                  0.7,
                                             )
                                           }
                                         </CTableDataCell>

@@ -27,6 +27,7 @@ const CompetencyDetail = ({
   setToggleEditCompetency,
   editCompetency,
   clusterdata,
+  indicatorlist,
   role,
 }) => {
   return (
@@ -62,22 +63,16 @@ const CompetencyDetail = ({
                         <CTableDataCell>Description:</CTableDataCell>
                         <CTableDataCell>{val.competency_description}</CTableDataCell>
                       </CTableRow>
-                      <CTableRow>
-                        <CTableDataCell>Indicator 1:</CTableDataCell>
-                        <CTableDataCell>{val.competency_indicator1}</CTableDataCell>
-                      </CTableRow>
-                      <CTableRow>
-                        <CTableDataCell>Indicator 2:</CTableDataCell>
-                        <CTableDataCell>{val.competency_indicator2}</CTableDataCell>
-                      </CTableRow>
-                      <CTableRow>
-                        <CTableDataCell>Indicator 3:</CTableDataCell>
-                        <CTableDataCell>{val.competency_indicator3}</CTableDataCell>
-                      </CTableRow>
-                      <CTableRow>
-                        <CTableDataCell>Indicator 4:</CTableDataCell>
-                        <CTableDataCell>{val.competency_indicator4}</CTableDataCell>
-                      </CTableRow>
+                      {indicatorlist
+                        .filter((i) => i.competency_id === val.competency_id)
+                        .map((val2, key2) => {
+                          return (
+                            <CTableRow key={key2}>
+                              <CTableDataCell>Indicator {key2 + 1}</CTableDataCell>
+                              <CTableDataCell>{val2.indicator_description}</CTableDataCell>
+                            </CTableRow>
+                          )
+                        })}
                     </CTableBody>
                   </CTable>
                   <span className="text-black-50">
@@ -133,6 +128,7 @@ CompetencyDetail.propTypes = {
   setToggleEditCompetency: PropTypes.func.isRequired,
   editCompetency: PropTypes.func,
   clusterdata: PropTypes.array.isRequired,
+  indicatorlist: PropTypes.array.isRequired,
   role: PropTypes.string.isRequired,
 }
 

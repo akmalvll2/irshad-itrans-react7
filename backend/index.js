@@ -19,6 +19,8 @@ const jobCompetencyRoute = require('./route/jobCompetencyRoute')
 const assessmentRoute = require('./route/assessmentRoute')
 const assessorRoute = require('./route/assessorRoute')
 const assessmentResultRoute = require('./route/assessmentResultRoute')
+const indicatorRoute = require('./route/indicatorRoute')
+const trainingCompetencyRoute = require('./route/trainingCompetencyRoute')
 
 //initialize to use .env ( process.env.YOUR_ENVIRONMENT_VARIABLE)
 require('dotenv').config()
@@ -30,6 +32,9 @@ app.use(cors())
 app.use(express.json({ limit: '90mb' }))
 
 //main application declaration
+app.get('/', (req,res) => {
+    res.json('Connected to ITRANS')
+})
 app.use('/authentication', authRoute)
 app.use('/company', companyRoute)
 app.use('/department', departmentRoute)
@@ -42,6 +47,8 @@ app.use('/jobcompetency', jobCompetencyRoute)
 app.use('/assessment', assessmentRoute)
 app.use('/assessor', assessorRoute)
 app.use('/assessmentresult', assessmentResultRoute)
+app.use('/indicator', indicatorRoute)
+app.use('/trainingcompetency', trainingCompetencyRoute)
 
 //connecting port
 app.listen(port, () => {

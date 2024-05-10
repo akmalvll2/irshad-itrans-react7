@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import img2 from '../../../assets/images/4.png'
 import {
@@ -21,6 +21,7 @@ import {
   CButton,
   CTooltip,
   CWidgetStatsF,
+  CBadge,
 } from '@coreui/react'
 
 //icon
@@ -37,6 +38,11 @@ const TrainingTable = ({
   editTraining,
   role,
 }) => {
+  const [groupFilter, setGroupFilter] = useState('All')
+
+  const filteredTraining = traininglist.filter((i) =>
+    groupFilter === 'All' ? true : i.cluster_name === groupFilter,
+  )
   return (
     <>
       <div>
@@ -75,7 +81,7 @@ const TrainingTable = ({
           </CCardHeader>
           <CCardBody>
             <CRow>
-              <CCol lg={4}>
+              <CCol lg={3}>
                 <CWidgetStatsF
                   className="mb-3"
                   color="primary"
@@ -84,8 +90,76 @@ const TrainingTable = ({
                   value={traininglist.length}
                 />
               </CCol>
+              <CCol lg={3}>
+                <CWidgetStatsF
+                  className="mb-3"
+                  color="warning"
+                  //icon={<CIcon icon={cilChartPie} height={24} />}
+                  title="TOTAL CORE TRAINING"
+                  value={traininglist.filter((i) => i.cluster_name === 'Core').length}
+                />
+              </CCol>
+              <CCol lg={3}>
+                <CWidgetStatsF
+                  className="mb-3"
+                  color="success"
+                  //icon={<CIcon icon={cilChartPie} height={24} />}
+                  title="TOTAL GENERIC TRAINING"
+                  value={traininglist.filter((i) => i.cluster_name === 'Generic').length}
+                />
+              </CCol>
+              <CCol lg={3}>
+                <CWidgetStatsF
+                  className="mb-3"
+                  color="info"
+                  //icon={<CIcon icon={cilChartPie} height={24} />}
+                  title="TOTAL FUNCTIONAL TRAINING"
+                  value={traininglist.filter((i) => i.cluster_name === 'Functional').length}
+                />
+              </CCol>
             </CRow>
-            {traininglist.length > 0 ? (
+            <CAlert color="secondary">
+              <h6>Filter</h6>
+              <CButtonGroup>
+                <CButton
+                  color="secondary"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setGroupFilter('All')}
+                  active={groupFilter === 'All' ? true : false}
+                >
+                  All
+                </CButton>
+                <CButton
+                  color="secondary"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setGroupFilter('Core')}
+                  active={groupFilter === 'Core' ? true : false}
+                >
+                  Core
+                </CButton>
+                <CButton
+                  color="secondary"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setGroupFilter('Generic')}
+                  active={groupFilter === 'Generic' ? true : false}
+                >
+                  Generic
+                </CButton>
+                <CButton
+                  color="secondary"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setGroupFilter('Functional')}
+                  active={groupFilter === 'Functional' ? true : false}
+                >
+                  Functional
+                </CButton>
+              </CButtonGroup>
+            </CAlert>
+            {filteredTraining.length > 0 ? (
               <CTable small bordered striped responsive>
                 <CTableHead color="dark">
                   <CTableRow>
@@ -95,11 +169,16 @@ const TrainingTable = ({
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {traininglist?.map((val, key) => {
+                  {filteredTraining?.map((val, key) => {
                     return (
                       <CTableRow key={key}>
                         <CTableDataCell>{key + 1}</CTableDataCell>
-                        <CTableDataCell>{val.training_name}</CTableDataCell>
+                        <CTableDataCell className="text-uppercase">
+                          {val.training_name}
+                          <CBadge className="mx-2" size="sm" color={val.cluster_color}>
+                            {val.cluster_name}
+                          </CBadge>
+                        </CTableDataCell>
                         <CTableDataCell>
                           <CButtonGroup className=" d-flex justify-content-center">
                             <CTooltip content="Details" placement="auto">
@@ -155,9 +234,11 @@ const TrainingTable = ({
             ) : (
               <CAlert color="danger">
                 No training data available.
-                <CButton color="link" onClick={() => setToggleCreateTraining(true)}>
-                  Add training
-                </CButton>
+                {role === 'admin' ? (
+                  <CButton color="link" onClick={() => setToggleCreateTraining(true)}>
+                    Add training
+                  </CButton>
+                ) : null}
               </CAlert>
             )}
           </CCardBody>

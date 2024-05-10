@@ -3,7 +3,7 @@ const db = require('../config/db')
 //READ ALL COMPETENCY
 async function getAllCompetency () {
     try {
-        const [rows] = await db.query('SELECT * FROM `competency` ORDER BY competency.competency_name')
+        const [rows] = await db.query('SELECT * FROM `competency` JOIN `cluster` ON cluster.cluster_id = competency.cluster_id ORDER BY competency.competency_name')
         return rows
     } catch (error) {
         throw new Error(error.message)

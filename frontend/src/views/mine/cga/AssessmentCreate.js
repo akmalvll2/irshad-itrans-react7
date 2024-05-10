@@ -11,6 +11,8 @@ import {
   CFormInput,
   CRow,
   CCol,
+  CFormCheck,
+  CFormLabel,
 } from '@coreui/react'
 
 const AssessmentCreate = ({ visible, setVisible, createAssessment }) => {
@@ -45,6 +47,32 @@ const AssessmentCreate = ({ visible, setVisible, createAssessment }) => {
                   placeholder="eg. First Quater Assessment"
                   onChange={handleInputChange}
                   required
+                />
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol>
+                <CFormLabel>Assessment Type</CFormLabel>
+                <br />
+                <CFormCheck
+                  inline
+                  type="radio"
+                  size="sm"
+                  name="assessmenttype"
+                  label="Leadership"
+                  value={'leadership'}
+                  onChange={handleInputChange}
+                  checked={assessmentData.assessmenttype === 'leadership'}
+                />
+                <CFormCheck
+                  inline
+                  type="radio"
+                  size="sm"
+                  name="assessmenttype"
+                  label="Functional"
+                  value={'functional'}
+                  onChange={handleInputChange}
+                  checked={assessmentData.assessmenttype === 'functional'}
                 />
               </CCol>
             </CRow>

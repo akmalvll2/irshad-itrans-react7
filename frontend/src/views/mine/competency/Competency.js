@@ -18,6 +18,7 @@ const CompetencyEdit = React.lazy(() => import('./CompetencyEdit'))
 const Competency = () => {
   const [competencylist, setCompetencylist] = useState([])
   const [clusterlist, setClusterlist] = useState([])
+  const [indicatorlist, setIndicatorlist] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [toggleCreateCompetency, setToggleCreateCompetency] = useState(false)
   const [toggleDetailCompetency, setToggleDetailCompetency] = useState(false)
@@ -26,15 +27,39 @@ const Competency = () => {
   const [editCompetency, setEditCompetency] = useState()
 
   //CREATE COMPETENCY API
-  const createNewCompetency = async (competencydata) => {
+  const createNewCompetency = async (competencydata, indicatordata) => {
     try {
       await axios
         .post(`${config.REACT_APP_API_ENDPOINT}/competency/createcompetency`, {
           competencydata: competencydata,
         })
         .then((response) => {
-          if (response) {
-            alert('Competency data saved.')
+          if (response.data) {
+            if (indicatordata) {
+              for (let x = 0; x < indicatordata.length; x++) {
+                createNewIndicator(indicatordata[x], response.data)
+              }
+            }
+            setIsChange(!isChange)
+          }
+        })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      alert('Competency data saved')
+    }
+  }
+
+  //CREATE INDICATOR API
+  const createNewIndicator = async (indicatordata, competencyid) => {
+    indicatordata.competencyid = competencyid
+    try {
+      await axios
+        .post(`${config.REACT_APP_API_ENDPOINT}/indicator/createindicator`, {
+          indicatordata: indicatordata,
+        })
+        .then((response) => {
+          if (response.data) {
             setIsChange(!isChange)
           }
         })
@@ -74,7 +99,28 @@ const Competency = () => {
         )
         .then((response) => {
           if (response) {
-            alert('Competency updated')
+            console.log(response.data)
+            setIsChange(!isChange)
+          }
+        })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  //UPDATE INDICATOR API
+  const updateIndicator = async (indicatordata) => {
+    try {
+      await axios
+        .put(
+          `${config.REACT_APP_API_ENDPOINT}/indicator/updateindicator/${indicatordata.indicatorid}`,
+          {
+            indicatordata: indicatordata,
+          },
+        )
+        .then((response) => {
+          if (response) {
+            console.log(response.data)
             setIsChange(!isChange)
           }
         })
@@ -95,6 +141,21 @@ const Competency = () => {
       }
     }
     fetchAllCompetency()
+  }, [isChange])
+
+  useEffect(() => {
+    //READ INDICATOR API
+    const fetchAllIndicator = async () => {
+      try {
+        const response = await axios.get(
+          `${config.REACT_APP_API_ENDPOINT}/indicator/getallindicator`,
+        )
+        setIndicatorlist(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllIndicator()
   }, [isChange])
 
   useEffect(() => {
@@ -137,6 +198,7 @@ const Competency = () => {
           setToggleEditCompetency={setToggleEditCompetency}
           editCompetency={setEditCompetency}
           clusterdata={clusterlist}
+          indicatorlist={indicatorlist}
           role={userType.role}
         />
         <CompetencyEdit
@@ -146,6 +208,8 @@ const Competency = () => {
           competencyid={editCompetency}
           updatedcompetency={updateCompetency}
           clusterlist={clusterlist}
+          indicatorlist={indicatorlist}
+          updateindicator={updateIndicator}
         />
       </Suspense>
     </>

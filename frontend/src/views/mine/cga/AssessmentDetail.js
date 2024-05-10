@@ -47,6 +47,12 @@ const AssessmentDetail = ({
                         <CTableDataCell>{val.assessment_name}</CTableDataCell>
                       </CTableRow>
                       <CTableRow>
+                        <CTableDataCell>Assessment Type:</CTableDataCell>
+                        <CTableDataCell className=" text-capitalize">
+                          {val.assessment_type}
+                        </CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
                         <CTableDataCell>Start Date:</CTableDataCell>
                         <CTableDataCell>
                           {moment(val.assessment_start_date).format('Do MMMM YYYY')}

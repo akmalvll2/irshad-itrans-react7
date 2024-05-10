@@ -33,7 +33,6 @@ const splitBase64 = async (imageUrl) => {
 
 //SEND GENERATE PASSWORD MAIL TO EMPLOYEE
 async function mailPasswordEmployee(employeeid,employeedata) {
-    console.log(employeedata)
     try {
         const password = await createPassword()
         const hashedpassword = await hashPassword(password)
@@ -48,16 +47,17 @@ async function mailPasswordEmployee(employeeid,employeedata) {
             `
                 <h4>Integrated Training Need Analysis System</h4>
                 <p style="color: red">This email are generated only for testing purposes. If you receive this email, please remove or ignore.</p>
-                <h6>This is your login information</h6>
+                <h4>This is your login information</h4>
                 <div>
                     Name : ${employeedata.staff_name} <br />
-                    ID : ${employeeid} <br />
+                    ID : ${employeedata.staff_id_number} <br />
                     Password : ${password} <br />
                     Link : http://localhost:3000
                 </div>
             `)
         return "Employee Password Generated and Sent"
     } catch (error) {
+        console.log('Error sending email')
         throw new Error(error.message)
     }
 }
@@ -65,7 +65,7 @@ async function mailPasswordEmployee(employeeid,employeedata) {
 //READ ALL EMPLOYEE
 async function getAllEmployee() {
     try {
-        const [rows] = await db.query('SELECT staff.*, m.staff_name AS manager_name FROM staff JOIN department ON department.department_id = staff.department_id JOIN position ON position.position_id = staff.position_id JOIN staff m ON m.staff_id = staff.manager_id ORDER BY staff.staff_name')
+        const [rows] = await db.query('SELECT * FROM staff JOIN department ON department.department_id = staff.department_id JOIN position ON position.position_id = staff.position_id ORDER BY staff.staff_name')
         return rows
     } catch (error) {
         throw new Error(error.message)
@@ -74,6 +74,7 @@ async function getAllEmployee() {
 
 //CREATE EMPLOYEE
 async function createEmployee(employeedata) {
+    console.log(employeedata)
     try {
         const password = await createPassword()
         employeedata.employeepassword = await hashPassword(password)
@@ -133,7 +134,7 @@ async function updateEmployee(employeeid,employeedata) {
             employeedata.managerid,
             employeedata.employeerole,
             employeedata.employeejoindate,
-            employeedata.employeeid,
+            employeedata.employeeidnumber,
             employeedata.employeeimage,
             employeeid,
         ])
