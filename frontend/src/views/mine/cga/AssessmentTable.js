@@ -36,6 +36,7 @@ import {
   cilAddressBook,
   cilClipboard,
   cilCalendarCheck,
+  cilList,
 } from '@coreui/icons'
 
 const AssessmentTable = ({
@@ -152,7 +153,7 @@ const AssessmentTable = ({
                               ) : (
                                 ''
                               )}
-                              <CButton
+                              {/*<CButton
                                 size="sm"
                                 color="secondary"
                                 variant="outline"
@@ -162,6 +163,17 @@ const AssessmentTable = ({
                                 }}
                               >
                                 <CIcon icon={cilAddressBook} />
+                              </CButton>*/}
+                              <CButton
+                                size="sm"
+                                color="secondary"
+                                variant="outline"
+                                onClick={() => {
+                                  setToggleSubmissionTable(true)
+                                  viewAssessment(val.assessment_id)
+                                }}
+                              >
+                                <CIcon icon={cilCalendarCheck} />
                               </CButton>
                               <CButton
                                 size="sm"

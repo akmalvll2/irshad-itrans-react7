@@ -124,340 +124,131 @@ const ReportTable1 = ({
     if (result || result === 0) return roundedNumber(result)
     return 'N/A'
   }
+
+  const assessmentResult = (staff_id, competencyid, type) => {
+    const result = assessmentresult.find(
+      (i) =>
+        i.competency_id === competencyid &&
+        i.staff_id === staff_id &&
+        i.staff_assessor_type === type,
+    )?.assessment_result_score
+    return result
+  }
   return (
     <>
       <CCard>
-        <CCardHeader
-          style={{
-            backgroundImage: `url(${img2})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            color: 'navy',
-          }}
-        >
-          <center>
-            <h6>REPORT & ANALYSIS</h6>
-          </center>
+        <CCardHeader>
+          <h6>Report Filter</h6>
+          <CRow>
+            <CCol>
+              <CFormSelect
+                aria-label="Assessment"
+                size="sm"
+                name="assessmentid"
+                onChange={(e) => setAssessment(e.target.value)}
+              >
+                <option value="">..Assessment..</option>
+                {assessmentlist?.map((val, key) => {
+                  return (
+                    <option key={key} value={val.assessment_id}>
+                      {val.assessment_name}
+                    </option>
+                  )
+                })}
+              </CFormSelect>
+            </CCol>
+            <CCol>
+              <CFormSelect
+                aria-label="Group"
+                size="sm"
+                name="clusterid"
+                onChange={(e) => setGroup(e.target.value)}
+              >
+                <option value="">..Group..</option>
+                {clusterlist?.map((val, key) => {
+                  return (
+                    <option key={key} value={val.cluster_id}>
+                      {val.cluster_name}
+                    </option>
+                  )
+                })}
+              </CFormSelect>
+            </CCol>
+            <CCol>
+              <CFormSelect
+                aria-label="Department"
+                size="sm"
+                name="departmentid"
+                onChange={(e) => setDepartment(e.target.value)}
+              >
+                <option value="">..Department..</option>
+                {departmentlist?.map((val, key) => {
+                  return (
+                    <option key={key} value={val.department_id}>
+                      {val.department_name}
+                    </option>
+                  )
+                })}
+              </CFormSelect>
+            </CCol>
+          </CRow>
         </CCardHeader>
         <CCardBody>
-          <CCard>
-            <CCardHeader>
-              <h6>Report Filter</h6>
-              <CRow>
-                <CCol>
-                  <CFormSelect
-                    aria-label="Assessment"
-                    size="sm"
-                    name="assessmentid"
-                    onChange={(e) => setAssessment(e.target.value)}
-                  >
-                    <option value="">..Assessment..</option>
-                    {assessmentlist?.map((val, key) => {
+          {group && department && assessment ? (
+            <>
+              <h6>Staff with Average Gaps More Than 1.5</h6>
+              <CTable small responsive striped hover bordered>
+                <CTableHead color="dark">
+                  <CTableRow>
+                    <CTableHeaderCell rowSpan={1}>No</CTableHeaderCell>
+                    <CTableHeaderCell rowSpan={1}>Competency</CTableHeaderCell>
+                    <CTableHeaderCell
+                      colSpan={
+                        positionlist.filter((i) =>
+                          stafflist.some(
+                            (u) =>
+                              u.position_id === i.position_id &&
+                              u.department_id.toString() === department,
+                          ),
+                        )?.length
+                      }
+                    >
+                      Number of Staff with Gap
+                    </CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {competencylist
+                    .filter((i) => i.cluster_id.toString() === group)
+                    .map((val, key) => {
                       return (
-                        <option key={key} value={val.assessment_id}>
-                          {val.assessment_name}
-                        </option>
+                        <CTableRow key={key}>
+                          <CTableDataCell>{key + 1}</CTableDataCell>
+                          <CTableDataCell>{val.competency_name}</CTableDataCell>
+                          <CTableDataCell>
+                            {
+                              stafflist.filter(
+                                (i) =>
+                                  i.department_id.toString() === department &&
+                                  roundedNumber(
+                                    assessmentResult(i.staff_id, val.competency_id, 'self') * 0.3 +
+                                      assessmentResult(i.staff_id, val.competency_id, 'superior') *
+                                        0.7,
+                                  ) > 1.4,
+                              )?.length
+                            }
+                          </CTableDataCell>
+                        </CTableRow>
                       )
                     })}
-                  </CFormSelect>
-                </CCol>
-                <CCol>
-                  <CFormSelect
-                    aria-label="Group"
-                    size="sm"
-                    name="clusterid"
-                    onChange={(e) => setGroup(e.target.value)}
-                  >
-                    <option value="">..Group..</option>
-                    {clusterlist?.map((val, key) => {
-                      return (
-                        <option key={key} value={val.cluster_id}>
-                          {val.cluster_name}
-                        </option>
-                      )
-                    })}
-                  </CFormSelect>
-                </CCol>
-                <CCol>
-                  <CFormSelect
-                    aria-label="Department"
-                    size="sm"
-                    name="departmentid"
-                    onChange={(e) => setDepartment(e.target.value)}
-                  >
-                    <option value="">..Department..</option>
-                    {departmentlist?.map((val, key) => {
-                      return (
-                        <option key={key} value={val.department_id}>
-                          {val.department_name}
-                        </option>
-                      )
-                    })}
-                  </CFormSelect>
-                </CCol>
-              </CRow>
-            </CCardHeader>
-            <CCardBody>
-              {group && department && assessment ? (
-                <>
-                  <h6>Staff with Average Gaps More Than 1.5</h6>
-                  <CTable small responsive striped hover bordered>
-                    <CTableHead color="dark">
-                      <CTableRow>
-                        <CTableHeaderCell rowSpan={2}>No</CTableHeaderCell>
-                        <CTableHeaderCell rowSpan={2}>Competency</CTableHeaderCell>
-                        <CTableHeaderCell
-                          colSpan={
-                            positionlist.filter((i) =>
-                              stafflist.some(
-                                (u) =>
-                                  u.position_id === i.position_id &&
-                                  u.department_id.toString() === department,
-                              ),
-                            )?.length
-                          }
-                        >
-                          Number of Staff with Gap ( By Job Grade )
-                        </CTableHeaderCell>
-                        <CTableHeaderCell rowSpan={2}>
-                          Total Number of Staff with Gap
-                        </CTableHeaderCell>
-                      </CTableRow>
-                      <CTableRow>
-                        {positionlist
-                          .filter((i) =>
-                            stafflist.some(
-                              (u) =>
-                                u.position_id === i.position_id &&
-                                u.department_id.toString() === department,
-                            ),
-                          )
-                          .map((val, key) => {
-                            return (
-                              <CTableHeaderCell key={key}>{val.position_grade}</CTableHeaderCell>
-                            )
-                          })}
-                      </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                      {competencylist
-                        .filter((i) => i.cluster_id.toString() === group)
-                        .map((val, key) => {
-                          return (
-                            <CTableRow key={key}>
-                              <CTableDataCell>{key + 1}</CTableDataCell>
-                              <CTableDataCell>{val.competency_name}</CTableDataCell>
-                              {positionlist
-                                .filter((i) =>
-                                  stafflist.some(
-                                    (u) =>
-                                      u.position_id === i.position_id &&
-                                      u.department_id.toString() === department,
-                                  ),
-                                )
-                                .map((val2, key2) => {
-                                  return (
-                                    <CTableDataCell key={key2}>
-                                      {
-                                        stafflist.filter(
-                                          (i) =>
-                                            i.department_id.toString() === department &&
-                                            i.position_grade === val2.position_grade &&
-                                            parseFloat(
-                                              selfAssessment(
-                                                i.staff_id,
-                                                val.competency_id,
-                                                i.position_id,
-                                              ),
-                                            ) +
-                                              parseFloat(
-                                                superiorAssessment(
-                                                  i.staff_id,
-                                                  val.competency_id,
-                                                  i.position_id,
-                                                ),
-                                              ) +
-                                              parseFloat(
-                                                subordinateAssessment(
-                                                  i.staff_id,
-                                                  val.competency_id,
-                                                  i.position_id,
-                                                ),
-                                              ) >
-                                              1.4,
-                                        )?.length
-                                      }
-                                    </CTableDataCell>
-                                  )
-                                })}
-                              <CTableDataCell>
-                                {
-                                  stafflist.filter(
-                                    (i) =>
-                                      i.department_id.toString() === department &&
-                                      parseFloat(
-                                        selfAssessment(
-                                          i.staff_id,
-                                          val.competency_id,
-                                          i.position_id,
-                                        ),
-                                      ) +
-                                        parseFloat(
-                                          superiorAssessment(
-                                            i.staff_id,
-                                            val.competency_id,
-                                            i.position_id,
-                                          ),
-                                        ) +
-                                        parseFloat(
-                                          subordinateAssessment(
-                                            i.staff_id,
-                                            val.competency_id,
-                                            i.position_id,
-                                          ),
-                                        ) >
-                                        1.4,
-                                  )?.length
-                                }
-                              </CTableDataCell>
-                            </CTableRow>
-                          )
-                        })}
-                    </CTableBody>
-                  </CTable>
-                  <h6>Staff with Average Gaps More Than 0</h6>
-                  <CTable small responsive striped hover bordered>
-                    <CTableHead color="dark">
-                      <CTableRow>
-                        <CTableHeaderCell rowSpan={2}>No</CTableHeaderCell>
-                        <CTableHeaderCell rowSpan={2}>Competency</CTableHeaderCell>
-                        <CTableHeaderCell
-                          colSpan={
-                            positionlist.filter((i) =>
-                              stafflist.some(
-                                (u) =>
-                                  u.position_id === i.position_id &&
-                                  u.department_id.toString() === department,
-                              ),
-                            )?.length
-                          }
-                        >
-                          Number of Staff with Gap ( By Job Grade )
-                        </CTableHeaderCell>
-                        <CTableHeaderCell rowSpan={2}>
-                          Total Number of Staff with Gap
-                        </CTableHeaderCell>
-                      </CTableRow>
-                      <CTableRow>
-                        {positionlist
-                          .filter((i) =>
-                            stafflist.some(
-                              (u) =>
-                                u.position_id === i.position_id &&
-                                u.department_id.toString() === department,
-                            ),
-                          )
-                          .map((val, key) => {
-                            return (
-                              <CTableHeaderCell key={key}>{val.position_grade}</CTableHeaderCell>
-                            )
-                          })}
-                      </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                      {competencylist
-                        .filter((i) => i.cluster_id.toString() === group)
-                        .map((val, key) => {
-                          return (
-                            <CTableRow key={key}>
-                              <CTableDataCell>{key + 1}</CTableDataCell>
-                              <CTableDataCell>{val.competency_name}</CTableDataCell>
-                              {positionlist
-                                .filter((i) =>
-                                  stafflist.some(
-                                    (u) =>
-                                      u.position_id === i.position_id &&
-                                      u.department_id.toString() === department,
-                                  ),
-                                )
-                                .map((val2, key2) => {
-                                  return (
-                                    <CTableDataCell key={key2}>
-                                      {
-                                        stafflist.filter(
-                                          (i) =>
-                                            i.department_id.toString() === department &&
-                                            i.position_grade === val2.position_grade &&
-                                            parseFloat(
-                                              selfAssessment(
-                                                i.staff_id,
-                                                val.competency_id,
-                                                i.position_id,
-                                              ),
-                                            ) +
-                                              parseFloat(
-                                                superiorAssessment(
-                                                  i.staff_id,
-                                                  val.competency_id,
-                                                  i.position_id,
-                                                ),
-                                              ) +
-                                              parseFloat(
-                                                subordinateAssessment(
-                                                  i.staff_id,
-                                                  val.competency_id,
-                                                  i.position_id,
-                                                ),
-                                              ) >
-                                              0,
-                                        )?.length
-                                      }
-                                    </CTableDataCell>
-                                  )
-                                })}
-                              <CTableDataCell>
-                                {
-                                  stafflist.filter(
-                                    (i) =>
-                                      i.department_id.toString() === department &&
-                                      parseFloat(
-                                        selfAssessment(
-                                          i.staff_id,
-                                          val.competency_id,
-                                          i.position_id,
-                                        ),
-                                      ) +
-                                        parseFloat(
-                                          superiorAssessment(
-                                            i.staff_id,
-                                            val.competency_id,
-                                            i.position_id,
-                                          ),
-                                        ) +
-                                        parseFloat(
-                                          subordinateAssessment(
-                                            i.staff_id,
-                                            val.competency_id,
-                                            i.position_id,
-                                          ),
-                                        ) >
-                                        0,
-                                  )?.length
-                                }
-                              </CTableDataCell>
-                            </CTableRow>
-                          )
-                        })}
-                    </CTableBody>
-                  </CTable>
-                </>
-              ) : (
-                <CAlert className="my-2" color="info">
-                  Please choose from the filter options to view result
-                </CAlert>
-              )}
-            </CCardBody>
-          </CCard>
+                </CTableBody>
+              </CTable>
+            </>
+          ) : (
+            <CAlert className="my-2" color="info">
+              Please choose from the filter options to view result
+            </CAlert>
+          )}
         </CCardBody>
       </CCard>
     </>

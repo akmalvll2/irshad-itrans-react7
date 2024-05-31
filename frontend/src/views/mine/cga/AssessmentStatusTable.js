@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import img2 from '../../../assets/images/4.png'
+import { usePDF } from 'react-to-pdf'
 import {
   CSpinner,
   CCard,
@@ -26,6 +27,7 @@ import {
   CModal,
   CModalHeader,
   CModalBody,
+  CContainer,
 } from '@coreui/react'
 
 //icon
@@ -38,9 +40,25 @@ import {
   cilPencil,
   cilAddressBook,
   cilClipboard,
+  cilCheck,
+  cilXCircle,
+  cilFile,
 } from '@coreui/icons'
 
-const AssessmentStatusTable = ({ visible, setVisible, stafflist, assessmentdata, assessors }) => {
+const AssessmentStatusTable = ({
+  visible,
+  setVisible,
+  stafflist,
+  assessmentdata,
+  assessmentresultlist,
+  assessors,
+  setToggleResultDetail,
+  setSelectedStaff,
+}) => {
+  const [isGeneratePDF, setIsGeneratePDF] = useState(false)
+  const { toPDF, targetRef } = usePDF({
+    filename: `Submission_Status_${moment().format('DDMMYYYY')}`,
+  })
   return (
     <>
       <CModal
@@ -53,65 +71,131 @@ const AssessmentStatusTable = ({ visible, setVisible, stafflist, assessmentdata,
       >
         <CModalHeader>
           <h6>
-            Assessment Submission Status: ({' '}
+            SUBMISSION STATUS ({' '}
             <span style={{ color: 'blue' }}>{assessmentdata?.assessment_name}</span> )
           </h6>
         </CModalHeader>
         <CModalBody>
-          <CTable small bordered striped responsive>
-            <CTableHead color="dark">
-              <CTableRow>
-                <CTableHeaderCell>No</CTableHeaderCell>
-                <CTableHeaderCell>Name</CTableHeaderCell>
-                <CTableHeaderCell>Self</CTableHeaderCell>
-                <CTableHeaderCell>Superior</CTableHeaderCell>
-                <CTableHeaderCell>Subordinate/Peers</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {stafflist?.map((val, key) => {
-                return (
-                  <CTableRow key={key}>
-                    <CTableDataCell>{key + 1}</CTableDataCell>
-                    <CTableDataCell>{val.staff_name}</CTableDataCell>
-                    <CTableDataCell>
-                      <ul>
-                        {stafflist
-                          ?.filter(
+          {stafflist?.length > 0 ? (
+            <CAlert color="secondary">
+              <CRow>
+                <CCol>
+                  <CButtonGroup className="float-end">
+                    <CButton size="sm" color="secondary" onClick={() => toPDF()}>
+                      Save PDF <CIcon icon={cilFile} />
+                    </CButton>
+                  </CButtonGroup>
+                </CCol>
+              </CRow>
+              <div ref={targetRef}>
+                <CRow className="mb-4">
+                  <CCol>
+                    <h6 className="float-start">Submission Status Summary</h6>
+                    <hr />
+                    <div>
+                      Self Submission :{' '}
+                      {
+                        stafflist?.filter((i) =>
+                          assessmentresultlist.some(
+                            (u) => u.staff_id === i.staff_id && u.staff_assessor_type === 'self',
+                          ),
+                        ).length
+                      }
+                    </div>
+                    <div>
+                      Superior Submission :{' '}
+                      {
+                        stafflist?.filter((i) =>
+                          assessmentresultlist.some(
                             (u) =>
-                              u.staff_id === val.staff_id &&
-                              assessors.some(
-                                (x) =>
-                                  x.staff_id === u.staff_id && x.staff_assessor_type === 'self',
-                              ),
+                              u.staff_id === i.staff_id && u.staff_assessor_type === 'superior',
+                          ),
+                        ).length
+                      }
+                    </div>
+                  </CCol>
+                </CRow>
+                <CRow>
+                  <CCol>
+                    <h6 className="float-start">Individual Submission Status</h6>
+                    <hr />
+                    <CTable small bordered striped responsive>
+                      <CTableHead color="dark">
+                        <CTableRow>
+                          <CTableHeaderCell rowSpan={2}>No</CTableHeaderCell>
+                          <CTableHeaderCell rowSpan={2}>Name</CTableHeaderCell>
+                          <CTableHeaderCell colSpan={2}>Submission</CTableHeaderCell>
+                          <CTableHeaderCell rowSpan={2}>Action</CTableHeaderCell>
+                        </CTableRow>
+                        <CTableRow>
+                          <CTableHeaderCell>Self</CTableHeaderCell>
+                          <CTableHeaderCell>Superior</CTableHeaderCell>
+                        </CTableRow>
+                      </CTableHead>
+                      <CTableBody>
+                        {stafflist?.map((val, key) => {
+                          return (
+                            <CTableRow key={key}>
+                              <CTableDataCell>{key + 1}</CTableDataCell>
+                              <CTableDataCell>{val.staff_name}</CTableDataCell>
+                              <CTableDataCell>
+                                {assessmentresultlist?.some(
+                                  (i) =>
+                                    i.staff_id === val.staff_id && i.staff_assessor_type === 'self',
+                                ) ? (
+                                  <CBadge color="success">
+                                    <CIcon className="mx-2" icon={cilCheck} />
+                                    Submitted
+                                  </CBadge>
+                                ) : (
+                                  <CBadge color="danger">
+                                    <CIcon className="mx-2" icon={cilXCircle} />
+                                    No Submission
+                                  </CBadge>
+                                )}
+                              </CTableDataCell>
+                              <CTableDataCell>
+                                {assessmentresultlist?.some(
+                                  (i) =>
+                                    i.staff_id === val.staff_id &&
+                                    i.staff_assessor_type === 'superior',
+                                ) ? (
+                                  <CBadge color="success">
+                                    <CIcon className="mx-2" icon={cilCheck} />
+                                    Submitted
+                                  </CBadge>
+                                ) : (
+                                  <CBadge color="danger">
+                                    <CIcon className="mx-2" icon={cilXCircle} />
+                                    No Submission
+                                  </CBadge>
+                                )}
+                              </CTableDataCell>
+                              <CTableDataCell>
+                                <CButton
+                                  color="secondary"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    setToggleResultDetail(true)
+                                    setSelectedStaff(val.staff_id)
+                                  }}
+                                >
+                                  View Result
+                                </CButton>
+                              </CTableDataCell>
+                            </CTableRow>
                           )
-                          .map((i, key) => (
-                            <li key={key}>{i.staff_name}</li>
-                          ))}
-                      </ul>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <ul>
-                        {stafflist
-                          ?.filter(
-                            (u) =>
-                              u.staff_id === val.staff_id &&
-                              assessors.some(
-                                (x) =>
-                                  x.staff_id === u.staff_id && x.staff_assessor_type === 'superior',
-                              ),
-                          )
-                          .map((i, key) => (
-                            <li key={key}>{i.staff_name}</li>
-                          ))}
-                      </ul>
-                    </CTableDataCell>
-                    <CTableDataCell></CTableDataCell>
-                  </CTableRow>
-                )
-              })}
-            </CTableBody>
-          </CTable>
+                        })}
+                      </CTableBody>
+                    </CTable>
+                  </CCol>
+                </CRow>
+              </div>
+            </CAlert>
+          ) : (
+            <CAlert color="danger">No Staff Data Available</CAlert>
+          )}
         </CModalBody>
       </CModal>
     </>
@@ -123,7 +207,10 @@ AssessmentStatusTable.propTypes = {
   setVisible: PropTypes.func.isRequired,
   stafflist: PropTypes.array.isRequired,
   assessmentdata: PropTypes.object,
+  assessmentresultlist: PropTypes.array,
   assessors: PropTypes.array.isRequired,
+  setToggleResultDetail: PropTypes.func,
+  setSelectedStaff: PropTypes.func,
 }
 
 export default AssessmentStatusTable

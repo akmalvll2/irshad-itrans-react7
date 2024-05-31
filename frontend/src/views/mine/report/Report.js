@@ -6,6 +6,8 @@ const { config } = packageJson
 
 //IMPORT COMPONENT
 const ReportTable1 = React.lazy(() => import('./ReportTable1'))
+const ReportTable2 = React.lazy(() => import('./ReportTable2'))
+const ReportTable3 = React.lazy(() => import('./ReportTable3'))
 
 const Report = () => {
   // SETTING INITIALIZE
@@ -134,6 +136,26 @@ const Report = () => {
   }, [isChange])
   return (
     <>
+      {/*<ReportTable2
+        stafflist={stafflist}
+        departmentlist={departmentlist}
+        positionlist={positionlist}
+        jobcompetency={jobcompetency}
+        clusterlist={clusterlist}
+        assessmentlist={assessmentlist}
+        assessmentresult={assessmentresult}
+        competencylist={competencylist}
+      />*/}
+      <ReportTable3
+        stafflist={stafflist}
+        departmentlist={departmentlist}
+        positionlist={positionlist}
+        jobcompetency={jobcompetency}
+        clusterlist={clusterlist}
+        assessmentlist={assessmentlist}
+        assessmentresult={assessmentresult}
+        competencylist={competencylist}
+      />
       <ReportTable1
         stafflist={stafflist}
         departmentlist={departmentlist}

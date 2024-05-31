@@ -1,10 +1,6 @@
 //import dependencies
 const express = require("express") 
 const cors = require("cors") 
-const session = require("express-session") 
-const bcrypt = require("bcrypt") 
-const nodemailer = require("nodemailer")
-const bodyparser = require("body-parser")
 
 //import routes from route folder
 const authRoute = require('./route/authRoute')

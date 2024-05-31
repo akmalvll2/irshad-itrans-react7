@@ -18,6 +18,7 @@ const AssessmentFormAdmin = React.lazy(() => import('./AssessmentFormAdmin'))
 const AssessmentFormUser = React.lazy(() => import('./AssessmentFormUser'))
 const AssessmentStatusTable = React.lazy(() => import('./AssessmentStatusTable'))
 const AssessmentFormLeadership = React.lazy(() => import('./AssessmentFormLeadership'))
+const AssessmentResultDetail = React.lazy(() => import('./AssessmentResultDetail'))
 
 const Assessment = () => {
   const [assessmentlist, setAssessmentlist] = useState([])
@@ -36,6 +37,8 @@ const Assessment = () => {
   const [toggleSubmissionTable, setToggleSubmissionTable] = useState(false)
   const [viewAssessment, setViewAssessment] = useState()
   const [editAssessment, setEditAssessment] = useState()
+  const [toggleResultDetail, setToggleResultDetail] = useState(false)
+  const [selectedStaff, setSelectedStaff] = useState()
 
   //CREATE ASSESSMENT API
   const createNewAssessment = async (assessmentdata) => {
@@ -265,7 +268,19 @@ const Assessment = () => {
           setVisible={setToggleSubmissionTable}
           stafflist={employeelist}
           assessmentdata={assessmentlist.find((i) => i.assessment_id === viewAssessment)}
+          assessmentresultlist={assessmentresult.filter((i) => i.assessment_id === viewAssessment)}
           assessors={assessors}
+          setToggleResultDetail={setToggleResultDetail}
+          setSelectedStaff={setSelectedStaff}
+        />
+        <AssessmentResultDetail
+          visible={toggleResultDetail}
+          setVisible={setToggleResultDetail}
+          stafflist={employeelist}
+          jobcompetency={jobcompetency}
+          assessmentresultlist={assessmentresult.filter((i) => i.assessment_id === viewAssessment)}
+          assessors={assessors}
+          selectedStaff={selectedStaff}
         />
         {/*<AssessmentFormLeadership
           visible={toggleFormLeadership}

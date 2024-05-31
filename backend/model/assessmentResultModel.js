@@ -3,7 +3,7 @@ const db = require('../config/db')
 //READ ALL ASSESSMENT RESULT
 async function getAllAssessmentResult () {
     try {
-        const [rows] = await db.query('SELECT * FROM assessment_result JOIN assessment ON assessment.assessment_id = assessment_result.assessment_id JOIN competency ON competency.competency_id = assessment_result.competency_id JOIN staff_assessor ON staff_assessor.staff_assessor_id = assessment_result.staff_assessor_id JOIN cluster ON cluster.cluster_id = competency.cluster_id')
+        const [rows] = await db.query('SELECT * FROM assessment_result JOIN assessment ON assessment.assessment_id = assessment_result.assessment_id JOIN competency ON competency.competency_id = assessment_result.competency_id JOIN staff_assessor ON staff_assessor.staff_assessor_id = assessment_result.staff_assessor_id JOIN cluster ON cluster.cluster_id = competency.cluster_id JOIN staff ON staff.staff_id = staff_assessor.staff_id JOIN department ON department.department_id = staff.department_id')
         return rows
     } catch (error) {
         throw new Error(error.message)
