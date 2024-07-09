@@ -196,7 +196,9 @@ const IdpTable1 = ({
                             <CTableHeaderCell>Training</CTableHeaderCell>
                             <CTableHeaderCell>Coaching</CTableHeaderCell>
                             <CTableHeaderCell>Self Learning</CTableHeaderCell>
-                            <CTableHeaderCell>On the Job Training</CTableHeaderCell>
+                            <CTableHeaderCell>
+                              Enhance Competency Through Working Experience
+                            </CTableHeaderCell>
                           </CTableRow>
                         </CTableHead>
                         <CTableBody>

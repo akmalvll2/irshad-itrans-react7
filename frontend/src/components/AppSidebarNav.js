@@ -33,7 +33,7 @@ export const AppSidebarNav = ({ items }) => {
     const Component = component
     return userType?.role === 'admin' || (userType?.role === 'user' && item.role === 'both') ? (
       <Component
-        style={name === 'Assessment' ? { backgroundColor: `steelblue` } : null}
+        //style={name === 'Assessment' ? { backgroundColor: `steelblue` } : null}
         {...(rest.to &&
           !rest.items && {
             component: NavLink,

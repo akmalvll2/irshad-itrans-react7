@@ -16,6 +16,7 @@ const AssessmentDetail = React.lazy(() => import('./AssessmentDetail'))
 const AssessmentEdit = React.lazy(() => import('./AssessmentEdit'))
 const AssessmentFormAdmin = React.lazy(() => import('./AssessmentFormAdmin'))
 const AssessmentFormUser = React.lazy(() => import('./AssessmentFormUser'))
+const AssessmentFormCBI = React.lazy(() => import('./AssessmentFormCBI'))
 const AssessmentStatusTable = React.lazy(() => import('./AssessmentStatusTable'))
 const AssessmentFormLeadership = React.lazy(() => import('./AssessmentFormLeadership'))
 const AssessmentResultDetail = React.lazy(() => import('./AssessmentResultDetail'))
@@ -250,19 +251,22 @@ const Assessment = () => {
           assessmentid={viewAssessment}
           assessors={assessors}
         />
-        <AssessmentFormUser
-          visible={toggleFormUser}
-          setVisible={setToggleFormUser}
-          stafflist={employeelist}
-          jobcompetency={jobcompetency}
-          user={userType}
-          assessmentid={viewAssessment}
-          createAssessmentResult={createAssessmentResult}
-          assessors={assessors}
-          assessmentresult={assessmentresult}
-          assessmentdata={assessmentlist}
-          indicators={indicators}
-        />
+        {assessmentlist?.find((i) => i.assessment_id === viewAssessment)?.assessment_type ===
+        'functional' ? (
+          <AssessmentFormUser
+            visible={toggleFormUser}
+            setVisible={setToggleFormUser}
+            stafflist={employeelist}
+            jobcompetency={jobcompetency}
+            user={userType}
+            assessmentid={viewAssessment}
+            createAssessmentResult={createAssessmentResult}
+            assessors={assessors}
+            assessmentresult={assessmentresult}
+            assessmentdata={assessmentlist}
+            indicators={indicators}
+          />
+        ) : null}
         <AssessmentStatusTable
           visible={toggleSubmissionTable}
           setVisible={setToggleSubmissionTable}
@@ -282,10 +286,29 @@ const Assessment = () => {
           assessors={assessors}
           selectedStaff={selectedStaff}
         />
-        {/*<AssessmentFormLeadership
-          visible={toggleFormLeadership}
-          setVisible={setToggleFormLeadership}
-  />*/}
+        {assessmentlist?.find((i) => i.assessment_id === viewAssessment)?.assessment_type ===
+        'leadership' ? (
+          <AssessmentFormLeadership
+            visible={toggleFormLeadership}
+            setVisible={setToggleFormLeadership}
+          />
+        ) : null}
+        {assessmentlist?.find((i) => i.assessment_id === viewAssessment)?.assessment_type ===
+        'cbi' ? (
+          <AssessmentFormCBI
+            visible={toggleFormUser}
+            setVisible={setToggleFormUser}
+            stafflist={employeelist}
+            jobcompetency={jobcompetency}
+            user={userType}
+            assessmentid={viewAssessment}
+            createAssessmentResult={createAssessmentResult}
+            assessors={assessors}
+            assessmentresult={assessmentresult}
+            assessmentdata={assessmentlist}
+            indicators={indicators}
+          />
+        ) : null}
       </Suspense>
     </>
   )

@@ -21,10 +21,8 @@ import {
 const DashboardInfo1 = ({ assessmentlist }) => {
   return (
     <div>
-      <CCard>
-        <CCardHeader>
-          <h6>Active Assessment</h6>
-        </CCardHeader>
+      <CCard className=" m-2">
+        <CCardHeader>ACTIVE ASSESSMENT</CCardHeader>
         <CCardBody>
           {assessmentlist.filter((i) =>
             moment().isBetween(moment(i.assessment_start_date), moment(i.assessment_end_date)),

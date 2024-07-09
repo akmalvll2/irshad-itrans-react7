@@ -3,7 +3,7 @@ const db = require('../config/db')
 //READ ALL TRAINING COMPETENCY
 async function getAllTrainingCompetency () {
     try {
-        const [rows] = await db.query('SELECT * FROM `training_competency`')
+        const [rows] = await db.query('SELECT * FROM `training_competency` JOIN training ON training.training_id = training_competency.training_id JOIN competency ON competency.competency_id = training_competency.competency_id')
         return rows
     } catch (error) {
         throw new Error(error.message)
@@ -13,9 +13,10 @@ async function getAllTrainingCompetency () {
 //CREATE TRAINING COMPETENCY
 async function createTrainingCompetency (trainingcompetencydata) {
     try {
-        const [result] = await db.query('INSERT INTO `training_competency` (competency_id, training_id) VALUES (?,?)', [
+        const [result] = await db.query('INSERT INTO `training_competency` (competency_id, training_id, training_competency_level) VALUES (?,?,?)', [
             trainingcompetencydata.competencyid,
             trainingcompetencydata.trainingid,
+            trainingcompetencydata.relevantlevel,
         ])
         return result.insertId
     } catch (error) {

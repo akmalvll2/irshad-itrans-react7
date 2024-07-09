@@ -8,6 +8,7 @@ const { config } = packageJson
 
 //import department component
 const MapJobCompetency = React.lazy(() => import('./MapJobCompetency'))
+const MapTrainingCompetency = React.lazy(() => import('./MapTrainingCompetency'))
 const MapTable = React.lazy(() => import('./MapTable'))
 const MapAssessor = React.lazy(() => import('./MapAssessor'))
 //const EmployeeEdit = React.lazy(() => import('./EmployeeEdit'))
@@ -20,10 +21,13 @@ const Map = () => {
   const [assessorlist, setassessorlist] = useState([])
   const [traininglist, settraininglist] = useState([])
   const [positioncompetencydata, setPositioncompetencydata] = useState([])
+  const [trainingCompetencyData, setTrainingCompetencyData] = useState([])
   const [isChange, setIsChange] = useState(false)
   const [openJobCompetency, setOpenJobCompetency] = useState(false)
+  const [openTrainingCompetency, setOpenTrainingCompetency] = useState(false)
   const [toggleMapAssessor, setToggleMapAssessor] = useState(false)
   const [positionid, setPositionid] = useState()
+  const [trainingId, setTrainingId] = useState()
   const [staffid, setstaffid] = useState()
 
   //CREATE JOB COMPETENCY API
@@ -36,6 +40,24 @@ const Map = () => {
         .then((response) => {
           if (response) {
             console.log('Successfully set position skills set')
+            setIsChange(!isChange)
+          }
+        })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  //CREATE TRAINING COMPETENCY API
+  const createNewTrainingCompetency = async (trainingcompetencydata) => {
+    try {
+      await axios
+        .post(`${config.REACT_APP_API_ENDPOINT}/trainingcompetency/createtrainingcompetency`, {
+          trainingcompetencydata: trainingcompetencydata,
+        })
+        .then((response) => {
+          if (response) {
+            console.log('Successfully set training with relevant competencies')
             setIsChange(!isChange)
           }
         })
@@ -181,14 +203,32 @@ const Map = () => {
     }
     fetchAllTraining()
   }, [isChange])
+
+  useEffect(() => {
+    //READ TRAINING COMPETENCY API
+    const fetchAllTrainingCompetency = async () => {
+      try {
+        const response = await axios.get(
+          `${config.REACT_APP_API_ENDPOINT}/trainingcompetency/getalltrainingcompetency`,
+        )
+        setTrainingCompetencyData(response.data)
+      } catch (error) {
+        console.log('Error: '.error)
+      }
+    }
+    fetchAllTrainingCompetency()
+  }, [isChange])
   return (
     <>
       <MapTable
         positiondata={positiondata}
         competencydata={competencydata}
         positioncompetencydata={positioncompetencydata}
+        trainingcompetencydata={trainingCompetencyData}
         setOpenJobCompetency={setOpenJobCompetency}
+        setOpenTrainingCompetency={setOpenTrainingCompetency}
         setPositionid={setPositionid}
+        setTrainingId={setTrainingId}
         stafflist={stafflist}
         assessorlist={assessorlist}
         traininglist={traininglist}
@@ -204,6 +244,15 @@ const Map = () => {
         positioncompetencydata={positioncompetencydata}
         createnewjobcompetency={createNewJobCompetency}
         deleteJobCompetency={deleteJobCompetency}
+      />
+      <MapTrainingCompetency
+        visible={openTrainingCompetency}
+        setVisible={setOpenTrainingCompetency}
+        competencydata={competencydata}
+        trainingdata={traininglist}
+        trainingId={trainingId}
+        trainingCompetencyData={trainingCompetencyData}
+        createtrainingcompetency={createNewTrainingCompetency}
       />
       <MapAssessor
         visible={toggleMapAssessor}

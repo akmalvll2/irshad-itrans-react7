@@ -15,6 +15,8 @@ const { config } = packageJson
 //IMPORT COMPONENT
 const DashboardInfo1 = React.lazy(() => import('./DashboardInfo1'))
 const DashboardInfo2 = React.lazy(() => import('./DashboardInfo2'))
+const DbDepartmentInfo = React.lazy(() => import('./DbDepartmentInfo'))
+const DbStaffInfo = React.lazy(() => import('./DbStaffInfo'))
 
 const Dashboard = () => {
   const [isChange, setIsChange] = useState(false)
@@ -110,20 +112,30 @@ const Dashboard = () => {
     <>
       <CRow>
         <CCol>
-          <DashboardInfo2
-            employeelist={employeelist}
-            departmentlist={departmentlist}
-            competencylist={competencylist}
-            traininglist={traininglist}
-            joblist={joblist}
-          />
+          {userType.role === 'admin' ? (
+            <DashboardInfo2
+              employeelist={employeelist}
+              departmentlist={departmentlist}
+              competencylist={competencylist}
+              traininglist={traininglist}
+              joblist={joblist}
+            />
+          ) : (
+            ''
+          )}
         </CCol>
       </CRow>
       <CRow>
-        <CCol xs={6}>
+        <CCol md={6}>
+          <DbStaffInfo />
+        </CCol>
+        <CCol md={6}>
           <DashboardInfo1 assessmentlist={assessmentlist} />
         </CCol>
       </CRow>
+      {/*<CRow>
+        <CCol>{userType.role !== 'admin' ? <DbDepartmentInfo /> : ''}</CCol>
+      </CRow>*/}
     </>
   )
 }

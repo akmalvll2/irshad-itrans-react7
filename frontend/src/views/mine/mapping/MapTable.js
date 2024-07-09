@@ -42,8 +42,11 @@ const MapTable = ({
   positiondata,
   competencydata,
   positioncompetencydata,
+  trainingcompetencydata,
   setOpenJobCompetency,
+  setOpenTrainingCompetency,
   setPositionid,
+  setTrainingId,
   stafflist,
   traininglist,
   setToggleMapAssessor,
@@ -177,10 +180,22 @@ const MapTable = ({
                       <CTableRow key={key}>
                         <CTableDataCell>{key + 1}</CTableDataCell>
                         <CTableDataCell>{val.training_name}</CTableDataCell>
-                        <CTableDataCell>2</CTableDataCell>
+                        <CTableDataCell>
+                          {
+                            trainingcompetencydata?.filter((i) => i.training_id === val.training_id)
+                              .length
+                          }
+                        </CTableDataCell>
                         <CTableDataCell>
                           <CButtonGroup>
-                            <CButton size="sm" variant="outline">
+                            <CButton
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setTrainingId(val.training_id)
+                                setOpenTrainingCompetency(true)
+                              }}
+                            >
                               <CIcon icon={cilLink} size="sm" /> Set Competency
                             </CButton>
                           </CButtonGroup>
@@ -243,8 +258,11 @@ MapTable.propTypes = {
   positiondata: PropTypes.array.isRequired,
   competencydata: PropTypes.array.isRequired,
   positioncompetencydata: PropTypes.array.isRequired,
+  trainingcompetencydata: PropTypes.array.isRequired,
   setOpenJobCompetency: PropTypes.func.isRequired,
+  setOpenTrainingCompetency: PropTypes.func.isRequired,
   setPositionid: PropTypes.func.isRequired,
+  setTrainingId: PropTypes.func.isRequired,
   stafflist: PropTypes.array.isRequired,
   traininglist: PropTypes.array.isRequired,
   setToggleMapAssessor: PropTypes.func.isRequired,

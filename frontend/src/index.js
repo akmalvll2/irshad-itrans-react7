@@ -6,11 +6,14 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import store from './store'
+import { MyProvider } from './views/mine/data/MyContext'
 
 createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <MyProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </MyProvider>,
 )
 
 // If you want to start measuring performance in your app, pass a function

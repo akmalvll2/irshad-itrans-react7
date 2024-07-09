@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import img2 from '../../../assets/images/4.png'
 //path to API call IMPORTANT!
 import packageJson from '../../../../package.json'
+import {
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CNav,
+  CNavItem,
+  CNavLink,
+  CTabContent,
+  CTabPane,
+} from '@coreui/react'
 const { config } = packageJson
 
 //IMPORT COMPONENT
 const ReportTable1 = React.lazy(() => import('./ReportTable1'))
 const ReportTable2 = React.lazy(() => import('./ReportTable2'))
 const ReportTable3 = React.lazy(() => import('./ReportTable3'))
+const ReportExample1 = React.lazy(() => import('./ReportExample1'))
+const ReportExample2 = React.lazy(() => import('./ReportExample2'))
 
 const Report = () => {
   // SETTING INITIALIZE
@@ -134,6 +147,8 @@ const Report = () => {
     }
     fetchAllCompetency()
   }, [isChange])
+
+  const [activeKey, setActiveKey] = useState(1)
   return (
     <>
       {/*<ReportTable2
@@ -145,7 +160,7 @@ const Report = () => {
         assessmentlist={assessmentlist}
         assessmentresult={assessmentresult}
         competencylist={competencylist}
-      />*/}
+      />
       <ReportTable3
         stafflist={stafflist}
         departmentlist={departmentlist}
@@ -157,15 +172,122 @@ const Report = () => {
         competencylist={competencylist}
       />
       <ReportTable1
-        stafflist={stafflist}
-        departmentlist={departmentlist}
-        positionlist={positionlist}
-        jobcompetency={jobcompetency}
-        clusterlist={clusterlist}
-        assessmentlist={assessmentlist}
-        assessmentresult={assessmentresult}
-        competencylist={competencylist}
-      />
+                stafflist={stafflist}
+                departmentlist={departmentlist}
+                positionlist={positionlist}
+                jobcompetency={jobcompetency}
+                clusterlist={clusterlist}
+                assessmentlist={assessmentlist}
+                assessmentresult={assessmentresult}
+                competencylist={competencylist}
+              />
+      */}
+      <CCard>
+        <CCardHeader
+          style={{
+            backgroundImage: `url(${img2})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            color: 'navy',
+          }}
+          className="text-center"
+        >
+          <h6>REPORT AND ANALYSIS</h6>
+          <CNav variant="tabs" className="card-header-tabs float-end">
+            <CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer' }}
+                active={activeKey === 1}
+                onClick={() => setActiveKey(1)}
+              >
+                Overall
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer' }}
+                active={activeKey === 2}
+                onClick={() => setActiveKey(2)}
+              >
+                Report 1
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer' }}
+                active={activeKey === 3}
+                onClick={() => setActiveKey(3)}
+              >
+                Report 2
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer' }}
+                active={activeKey === 4}
+                onClick={() => setActiveKey(4)}
+              >
+                Report 3
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer' }}
+                active={activeKey === 5}
+                onClick={() => setActiveKey(5)}
+              >
+                Summary
+              </CNavLink>
+            </CNavItem>
+          </CNav>
+        </CCardHeader>
+        <CCardBody>
+          <CTabContent>
+            <CTabPane visible={activeKey === 1}>
+              <ReportExample1 />
+            </CTabPane>
+            <CTabPane visible={activeKey === 2}>
+              <ReportTable1
+                stafflist={stafflist}
+                departmentlist={departmentlist}
+                positionlist={positionlist}
+                jobcompetency={jobcompetency}
+                clusterlist={clusterlist}
+                assessmentlist={assessmentlist}
+                assessmentresult={assessmentresult}
+                competencylist={competencylist}
+              />
+            </CTabPane>
+            <CTabPane visible={activeKey === 3}>
+              <ReportTable2
+                stafflist={stafflist}
+                departmentlist={departmentlist}
+                positionlist={positionlist}
+                jobcompetency={jobcompetency}
+                clusterlist={clusterlist}
+                assessmentlist={assessmentlist}
+                assessmentresult={assessmentresult}
+                competencylist={competencylist}
+              />
+            </CTabPane>
+            <CTabPane visible={activeKey === 4}>
+              <ReportTable3
+                stafflist={stafflist}
+                departmentlist={departmentlist}
+                positionlist={positionlist}
+                jobcompetency={jobcompetency}
+                clusterlist={clusterlist}
+                assessmentlist={assessmentlist}
+                assessmentresult={assessmentresult}
+                competencylist={competencylist}
+              />
+            </CTabPane>
+            <CTabPane visible={activeKey === 5}>
+              <ReportExample2 />
+            </CTabPane>
+          </CTabContent>
+        </CCardBody>
+      </CCard>
     </>
   )
 }

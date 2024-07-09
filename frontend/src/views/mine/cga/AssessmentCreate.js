@@ -13,6 +13,7 @@ import {
   CCol,
   CFormCheck,
   CFormLabel,
+  CFormSelect,
 } from '@coreui/react'
 
 const AssessmentCreate = ({ visible, setVisible, createAssessment }) => {
@@ -52,28 +53,41 @@ const AssessmentCreate = ({ visible, setVisible, createAssessment }) => {
             </CRow>
             <CRow>
               <CCol>
-                <CFormLabel>Assessment Type</CFormLabel>
-                <br />
-                <CFormCheck
-                  inline
-                  type="radio"
+                <CFormSelect
                   size="sm"
                   name="assessmenttype"
-                  label="Leadership"
-                  value={'leadership'}
+                  label="Assessment Type"
                   onChange={handleInputChange}
-                  checked={assessmentData.assessmenttype === 'leadership'}
-                />
-                <CFormCheck
-                  inline
-                  type="radio"
-                  size="sm"
-                  name="assessmenttype"
-                  label="Functional"
-                  value={'functional'}
-                  onChange={handleInputChange}
-                  checked={assessmentData.assessmenttype === 'functional'}
-                />
+                >
+                  <option>..assessment type..</option>
+                  <option value="leadership">Leadership</option>
+                  <option value="functional">Competency Gap</option>
+                  <option value="cbi">Competency Based Interview</option>
+                </CFormSelect>
+                {/*
+                  <CFormLabel>Assessment Type</CFormLabel>
+                  <br />
+                  <CFormCheck
+                    inline
+                    type="radio"
+                    size="sm"
+                    name="assessmenttype"
+                    label="Leadership"
+                    value={'leadership'}
+                    onChange={handleInputChange}
+                    checked={assessmentData.assessmenttype === 'leadership'}
+                  />
+                  <CFormCheck
+                    inline
+                    type="radio"
+                    size="sm"
+                    name="assessmenttype"
+                    label="Functional"
+                    value={'functional'}
+                    onChange={handleInputChange}
+                    checked={assessmentData.assessmenttype === 'functional'}
+                  />
+                */}
               </CCol>
             </CRow>
             <CRow>
