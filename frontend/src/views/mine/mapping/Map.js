@@ -105,6 +105,27 @@ const Map = () => {
     }
   }
 
+  //DELETE TRAINING COMPETENCY API
+  const deleteTrainingCompetency = async (trainingcompetencyid) => {
+    const deleteconfirm = window.confirm('Delete Mapping?')
+    if (deleteconfirm) {
+      try {
+        await axios
+          .delete(
+            `${config.REACT_APP_API_ENDPOINT}/trainingcompetency/deletetrainingcompetency/${trainingcompetencyid}`,
+          )
+          .then((response) => {
+            if (response) {
+              //alert('Mapping deleted')
+              setIsChange(!isChange)
+            }
+          })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
   //DELETE ASSESSOR API
   const deleteAssessor = async (staffassessorid) => {
     const deleteconfirm = window.confirm('Delete Assessor? ')
@@ -253,6 +274,7 @@ const Map = () => {
         trainingId={trainingId}
         trainingCompetencyData={trainingCompetencyData}
         createtrainingcompetency={createNewTrainingCompetency}
+        deletetrainingcompetency={deleteTrainingCompetency}
       />
       <MapAssessor
         visible={toggleMapAssessor}

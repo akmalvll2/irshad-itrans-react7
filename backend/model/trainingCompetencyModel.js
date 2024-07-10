@@ -13,10 +13,11 @@ async function getAllTrainingCompetency () {
 //CREATE TRAINING COMPETENCY
 async function createTrainingCompetency (trainingcompetencydata) {
     try {
+        console.log(trainingcompetencydata)
         const [result] = await db.query('INSERT INTO `training_competency` (competency_id, training_id, training_competency_level) VALUES (?,?,?)', [
-            trainingcompetencydata.competencyid,
-            trainingcompetencydata.trainingid,
-            trainingcompetencydata.relevantlevel,
+            trainingcompetencydata[0].competencyid,
+            trainingcompetencydata[0].trainingid,
+            trainingcompetencydata[0].relevantlevel,
         ])
         return result.insertId
     } catch (error) {
@@ -27,7 +28,7 @@ async function createTrainingCompetency (trainingcompetencydata) {
 //DELETE TRAINING COMPETENCY
 async function deleteTrainingCompetency (trainingcompetencyid) {
     try {
-        const [result] = await db.query('DELETE FROM `training_competency` WHERE training_competency.training_competency_id = ?', [indicatorid])
+        const [result] = await db.query('DELETE FROM `training_competency` WHERE training_competency.training_competency_id = ?', [trainingcompetencyid])
         return "Mapping Deleted"
     } catch (error) {
         throw new Error(error.message)

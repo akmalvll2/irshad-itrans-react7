@@ -43,6 +43,7 @@ const MapTrainingCompetency = ({
   trainingCompetencyData,
   trainingId,
   createtrainingcompetency,
+  deletetrainingcompetency,
 }) => {
   const [tableRows, setTableRows] = useState([
     { trainingid: trainingId, competencyid: null, relevantlevel: null },
@@ -70,13 +71,13 @@ const MapTrainingCompetency = ({
 
   const handleCompetencyChange = (index, value) => {
     const updatedRows = [...tableRows]
-    updatedRows[index].competencyid = value
+    updatedRows[index].competencyid = parseInt(value)
     setTableRows(updatedRows)
   }
 
   const handleRelevantLevelChange = (index, value) => {
     const updatedRows = [...tableRows]
-    updatedRows[index].relevantlevel = value
+    updatedRows[index].relevantlevel = parseInt(value)
     setTableRows(updatedRows)
   }
 
@@ -150,7 +151,12 @@ const MapTrainingCompetency = ({
                             <CTableDataCell>{val.competency_name}</CTableDataCell>
                             <CTableDataCell>{val.training_competency_level}</CTableDataCell>
                             <CTableDataCell>
-                              <CButton size="sm" color="danger" variant="outline">
+                              <CButton
+                                size="sm"
+                                color="danger"
+                                variant="outline"
+                                onClick={() => deletetrainingcompetency(val.training_competency_id)}
+                              >
                                 Delete
                               </CButton>
                             </CTableDataCell>
@@ -242,6 +248,7 @@ MapTrainingCompetency.propTypes = {
   trainingCompetencyData: PropTypes.array.isRequired,
   trainingId: PropTypes.number,
   createtrainingcompetency: PropTypes.func,
+  deletetrainingcompetency: PropTypes.func,
 }
 
 export default MapTrainingCompetency
