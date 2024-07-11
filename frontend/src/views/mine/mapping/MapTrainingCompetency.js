@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import { usePDF } from 'react-to-pdf'
 import img2 from '../../../assets/images/4.png'
 import {
   CSpinner,
@@ -29,6 +30,7 @@ import {
   CModalFooter,
   CModalTitle,
   CBadge,
+  CCardFooter,
 } from '@coreui/react'
 
 //icon
@@ -45,6 +47,10 @@ const MapTrainingCompetency = ({
   createtrainingcompetency,
   deletetrainingcompetency,
 }) => {
+  const [toggleEdit, setToggleEdit] = useState(false)
+  const { toPDF, targetRef } = usePDF({
+    filename: `TrainingMap.pdf`,
+  })
   const [tableRows, setTableRows] = useState([
     { trainingid: trainingId, competencyid: null, relevantlevel: null },
   ])
@@ -107,129 +113,184 @@ const MapTrainingCompetency = ({
         </CModalHeader>
         <CForm onSubmit={handleSubmit}>
           <CModalBody>
-            <CRow>
-              <CCol md={2}>
-                <b>Training :</b>
-              </CCol>
-              <CCol md={10}>{selectedTraining?.training_name}</CCol>
-            </CRow>
-            <CRow>
-              <CCol md={2}>
-                <b>Group :</b>
-              </CCol>
-              <CCol md={10}>
-                <CBadge color={selectedTraining?.cluster_color}>
-                  {selectedTraining?.cluster_name}
-                </CBadge>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol md={2}>
-                <b>Description :</b>
-              </CCol>
-              <CCol md={10}>{selectedTraining?.training_description}</CCol>
-            </CRow>
-            <CRow>
-              <CCol>
-                <CTable small responsive bordered className="my-2">
-                  <CTableHead color="secondary">
-                    <CTableRow>
-                      <CTableHeaderCell>#</CTableHeaderCell>
-                      <CTableHeaderCell>Competency</CTableHeaderCell>
-                      <CTableHeaderCell>Relevant Level</CTableHeaderCell>
-                      <CTableHeaderCell>Action</CTableHeaderCell>
-                    </CTableRow>
-                  </CTableHead>
-                  <CTableBody>
-                    {trainingCompetencyData?.filter((i) => i.training_id === trainingId).length >
-                    0 ? (
-                      trainingCompetencyData
-                        ?.filter((i) => i.training_id === trainingId)
-                        .map((val, key) => (
-                          <CTableRow key={key}>
-                            <CTableDataCell>{key + 1}</CTableDataCell>
-                            <CTableDataCell>{val.competency_name}</CTableDataCell>
-                            <CTableDataCell>{val.training_competency_level}</CTableDataCell>
-                            <CTableDataCell>
-                              <CButton
-                                size="sm"
-                                color="danger"
-                                variant="outline"
-                                onClick={() => deletetrainingcompetency(val.training_competency_id)}
-                              >
-                                Delete
-                              </CButton>
+            <CCard>
+              <CCardHeader>
+                {toggleEdit ? (
+                  <CButtonGroup>
+                    <CButton
+                      size="sm"
+                      color="secondary"
+                      type="button"
+                      onClick={() => setToggleEdit(false)}
+                    >
+                      Cancel
+                    </CButton>
+                    <CButton size="sm" color="primary" type="submit">
+                      Save
+                    </CButton>
+                  </CButtonGroup>
+                ) : (
+                  <CButtonGroup>
+                    <CButton
+                      size="sm"
+                      color="primary"
+                      type="button"
+                      onClick={() => setToggleEdit(true)}
+                    >
+                      Edit
+                    </CButton>
+                    <CButton
+                      className="float-end"
+                      size="sm"
+                      color="secondary"
+                      variant="outline"
+                      onClick={toPDF}
+                    >
+                      Save PDF
+                    </CButton>
+                  </CButtonGroup>
+                )}
+              </CCardHeader>
+              <CCardBody ref={targetRef}>
+                <CRow>
+                  <CCol md={2}>
+                    <b>Training :</b>
+                  </CCol>
+                  <CCol md={10}>{selectedTraining?.training_name}</CCol>
+                </CRow>
+                <CRow>
+                  <CCol md={2}>
+                    <b>Group :</b>
+                  </CCol>
+                  <CCol md={10}>
+                    <CBadge color={selectedTraining?.cluster_color}>
+                      {selectedTraining?.cluster_name}
+                    </CBadge>
+                  </CCol>
+                </CRow>
+                <CRow>
+                  <CCol md={2}>
+                    <b>Description :</b>
+                  </CCol>
+                  <CCol md={10}>{selectedTraining?.training_description}</CCol>
+                </CRow>
+                <CRow>
+                  <CCol>
+                    <CTable small responsive bordered className="my-2">
+                      <CTableHead color="secondary">
+                        <CTableRow>
+                          <CTableHeaderCell>#</CTableHeaderCell>
+                          <CTableHeaderCell>Competency</CTableHeaderCell>
+                          <CTableHeaderCell>Relevant Level</CTableHeaderCell>
+                          {toggleEdit ? <CTableHeaderCell>Action</CTableHeaderCell> : null}
+                        </CTableRow>
+                      </CTableHead>
+                      <CTableBody>
+                        {trainingCompetencyData?.filter((i) => i.training_id === trainingId)
+                          .length > 0 ? (
+                          trainingCompetencyData
+                            ?.filter((i) => i.training_id === trainingId)
+                            .map((val, key) => (
+                              <CTableRow key={key}>
+                                <CTableDataCell>{key + 1}</CTableDataCell>
+                                <CTableDataCell>{val.competency_name}</CTableDataCell>
+                                <CTableDataCell>{val.training_competency_level}</CTableDataCell>
+                                {toggleEdit ? (
+                                  <CTableDataCell>
+                                    <CButton
+                                      size="sm"
+                                      color="danger"
+                                      variant="outline"
+                                      onClick={() =>
+                                        deletetrainingcompetency(val.training_competency_id)
+                                      }
+                                    >
+                                      Delete
+                                    </CButton>
+                                  </CTableDataCell>
+                                ) : null}
+                              </CTableRow>
+                            ))
+                        ) : (
+                          <CTableRow>
+                            <CTableDataCell colSpan={3} className="text-danger">
+                              No Competency Mapped
                             </CTableDataCell>
                           </CTableRow>
-                        ))
-                    ) : (
-                      <CTableRow>
-                        <CTableDataCell colSpan={3} className="text-danger">
-                          No Competency Mapped
-                        </CTableDataCell>
-                      </CTableRow>
-                    )}
-                    {tableRows.map((row, index) => (
-                      <CTableRow key={index}>
-                        <CTableDataCell>
-                          {index +
-                            1 +
-                            trainingCompetencyData?.filter((i) => i.training_id === trainingId)
-                              .length}
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CFormSelect
-                            size="sm"
-                            defaultValue={''}
-                            onChange={(e) => handleCompetencyChange(index, e.target.value)}
-                            required
-                          >
-                            <option value={''}>..Competency..</option>
-                            {competencydata?.map((val, key) => {
-                              return (
-                                <option key={key} value={val.competency_id}>
-                                  {val.competency_name}
-                                </option>
-                              )
-                            })}
-                          </CFormSelect>
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CFormSelect
-                            size="sm"
-                            defaultValue={''}
-                            onChange={(e) => handleRelevantLevelChange(index, e.target.value)}
-                            required
-                          >
-                            <option value={''}>..Relevant Level..</option>
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                            <option value={5}>5</option>
-                          </CFormSelect>
-                        </CTableDataCell>
-                        <CTableDataCell>
-                          <CButton size="sm" color="secondary" onClick={() => handleRemove(index)}>
-                            <CIcon size="sm" icon={cilMinus} />
-                          </CButton>
-                        </CTableDataCell>
-                      </CTableRow>
-                    ))}
-                  </CTableBody>
-                </CTable>
-                <CButtonGroup>
-                  <CButton size="sm" color="secondary" onClick={handleAddMore}>
-                    <CIcon size="sm" icon={cilPlus} />
-                  </CButton>
-                </CButtonGroup>
-              </CCol>
-            </CRow>
+                        )}
+                        {toggleEdit
+                          ? tableRows.map((row, index) => (
+                              <CTableRow key={index}>
+                                <CTableDataCell>
+                                  {index +
+                                    1 +
+                                    trainingCompetencyData?.filter(
+                                      (i) => i.training_id === trainingId,
+                                    ).length}
+                                </CTableDataCell>
+                                <CTableDataCell>
+                                  <CFormSelect
+                                    size="sm"
+                                    defaultValue={''}
+                                    onChange={(e) => handleCompetencyChange(index, e.target.value)}
+                                    required
+                                  >
+                                    <option value={''}>..Competency..</option>
+                                    {competencydata?.map((val, key) => {
+                                      return (
+                                        <option key={key} value={val.competency_id}>
+                                          {val.competency_name}
+                                        </option>
+                                      )
+                                    })}
+                                  </CFormSelect>
+                                </CTableDataCell>
+                                <CTableDataCell>
+                                  <CFormSelect
+                                    size="sm"
+                                    defaultValue={''}
+                                    onChange={(e) =>
+                                      handleRelevantLevelChange(index, e.target.value)
+                                    }
+                                    required
+                                  >
+                                    <option value={''}>..Relevant Level..</option>
+                                    <option value={1}>1</option>
+                                    <option value={2}>2</option>
+                                    <option value={3}>3</option>
+                                    <option value={4}>4</option>
+                                    <option value={5}>5</option>
+                                  </CFormSelect>
+                                </CTableDataCell>
+                                {toggleEdit ? (
+                                  <CTableDataCell>
+                                    <CButton
+                                      size="sm"
+                                      color="secondary"
+                                      onClick={() => handleRemove(index)}
+                                    >
+                                      <CIcon size="sm" icon={cilMinus} />
+                                    </CButton>
+                                  </CTableDataCell>
+                                ) : null}
+                              </CTableRow>
+                            ))
+                          : null}
+                      </CTableBody>
+                    </CTable>
+                    {toggleEdit ? (
+                      <CButtonGroup>
+                        <CButton size="sm" color="secondary" onClick={handleAddMore}>
+                          <CIcon size="sm" icon={cilPlus} />
+                        </CButton>
+                      </CButtonGroup>
+                    ) : null}
+                  </CCol>
+                </CRow>
+              </CCardBody>
+            </CCard>
           </CModalBody>
           <CModalFooter>
-            <CButton size="sm" color="primary" type="submit">
-              Save
-            </CButton>
             <CButton size="sm" color="secondary" onClick={() => setVisible(false)}>
               Close
             </CButton>
