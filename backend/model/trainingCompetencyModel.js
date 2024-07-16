@@ -13,11 +13,10 @@ async function getAllTrainingCompetency () {
 //CREATE TRAINING COMPETENCY
 async function createTrainingCompetency (trainingcompetencydata) {
     try {
-        console.log(trainingcompetencydata)
         const [result] = await db.query('INSERT INTO `training_competency` (competency_id, training_id, training_competency_level) VALUES (?,?,?)', [
-            trainingcompetencydata[0].competencyid,
-            trainingcompetencydata[0].trainingid,
-            trainingcompetencydata[0].relevantlevel,
+            trainingcompetencydata?.competencyid,
+            trainingcompetencydata?.trainingid,
+            trainingcompetencydata?.relevantlevel,
         ])
         return result.insertId
     } catch (error) {

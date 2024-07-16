@@ -90,7 +90,7 @@ const MapTrainingCompetency = ({
   const handleSubmit = () => {
     try {
       tableRows?.forEach((val) => {
-        createtrainingcompetency(tableRows)
+        createtrainingcompetency(val)
       })
       //alert(' Successfully mapped ')
       //setVisible(!visible)
