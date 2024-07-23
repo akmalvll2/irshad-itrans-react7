@@ -214,19 +214,42 @@ const AssessmentTable = ({
                                   moment(val.assessment_start_date),
                                   moment(val.assessment_end_date),
                                 ) ? (
+                                <CButtonGroup>
+                                  <CButton
+                                    size="sm"
+                                    color="success"
+                                    //variant="outline"
+                                    onClick={() => {
+                                      setToggleFormUser(true)
+                                      viewAssessment(val.assessment_id)
+                                    }}
+                                  >
+                                    <CIcon icon={cilClipboard} /> Start Assessment
+                                  </CButton>
+                                  <CButton
+                                    size="sm"
+                                    color="secondary"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setToggleSubmissionTable(true)
+                                      viewAssessment(val.assessment_id)
+                                    }}
+                                  >
+                                    <CIcon icon={cilCalendarCheck} />
+                                  </CButton>
+                                </CButtonGroup>
+                              ) : (
                                 <CButton
                                   size="sm"
-                                  color="success"
-                                  //variant="outline"
+                                  color="secondary"
+                                  variant="outline"
                                   onClick={() => {
-                                    setToggleFormUser(true)
+                                    setToggleSubmissionTable(true)
                                     viewAssessment(val.assessment_id)
                                   }}
                                 >
-                                  <CIcon icon={cilClipboard} /> Start Assessment
+                                  <CIcon icon={cilCalendarCheck} />
                                 </CButton>
-                              ) : (
-                                ''
                               )}
                             </CButtonGroup>
                           ) : (

@@ -10,6 +10,11 @@ import {
   CCardBody,
   CFormInput,
   CCardFooter,
+  CFormLabel,
+  CCardSubtitle,
+  CFormRange,
+  CRow,
+  CCol,
 } from '@coreui/react'
 import axios from 'axios'
 import React, { useState } from 'react'
@@ -22,6 +27,7 @@ const { config } = packageJson
 const Settings = ({ visible, setVisible }) => {
   const [password, setPassword] = useState()
   const [cpassword, setCpassword] = useState()
+  const [selfweight, setselfweight] = useState(30)
   const handleSubmit = async (e) => {
     e.preventDefault()
     let confirmchangepass = window.confirm('Confirm Update Password?')
@@ -45,12 +51,50 @@ const Settings = ({ visible, setVisible }) => {
   }
   return (
     <>
-      <CModal visible={visible} onClose={() => setVisible(false)}>
+      <CModal visible={visible} onClose={() => setVisible(false)} size="lg">
         <CModalHeader onClose={() => setVisible(false)}>
           <CModalTitle>Settings</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CCard>
+          {userType?.role === 'admin' ? (
+            <>
+              <h6>Data</h6>
+              <CCard>
+                <CCardBody>
+                  <CCardSubtitle className="my-2">Weightage</CCardSubtitle>
+                  <CRow>
+                    <CCol>
+                      <CFormRange
+                        min={0}
+                        max={100}
+                        step={0.5}
+                        label={`Self ${selfweight}%`}
+                        defaultValue={selfweight}
+                        value={selfweight}
+                        id="customRange3"
+                        onChange={(e) => setselfweight(e.target.value)}
+                      />
+                    </CCol>
+                    <CCol>
+                      <CFormRange
+                        min={0}
+                        max={100}
+                        step={0.5}
+                        label={`Superior ${100 - selfweight}%`}
+                        defaultValue={100 - selfweight}
+                        value={100 - selfweight}
+                        id="customRange3"
+                        onChange={(e) => setselfweight(100 - e.target.value)}
+                      />
+                    </CCol>
+                  </CRow>
+                </CCardBody>
+              </CCard>
+            </>
+          ) : (
+            'Setting for User'
+          )}
+          {/*<CCard>
             <CCardHeader>Change Password</CCardHeader>
             <CCardBody>
               <CFormInput
@@ -77,7 +121,7 @@ const Settings = ({ visible, setVisible }) => {
                 Update Password
               </CButton>
             </CCardFooter>
-          </CCard>
+          </CCard>*/}
         </CModalBody>
       </CModal>
     </>

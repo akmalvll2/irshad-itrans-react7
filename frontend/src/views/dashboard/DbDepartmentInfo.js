@@ -31,8 +31,6 @@ import { CChart } from '@coreui/react-chartjs'
 const DashboardInfo1 = () => {
   const { staff, department, loading } = useContext(MyContext)
 
-  console.log(staff?.find((i) => i.staff_id.toString() === userType?.id))
-
   // loading state if the data are not available
   if (loading.staff || loading.department) {
     return <CSpinner />

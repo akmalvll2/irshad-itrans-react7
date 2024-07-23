@@ -112,7 +112,7 @@ const Dashboard = () => {
     <>
       <CRow>
         <CCol>
-          {userType.role === 'admin' ? (
+          {userType.role === 'admin' || 'user' ? (
             <DashboardInfo2
               employeelist={employeelist}
               departmentlist={departmentlist}
@@ -126,16 +126,14 @@ const Dashboard = () => {
         </CCol>
       </CRow>
       <CRow>
-        <CCol md={6}>
-          <DbStaffInfo />
-        </CCol>
+        <CCol md={6}>{userType.role === 'admin' ? null : <DbStaffInfo />}</CCol>
         <CCol md={6}>
           <DashboardInfo1 assessmentlist={assessmentlist} />
         </CCol>
       </CRow>
-      {/*<CRow>
+      <CRow>
         <CCol>{userType.role !== 'admin' ? <DbDepartmentInfo /> : ''}</CCol>
-      </CRow>*/}
+      </CRow>
     </>
   )
 }

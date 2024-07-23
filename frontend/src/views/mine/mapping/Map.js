@@ -57,7 +57,7 @@ const Map = () => {
         })
         .then((response) => {
           if (response) {
-            console.log('Successfully set training with relevant competencies')
+            //console.log('Successfully set training with relevant competencies')
             setIsChange(!isChange)
           }
         })
