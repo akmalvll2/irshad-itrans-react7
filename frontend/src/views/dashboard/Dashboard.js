@@ -126,13 +126,11 @@ const Dashboard = () => {
         </CCol>
       </CRow>
       <CRow>
-        <CCol md={6}>{userType.role === 'admin' ? null : <DbStaffInfo />}</CCol>
         <CCol md={6}>
+          {userType.role === 'admin' ? null : <DbStaffInfo />}
           <DashboardInfo1 assessmentlist={assessmentlist} />
         </CCol>
-      </CRow>
-      <CRow>
-        <CCol>{userType.role !== 'admin' ? <DbDepartmentInfo /> : ''}</CCol>
+        <CCol md={6}>{userType.role !== 'admin' ? <DbDepartmentInfo /> : ''}</CCol>
       </CRow>
     </>
   )

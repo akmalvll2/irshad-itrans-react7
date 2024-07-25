@@ -52,8 +52,9 @@ const AssessmentResultDetail = ({
   })
 
   const roundedResult = (data) => {
+    console.log(data)
     var res
-    data ? (res = Number(data.toFixed(2))) : (res = null)
+    data !== null ? (res = Number(data.toFixed(2))) : (res = null)
     return res
   }
 
@@ -89,7 +90,7 @@ const AssessmentResultDetail = ({
               </CButton>
             </CButtonGroup>
           </CAlert>
-          <CAlert color="info" ref={targetRef}>
+          <CAlert color="secondary" ref={targetRef}>
             <h6 className="float-start">Staff Details</h6>
             <hr />
             <CRow>
@@ -128,89 +129,99 @@ const AssessmentResultDetail = ({
                   <CTableHeaderCell>70%</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
-              <CTableBody>
-                {jobcompetency
-                  .filter((i) => i.position_id === selectedStaffData?.position_id)
-                  .map((val) => (
-                    <CTableRow key={val.competency_id}>
-                      <CTableDataCell>{val.competency_name}</CTableDataCell>
-                      <CTableDataCell>{val.position_competency_expected_level}</CTableDataCell>
-                      <CTableDataCell className=" text-info">
-                        {assessmentResult(val.competency_id, 'self') ? (
-                          assessmentResult(val.competency_id, 'self')
-                        ) : (
-                          <span className="text-danger">Incomplete</span>
-                        )}
-                      </CTableDataCell>
-                      <CTableDataCell className=" text-info">
-                        {assessmentResult(val.competency_id, 'self') ? (
-                          val.position_competency_expected_level -
-                          assessmentResult(val.competency_id, 'self')
-                        ) : (
-                          <span className="text-danger">Incomplete</span>
-                        )}
-                      </CTableDataCell>
-                      <CTableDataCell className=" text-info">
-                        {assessmentResult(val.competency_id, 'self') ? (
-                          roundedResult(
-                            (val.position_competency_expected_level -
-                              assessmentResult(val.competency_id, 'self')) *
-                              0.3,
-                          )
-                        ) : (
-                          <span className="text-danger">Incomplete</span>
-                        )}
-                      </CTableDataCell>
-                      <CTableDataCell className=" text-info">
-                        {assessmentResult(val.competency_id, 'superior') ? (
-                          assessmentResult(val.competency_id, 'superior')
-                        ) : (
-                          <span className="text-danger">Incomplete</span>
-                        )}
-                      </CTableDataCell>
-                      <CTableDataCell className=" text-info">
-                        {assessmentResult(val.competency_id, 'superior') ? (
-                          val.position_competency_expected_level -
-                          assessmentResult(val.competency_id, 'superior')
-                        ) : (
-                          <span className="text-danger">Incomplete</span>
-                        )}
-                      </CTableDataCell>
-                      <CTableDataCell className=" text-info">
-                        {assessmentResult(val.competency_id, 'superior') ? (
-                          roundedResult(
-                            (val.position_competency_expected_level -
-                              assessmentResult(val.competency_id, 'superior')) *
-                              0.7,
-                          )
-                        ) : (
-                          <span className="text-danger">Incomplete</span>
-                        )}
-                      </CTableDataCell>
-                      <CTableDataCell className=" text-info">
-                        {roundedResult(
-                          assessmentResult(val.competency_id, 'self') &&
-                            assessmentResult(val.competency_id, 'superior') ? (
-                            (val.position_competency_expected_level -
-                              assessmentResult(val.competency_id, 'self')) *
-                              0.3 +
-                              (val.position_competency_expected_level -
-                                assessmentResult(val.competency_id, 'superior')) *
-                                0.7
-                          ) : assessmentResult(val.competency_id, 'self') ? (
+              {assessmentresultlist.filter((i) => i.staff_id === selectedStaff).length > 0 ? (
+                <CTableBody>
+                  {jobcompetency
+                    .filter((i) => i.position_id === selectedStaffData?.position_id)
+                    .map((val) => (
+                      <CTableRow key={val.competency_id}>
+                        <CTableDataCell>{val.competency_name}</CTableDataCell>
+                        <CTableDataCell>{val.position_competency_expected_level}</CTableDataCell>
+                        <CTableDataCell className=" text-info">
+                          {assessmentResult(val.competency_id, 'self') ? (
+                            assessmentResult(val.competency_id, 'self')
+                          ) : (
+                            <span className="text-danger">Incomplete</span>
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell className=" text-info">
+                          {assessmentResult(val.competency_id, 'self') ? (
                             val.position_competency_expected_level -
                             assessmentResult(val.competency_id, 'self')
-                          ) : assessmentResult(val.competency_id, 'superior') ? (
+                          ) : (
+                            <span className="text-danger">Incomplete</span>
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell className=" text-info">
+                          {assessmentResult(val.competency_id, 'self') ? (
+                            roundedResult(
+                              (val.position_competency_expected_level -
+                                assessmentResult(val.competency_id, 'self')) *
+                                0.3,
+                            )
+                          ) : (
+                            <span className="text-danger">Incomplete</span>
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell className=" text-info">
+                          {assessmentResult(val.competency_id, 'superior') ? (
+                            assessmentResult(val.competency_id, 'superior')
+                          ) : (
+                            <span className="text-danger">Incomplete</span>
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell className=" text-info">
+                          {assessmentResult(val.competency_id, 'superior') ? (
                             val.position_competency_expected_level -
                             assessmentResult(val.competency_id, 'superior')
                           ) : (
                             <span className="text-danger">Incomplete</span>
-                          ),
-                        )}
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
-              </CTableBody>
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell className=" text-info">
+                          {assessmentResult(val.competency_id, 'superior') ? (
+                            roundedResult(
+                              (val.position_competency_expected_level -
+                                assessmentResult(val.competency_id, 'superior')) *
+                                0.7,
+                            )
+                          ) : (
+                            <span className="text-danger">Incomplete</span>
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell className=" text-info">
+                          {roundedResult(
+                            assessmentResult(val.competency_id, 'self') &&
+                              assessmentResult(val.competency_id, 'superior') ? (
+                              (val.position_competency_expected_level -
+                                assessmentResult(val.competency_id, 'self')) *
+                                0.3 +
+                                (val.position_competency_expected_level -
+                                  assessmentResult(val.competency_id, 'superior')) *
+                                  0.7
+                            ) : assessmentResult(val.competency_id, 'self') ? (
+                              val.position_competency_expected_level -
+                              assessmentResult(val.competency_id, 'self')
+                            ) : assessmentResult(val.competency_id, 'superior') ? (
+                              val.position_competency_expected_level -
+                              assessmentResult(val.competency_id, 'superior')
+                            ) : (
+                              <span className="text-danger">Incomplete</span>
+                            ),
+                          )}
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))}
+                </CTableBody>
+              ) : (
+                <CTableBody>
+                  <CTableRow>
+                    <CTableDataCell colSpan={9} color="danger" className=" text-danger">
+                      No Data Available
+                    </CTableDataCell>
+                  </CTableRow>
+                </CTableBody>
+              )}
             </CTable>
           </CAlert>
         </CModalBody>

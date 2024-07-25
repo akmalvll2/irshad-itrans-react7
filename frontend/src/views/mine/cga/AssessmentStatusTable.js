@@ -59,7 +59,6 @@ const AssessmentStatusTable = ({
   const { toPDF, targetRef } = usePDF({
     filename: `Submission_Status_${moment().format('DDMMYYYY')}`,
   })
-  console.log(stafflist)
   return (
     <>
       <CModal

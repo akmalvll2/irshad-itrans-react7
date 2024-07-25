@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import moment from 'moment'
+import img2 from '../../assets/images/4.png'
 
 //path to userType component
 import { userType } from 'src/userType'
@@ -37,11 +38,19 @@ const DashboardInfo1 = () => {
 
   return (
     <div>
-      <CCard className="m-2">
-        <CCardHeader>STAFF</CCardHeader>
+      <CCard className="my-2">
+        <CCardHeader
+          style={{
+            backgroundImage: `url(${img2})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            color: 'navy',
+            textAlign: 'center',
+          }}
+        >
+          Staff Information
+        </CCardHeader>
         <CCardBody>
-          <b className="float-start">Staff Information</b>
-          <hr />
           <CRow>
             <CCol>
               {staff

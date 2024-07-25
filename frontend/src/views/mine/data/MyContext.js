@@ -19,6 +19,7 @@ export const MyProvider = ({ children }) => {
   const [assessment, setAssessment] = useState([])
   const [assessmentResult, setAssessmentResult] = useState([])
   const [positionCompetency, setPositionCompetency] = useState([])
+  const [staffAssessor, setStaffAssessor] = useState([])
   const [loading, setLoading] = useState({
     staff: true,
     department: true,
@@ -30,6 +31,7 @@ export const MyProvider = ({ children }) => {
     assessment: true,
     assessmentResult: true,
     positionCompetency: true,
+    staffAssessor: true,
   })
 
   // .........STAFF.........
@@ -70,6 +72,17 @@ export const MyProvider = ({ children }) => {
       console.log(err)
     } finally {
       setLoading((prev) => ({ ...prev, staff: false }))
+    }
+  }
+
+  const fetchStaffAssessor = async () => {
+    try {
+      const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/assessor/getallassessor`)
+      setStaffAssessor(response.data)
+    } catch (error) {
+      console.log('Error: '.error)
+    } finally {
+      setLoading((prev) => ({ ...prev, staffAssessor: false }))
     }
   }
 
@@ -191,6 +204,7 @@ export const MyProvider = ({ children }) => {
 
   useEffect(() => {
     fetchStaff()
+    fetchStaffAssessor()
     fetchPosition()
     fetchDepartment()
     fetchCompetency()
@@ -200,14 +214,13 @@ export const MyProvider = ({ children }) => {
     fetchAssessmentResult()
     fetchPositionCompetency()
     fetchTraining()
-    createStaff()
-    updateStaff()
   }, [])
 
   return (
     <MyContext.Provider
       value={{
         staff,
+        staffAssessor,
         updateStaff,
         department,
         position,
