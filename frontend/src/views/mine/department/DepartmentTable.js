@@ -25,7 +25,14 @@ import {
 
 //icon
 import CIcon from '@coreui/icons-react'
-import { cilPlus, cilSave, cilTrash, cilMagnifyingGlass, cilPencil } from '@coreui/icons'
+import {
+  cilPlus,
+  cilSave,
+  cilTrash,
+  cilMagnifyingGlass,
+  cilPencil,
+  cilLibrary,
+} from '@coreui/icons'
 
 const DepartmentTable = ({
   departmentlist,
@@ -42,16 +49,15 @@ const DepartmentTable = ({
       <div>
         <CCard>
           <CCardHeader
-            style={{
+            /*style={{
               backgroundImage: `url(${img2})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               color: 'navy',
-            }}
+            }}*/
+            style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
           >
-            <center>
-              <h6>DEPARTMENT</h6>
-            </center>
+            <CIcon icon={cilLibrary} /> DEPARTMENT
             {role === 'admin' ? (
               <CButtonGroup className="float-end">
                 <CTooltip content="Add" placement="auto">

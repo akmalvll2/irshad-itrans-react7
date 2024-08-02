@@ -36,7 +36,7 @@ import {
 
 //icon
 import CIcon from '@coreui/icons-react'
-import { cilLink } from '@coreui/icons'
+import { cilLibrary, cilLink } from '@coreui/icons'
 
 const MapTable = ({
   positiondata,
@@ -57,17 +57,16 @@ const MapTable = ({
     <>
       <CCard>
         <CCardHeader
-          style={{
+          /*style={{
             backgroundImage: `url(${img2})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             color: 'navy',
             paddingBottom: '0px',
-          }}
+          }}*/
+          style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
         >
-          <center>
-            <h6>MAPPING</h6>
-          </center>
+          <CIcon icon={cilLibrary} /> MAPPING
         </CCardHeader>
         <CCard>
           <CCardHeader>

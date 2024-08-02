@@ -37,6 +37,7 @@ import {
   cilClipboard,
   cilCalendarCheck,
   cilList,
+  cilLibrary,
 } from '@coreui/icons'
 
 const AssessmentTable = ({
@@ -57,16 +58,15 @@ const AssessmentTable = ({
       <div>
         <CCard>
           <CCardHeader
-            style={{
+            /*style={{
               backgroundImage: `url(${img2})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               color: 'navy',
-            }}
+            }}*/
+            style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
           >
-            <center>
-              <h6>ASSESSMENT</h6>
-            </center>
+            <CIcon icon={cilLibrary} /> ASSESSMENT
             {role === 'admin' ? (
               <CButtonGroup className="float-end">
                 <CButton

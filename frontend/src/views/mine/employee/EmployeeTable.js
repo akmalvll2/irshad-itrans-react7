@@ -38,7 +38,14 @@ import {
 
 //icon
 import CIcon from '@coreui/icons-react'
-import { cilPlus, cilSave, cilTrash, cilMagnifyingGlass, cilPencil } from '@coreui/icons'
+import {
+  cilPlus,
+  cilSave,
+  cilTrash,
+  cilMagnifyingGlass,
+  cilPencil,
+  cilLibrary,
+} from '@coreui/icons'
 
 const EmployeeChart = React.lazy(() => import('./EmployeeChart'))
 
@@ -67,16 +74,15 @@ const EmployeeTable = ({
       <div>
         <CCard>
           <CCardHeader
-            style={{
+            /*style={{
               backgroundImage: `url(${img2})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               color: 'navy',
-            }}
+            }}*/
+            style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
           >
-            <center>
-              <h6>EMPLOYEE</h6>
-            </center>
+            <CIcon icon={cilLibrary} /> EMPLOYEE
             {role === 'admin' ? (
               <CButtonGroup className="float-end">
                 <CTooltip content="Add" placement="auto">

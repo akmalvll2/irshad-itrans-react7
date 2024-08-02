@@ -166,7 +166,17 @@ const AssessmentFormUser = ({
                 .map((val, key) => {
                   return (
                     <option key={key} value={val.staff_id}>
-                      {val.staff_name}
+                      {val.staff_name}{' '}
+                      {/*assessmentresult.filter(
+                        (v) =>
+                          v.assessor_id?.toString() === user.id &&
+                          v.staff_id === val.staff_id &&
+                          v.assessment_id === assessmentid,
+                      ).length > 0 ? (
+                        <span style={{ color: 'blue' }}>Complete</span>
+                      ) : (
+                        'Incomplete'
+                      )*/}
                     </option>
                   )
                 })}

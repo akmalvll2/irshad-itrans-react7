@@ -13,6 +13,10 @@ import {
   CTabContent,
   CTabPane,
 } from '@coreui/react'
+
+import CIcon from '@coreui/icons-react'
+import { cilLibrary } from '@coreui/icons'
+
 const { config } = packageJson
 
 //IMPORT COMPONENT
@@ -184,19 +188,19 @@ const Report = () => {
       */}
       <CCard>
         <CCardHeader
-          style={{
+          /*style={{
             backgroundImage: `url(${img2})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             color: 'navy',
-          }}
-          className="text-center"
+          }}*/
+          style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
         >
-          <h6>REPORT AND ANALYSIS</h6>
+          <CIcon icon={cilLibrary} /> REPORT AND ANALYSIS
           <CNav variant="tabs" className="card-header-tabs float-end">
             <CNavItem>
               <CNavLink
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', color: activeKey === 1 ? 'black' : 'ghostwhite' }}
                 active={activeKey === 1}
                 onClick={() => setActiveKey(1)}
               >
@@ -205,7 +209,7 @@ const Report = () => {
             </CNavItem>
             <CNavItem>
               <CNavLink
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', color: activeKey === 2 ? 'black' : 'ghostwhite' }}
                 active={activeKey === 2}
                 onClick={() => setActiveKey(2)}
               >
@@ -214,7 +218,7 @@ const Report = () => {
             </CNavItem>
             <CNavItem>
               <CNavLink
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', color: activeKey === 3 ? 'black' : 'ghostwhite' }}
                 active={activeKey === 3}
                 onClick={() => setActiveKey(3)}
               >
@@ -223,7 +227,7 @@ const Report = () => {
             </CNavItem>
             <CNavItem>
               <CNavLink
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', color: activeKey === 4 ? 'black' : 'ghostwhite' }}
                 active={activeKey === 4}
                 onClick={() => setActiveKey(4)}
               >
@@ -232,7 +236,7 @@ const Report = () => {
             </CNavItem>
             <CNavItem>
               <CNavLink
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', color: activeKey === 5 ? 'black' : 'ghostwhite' }}
                 active={activeKey === 5}
                 onClick={() => setActiveKey(5)}
               >

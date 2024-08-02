@@ -24,7 +24,7 @@ import {
 
 //icon
 import CIcon from '@coreui/icons-react'
-import { cilPlus, cilSave, cilCheckAlt } from '@coreui/icons'
+import { cilPlus, cilSave, cilCheckAlt, cilLibrary } from '@coreui/icons'
 
 const IdpTable1 = ({
   stafflist,
@@ -122,16 +122,15 @@ const IdpTable1 = ({
     <>
       <CCard>
         <CCardHeader
-          style={{
+          /*style={{
             backgroundImage: `url(${img2})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             color: 'navy',
-          }}
+          }}*/
+          style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
         >
-          <center>
-            <h6>INDIVIDUAL DEVELOPMENT PLAN</h6>
-          </center>
+          <CIcon icon={cilLibrary} /> INDIVIDUAL DEVELOPMENT PLAN
         </CCardHeader>
         <CCardBody>
           <CAlert className="my-0" color="secondary">

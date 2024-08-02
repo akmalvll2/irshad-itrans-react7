@@ -30,10 +30,11 @@ import {
 import { CChart } from '@coreui/react-chartjs'
 
 const DashboardInfo1 = () => {
-  const { staff, department, loading } = useContext(MyContext)
+  const { staff, department, positionCompetency, competency, position, loading } =
+    useContext(MyContext)
 
   // loading state if the data are not available
-  if (loading.staff || loading.department) {
+  if (loading.staff || loading.department || loading.positionCompetency) {
     return <CSpinner />
   }
   return (
@@ -72,14 +73,84 @@ const DashboardInfo1 = () => {
                         <CTableHeaderCell className="text-secondary">
                           Number of Staff
                         </CTableHeaderCell>
-                        <CTableDataCell>{staff?.length}</CTableDataCell>
+                        <CTableDataCell>
+                          {staff?.filter((i) => i.department_id === val.department_id).length}
+                        </CTableDataCell>
                       </CTableRow>
                       <CTableRow>
                         <CTableHeaderCell className="text-secondary">
                           Number of Relevance Competency
                         </CTableHeaderCell>
                         <CTableDataCell>
-                          7 Core <br /> 8 Generic <br /> 15 Functional
+                          {
+                            competency.filter(
+                              (competency) =>
+                                competency.cluster_name === 'Core' &&
+                                positionCompetency.some(
+                                  (positionCompetency) =>
+                                    positionCompetency.competency_id === competency.competency_id &&
+                                    position.some(
+                                      (position) =>
+                                        position.position_id === positionCompetency.position_id &&
+                                        staff.some(
+                                          (staffMember) =>
+                                            staffMember.position_id === position.position_id &&
+                                            staffMember.department_id ===
+                                              staff.find(
+                                                (u) => u.staff_id.toString() === userType?.id,
+                                              )?.department_id,
+                                        ),
+                                    ),
+                                ),
+                            ).length
+                          }{' '}
+                          Core <br />
+                          {
+                            competency.filter(
+                              (competency) =>
+                                competency.cluster_name === 'Generic' &&
+                                positionCompetency.some(
+                                  (positionCompetency) =>
+                                    positionCompetency.competency_id === competency.competency_id &&
+                                    position.some(
+                                      (position) =>
+                                        position.position_id === positionCompetency.position_id &&
+                                        staff.some(
+                                          (staffMember) =>
+                                            staffMember.position_id === position.position_id &&
+                                            staffMember.department_id ===
+                                              staff.find(
+                                                (u) => u.staff_id.toString() === userType?.id,
+                                              )?.department_id,
+                                        ),
+                                    ),
+                                ),
+                            ).length
+                          }{' '}
+                          Generic <br />
+                          {
+                            competency.filter(
+                              (competency) =>
+                                competency.cluster_name === 'Functional' &&
+                                positionCompetency.some(
+                                  (positionCompetency) =>
+                                    positionCompetency.competency_id === competency.competency_id &&
+                                    position.some(
+                                      (position) =>
+                                        position.position_id === positionCompetency.position_id &&
+                                        staff.some(
+                                          (staffMember) =>
+                                            staffMember.position_id === position.position_id &&
+                                            staffMember.department_id ===
+                                              staff.find(
+                                                (u) => u.staff_id.toString() === userType?.id,
+                                              )?.department_id,
+                                        ),
+                                    ),
+                                ),
+                            ).length
+                          }{' '}
+                          Functional
                         </CTableDataCell>
                       </CTableRow>
                     </CTableBody>
