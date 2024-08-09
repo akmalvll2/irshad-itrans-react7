@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import img2 from '../../../assets/images/4.png'
@@ -9,17 +9,9 @@ import {
   CCard,
   CCardHeader,
   CCardTitle,
-  CTable,
-  CTableHead,
-  CTableRow,
-  CTableHeaderCell,
-  CTableBody,
-  CTableDataCell,
-  CCallout,
   CCardBody,
   CRow,
   CCol,
-  CAlert,
   CButtonGroup,
   CButton,
   CTooltip,
@@ -29,22 +21,18 @@ import {
   CModalHeader,
   CModalBody,
   CContainer,
+  CTable,
+  CTableHead,
+  CTableRow,
+  CTableHeaderCell,
+  CTableBody,
+  CTableDataCell,
+  CAlert,
 } from '@coreui/react'
 
-//icon
+// icon imports
 import CIcon from '@coreui/icons-react'
-import {
-  cilPlus,
-  cilSave,
-  cilTrash,
-  cilMagnifyingGlass,
-  cilPencil,
-  cilAddressBook,
-  cilClipboard,
-  cilCheck,
-  cilXCircle,
-  cilFile,
-} from '@coreui/icons'
+import { cilFile, cilCheck, cilXCircle } from '@coreui/icons'
 
 const AssessmentStatusTable = ({
   visible,
@@ -59,6 +47,7 @@ const AssessmentStatusTable = ({
   const { toPDF, targetRef } = usePDF({
     filename: `Submission_Status_${moment().format('DDMMYYYY')}`,
   })
+
   return (
     <>
       <CModal
@@ -81,81 +70,89 @@ const AssessmentStatusTable = ({
               ? i.staff_id.toString() === userType?.id || i.manager_id.toString() === userType?.id
               : i.staff_id !== null,
           ).length > 0 ? (
-            <CAlert color="secondary">
-              <CRow>
-                <CCol>
-                  <CButtonGroup className="float-end">
-                    <CButton size="sm" color="secondary" onClick={() => toPDF()}>
-                      Save PDF <CIcon icon={cilFile} />
-                    </CButton>
-                  </CButtonGroup>
+            <CContainer>
+              <CRow className="mb-4">
+                <CCol xs={12} md={6} className="mb-3">
+                  <CCard>
+                    <CCardHeader>
+                      <CCardTitle>Submission Summary</CCardTitle>
+                    </CCardHeader>
+                    <CCardBody>
+                      <CRow>
+                        <CCol>
+                          <div>
+                            <strong>Self Submission:</strong>{' '}
+                            {
+                              stafflist?.filter(
+                                (i) =>
+                                  (userType.role !== 'admin'
+                                    ? i.staff_id.toString() === userType?.id ||
+                                      i.manager_id.toString() === userType?.id
+                                    : i.staff_id !== null) &&
+                                  assessmentresultlist.some(
+                                    (u) =>
+                                      u.staff_id === i.staff_id && u.staff_assessor_type === 'self',
+                                  ),
+                              ).length
+                            }
+                          </div>
+                          <div>
+                            <strong>Superior Submission:</strong>{' '}
+                            {
+                              stafflist?.filter(
+                                (i) =>
+                                  (userType.role !== 'admin'
+                                    ? i.staff_id.toString() === userType?.id ||
+                                      i.manager_id.toString() === userType?.id
+                                    : i.staff_id !== null) &&
+                                  assessmentresultlist.some(
+                                    (u) =>
+                                      u.staff_id === i.staff_id &&
+                                      u.staff_assessor_type === 'superior',
+                                  ),
+                              ).length
+                            }
+                          </div>
+                        </CCol>
+                      </CRow>
+                    </CCardBody>
+                  </CCard>
                 </CCol>
               </CRow>
-              <div ref={targetRef}>
-                <CRow className="mb-4">
-                  <CCol>
-                    <h6 className="float-start">Submission Status Summary</h6>
-                    <hr />
-                    <div>
-                      Self Submission :{' '}
-                      {
-                        stafflist?.filter(
-                          (i) =>
-                            (userType.role !== 'admin'
-                              ? i.staff_id.toString() === userType?.id ||
-                                i.manager_id.toString() === userType?.id
-                              : i.staff_id !== null) &&
-                            assessmentresultlist.some(
-                              (u) => u.staff_id === i.staff_id && u.staff_assessor_type === 'self',
-                            ),
-                        ).length
-                      }
-                    </div>
-                    <div>
-                      Superior Submission :{' '}
-                      {
-                        stafflist?.filter(
-                          (i) =>
-                            (userType.role !== 'admin'
-                              ? i.staff_id.toString() === userType?.id ||
-                                i.manager_id.toString() === userType?.id
-                              : i.staff_id !== null) &&
-                            assessmentresultlist.some(
-                              (u) =>
-                                u.staff_id === i.staff_id && u.staff_assessor_type === 'superior',
-                            ),
-                        ).length
-                      }
-                    </div>
-                  </CCol>
-                </CRow>
-                <CRow>
-                  <CCol>
-                    <h6 className="float-start">Individual Submission Status</h6>
-                    <hr />
-                    <CTable small bordered striped responsive>
-                      <CTableHead color="dark">
-                        <CTableRow>
-                          <CTableHeaderCell rowSpan={2}>No</CTableHeaderCell>
-                          <CTableHeaderCell rowSpan={2}>Name</CTableHeaderCell>
-                          <CTableHeaderCell colSpan={2}>Submission</CTableHeaderCell>
-                          <CTableHeaderCell rowSpan={2}>Action</CTableHeaderCell>
-                        </CTableRow>
-                        <CTableRow>
-                          <CTableHeaderCell>Self</CTableHeaderCell>
-                          <CTableHeaderCell>Superior</CTableHeaderCell>
-                        </CTableRow>
-                      </CTableHead>
-                      <CTableBody>
-                        {stafflist
-                          ?.filter((i) =>
-                            userType.role !== 'admin'
-                              ? i.staff_id.toString() === userType?.id ||
-                                i.manager_id.toString() === userType?.id
-                              : i.staff_id !== null,
-                          )
-                          .map((val, key) => {
-                            return (
+              <CRow>
+                <CCol>
+                  <CCard ref={targetRef}>
+                    <CCardHeader>
+                      <CButtonGroup className="mt-3 float-end">
+                        <CButton size="sm" color="secondary" onClick={() => toPDF()}>
+                          Save PDF <CIcon icon={cilFile} />
+                        </CButton>
+                      </CButtonGroup>
+                      <CCardTitle>Individual Submission Status</CCardTitle>
+                    </CCardHeader>
+                    <CCardBody>
+                      <CTable small bordered striped responsive>
+                        <CTableHead color="dark">
+                          <CTableRow>
+                            <CTableHeaderCell rowSpan={2}>No</CTableHeaderCell>
+                            <CTableHeaderCell rowSpan={2}>Name</CTableHeaderCell>
+                            <CTableHeaderCell colSpan={2}>Submission</CTableHeaderCell>
+                            <CTableHeaderCell rowSpan={2}>Action</CTableHeaderCell>
+                          </CTableRow>
+                          <CTableRow>
+                            <CTableHeaderCell>Self</CTableHeaderCell>
+                            <CTableHeaderCell>Superior</CTableHeaderCell>
+                          </CTableRow>
+                        </CTableHead>
+                        <CTableBody>
+                          {stafflist
+                            ?.filter((i) =>
+                              userType.role !== 'admin'
+                                ? i.staff_id.toString() === userType?.id ||
+                                  i.manager_id.toString() === userType?.id
+                                : i.staff_id !== null,
+                            )
+                            .map((val, key) => (
                               <CTableRow key={key}>
                                 <CTableDataCell>{key + 1}</CTableDataCell>
                                 <CTableDataCell>{val.staff_name}</CTableDataCell>
@@ -207,14 +204,14 @@ const AssessmentStatusTable = ({
                                   </CButton>
                                 </CTableDataCell>
                               </CTableRow>
-                            )
-                          })}
-                      </CTableBody>
-                    </CTable>
-                  </CCol>
-                </CRow>
-              </div>
-            </CAlert>
+                            ))}
+                        </CTableBody>
+                      </CTable>
+                    </CCardBody>
+                  </CCard>
+                </CCol>
+              </CRow>
+            </CContainer>
           ) : (
             <CAlert color="danger">No Staff Data Available</CAlert>
           )}

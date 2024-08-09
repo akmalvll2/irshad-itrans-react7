@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import MyContext from '../data/MyContext'
 import {
   CModal,
   CModalHeader,
@@ -31,11 +32,12 @@ import {
   CTabContent,
   CTabPane,
   CPopover,
+  CSpinner,
 } from '@coreui/react'
 
 //icon
 import CIcon from '@coreui/icons-react'
-import { cilCheckAlt, cilInfo, cilMinus, cilXCircle, cilX, cilCheck } from '@coreui/icons'
+import { cilCheckAlt, cilInfo, cilMinus, cilXCircle, cilX, cilCheck, cilStar } from '@coreui/icons'
 
 const AssessmentFormUser = ({
   visible,
@@ -50,6 +52,7 @@ const AssessmentFormUser = ({
   assessmentdata,
   indicators,
 }) => {
+  const { cluster, loading } = useContext(MyContext)
   const [selectedStaff, setSelectedStaff] = useState()
   const [activeKey, setActiveKey] = useState(1)
   const [assessmentResult, setAssessmentResult] = useState([])
@@ -88,6 +91,19 @@ const AssessmentFormUser = ({
   }
 
   var indcount = 0
+
+  if (
+    loading.staff ||
+    loading.position ||
+    loading.department ||
+    loading.competency ||
+    loading.cluster ||
+    loading.assessment ||
+    loading.assessmentResult ||
+    loading.positionCompetency
+  ) {
+    return <CSpinner />
+  }
   return (
     <>
       <CModal
@@ -911,182 +927,192 @@ const AssessmentFormUser = ({
                                     </CTableRow>
                                   )}
                                 </CTableHead>
-
-                                {jobcompetency
-                                  ?.filter((fil) => fil.position_id === val.position_id)
-                                  .map((val2, key2) => {
-                                    return (
-                                      <CTableBody key={key2}>
-                                        <CTableRow>
-                                          <CTableDataCell>{key2 + 1}</CTableDataCell>
-                                          <CTableDataCell>
-                                            {val2.competency_name}
-                                            <CPopover
-                                              content={
-                                                <div>
-                                                  <p>
-                                                    <b>Description :</b>{' '}
-                                                    {val2.competency_description}
-                                                  </p>
-                                                  <p>
-                                                    <b>Group :</b>{' '}
-                                                    <CBadge color={val2.cluster_color}>
-                                                      {val2.cluster_name}
-                                                    </CBadge>
-                                                  </p>
-                                                </div>
-                                              }
-                                              placement="auto"
-                                              trigger={['hover', 'focus']}
-                                              title="Detail"
-                                            >
-                                              <CIcon className="mx-2" icon={cilInfo} />
-                                            </CPopover>
-                                          </CTableDataCell>
-                                          {/*<CTableDataCell>
+                                {cluster?.map((cluster, clusterkey) => (
+                                  <CTableBody key={clusterkey}>
+                                    <CTableRow>
+                                      <CTableHeaderCell colSpan={8} className="text-center">
+                                        {cluster.cluster_name}
+                                      </CTableHeaderCell>
+                                    </CTableRow>
+                                    {jobcompetency
+                                      ?.filter(
+                                        (fil) =>
+                                          fil.position_id === val.position_id &&
+                                          fil.cluster_id === cluster.cluster_id,
+                                      )
+                                      .map((val2, key2) => {
+                                        return (
+                                          <CTableRow key={key2}>
+                                            <CTableDataCell>{key2 + 1}</CTableDataCell>
+                                            <CTableDataCell>
+                                              {val2.competency_name}
+                                              <CPopover
+                                                content={
+                                                  <div>
+                                                    <p>
+                                                      <b>Description :</b>{' '}
+                                                      {val2.competency_description}
+                                                    </p>
+                                                    <p>
+                                                      <b>Group :</b>{' '}
+                                                      <CBadge color={val2.cluster_color}>
+                                                        {val2.cluster_name}
+                                                      </CBadge>
+                                                    </p>
+                                                  </div>
+                                                }
+                                                placement="auto"
+                                                trigger={['hover', 'focus']}
+                                                title="Detail"
+                                              >
+                                                <CIcon className="mx-2" icon={cilInfo} />
+                                              </CPopover>
+                                            </CTableDataCell>
+                                            {/*<CTableDataCell>
                                             {val2.position_competency_expected_level}
                                             </CTableDataCell>*/}
-                                          <CTableDataCell className=" text-center">
-                                            <CFormCheck
-                                              button={{ color: 'primary', variant: 'outline' }}
-                                              label={<CIcon icon={cilCheckAlt} />}
-                                              id={`btn${key2}1`}
-                                              type="radio"
-                                              name={`currentvalue_${key2}`}
-                                              value={1}
-                                              onChange={(e) =>
-                                                handleOnChange1(
-                                                  key2,
-                                                  e.target.value,
-                                                  val2.competency_id,
-                                                  null,
-                                                )
-                                              }
-                                              checked={
-                                                assessmentResult[key2]?.assessmentresultscore ===
-                                                '1'
-                                                  ? true
-                                                  : false
-                                              }
-                                              required
-                                            />
-                                          </CTableDataCell>
-                                          <CTableDataCell className=" text-center">
-                                            <CFormCheck
-                                              button={{ color: 'primary', variant: 'outline' }}
-                                              label={<CIcon icon={cilCheckAlt} />}
-                                              id={`btn${key2}2`}
-                                              type="radio"
-                                              name={`currentvalue_${key2}`}
-                                              value={2}
-                                              onChange={(e) =>
-                                                handleOnChange1(
-                                                  key2,
-                                                  e.target.value,
-                                                  val2.competency_id,
-                                                  null,
-                                                )
-                                              }
-                                              checked={
-                                                assessmentResult[key2]?.assessmentresultscore ===
-                                                '2'
-                                                  ? true
-                                                  : false
-                                              }
-                                              required
-                                            />
-                                          </CTableDataCell>
-                                          <CTableDataCell className=" text-center">
-                                            <CFormCheck
-                                              button={{ color: 'primary', variant: 'outline' }}
-                                              label={<CIcon icon={cilCheckAlt} />}
-                                              id={`btn${key2}3`}
-                                              type="radio"
-                                              name={`currentvalue_${key2}`}
-                                              value={3}
-                                              onChange={(e) =>
-                                                handleOnChange1(
-                                                  key2,
-                                                  e.target.value,
-                                                  val2.competency_id,
-                                                  null,
-                                                )
-                                              }
-                                              checked={
-                                                assessmentResult[key2]?.assessmentresultscore ===
-                                                '3'
-                                                  ? true
-                                                  : false
-                                              }
-                                              required
-                                            />
-                                          </CTableDataCell>
-                                          <CTableDataCell className=" text-center">
-                                            <CFormCheck
-                                              button={{ color: 'primary', variant: 'outline' }}
-                                              label={<CIcon icon={cilCheckAlt} />}
-                                              id={`btn${key2}4`}
-                                              type="radio"
-                                              name={`currentvalue_${key2}`}
-                                              value={4}
-                                              onChange={(e) =>
-                                                handleOnChange1(
-                                                  key2,
-                                                  e.target.value,
-                                                  val2.competency_id,
-                                                  null,
-                                                )
-                                              }
-                                              checked={
-                                                assessmentResult[key2]?.assessmentresultscore ===
-                                                '4'
-                                                  ? true
-                                                  : false
-                                              }
-                                              required
-                                            />
-                                          </CTableDataCell>
-                                          <CTableDataCell className=" text-center">
-                                            <CFormCheck
-                                              button={{ color: 'primary', variant: 'outline' }}
-                                              label={<CIcon icon={cilCheckAlt} />}
-                                              id={`btn${key2}5`}
-                                              type="radio"
-                                              name={`currentvalue_${key2}`}
-                                              value={5}
-                                              onChange={(e) =>
-                                                handleOnChange1(
-                                                  key2,
-                                                  e.target.value,
-                                                  val2.competency_id,
-                                                  null,
-                                                )
-                                              }
-                                              checked={
-                                                assessmentResult[key2]?.assessmentresultscore ===
-                                                '5'
-                                                  ? true
-                                                  : false
-                                              }
-                                              required
-                                            />
-                                          </CTableDataCell>
-                                          <CTableDataCell>
-                                            <CFormTextarea
-                                              id="exampleFormControlTextarea1"
-                                              //label="Example textarea"
-                                              rows={1}
-                                              placeholder="comments..."
-                                              onChange={(e) =>
-                                                handleOnChangeMessage(key2, e.target.value)
-                                              }
-                                              //text="Must be 8-20 words long."
-                                            />
-                                          </CTableDataCell>
-                                        </CTableRow>
-                                      </CTableBody>
-                                    )
-                                  })}
+                                            <CTableDataCell className=" text-center">
+                                              <CFormCheck
+                                                button={{ color: 'primary', variant: 'outline' }}
+                                                label={<CIcon icon={cilStar} />}
+                                                id={`btn${key2}1`}
+                                                type="radio"
+                                                name={`currentvalue_${key2}`}
+                                                value={1}
+                                                onChange={(e) =>
+                                                  handleOnChange1(
+                                                    key2,
+                                                    e.target.value,
+                                                    val2.competency_id,
+                                                    null,
+                                                  )
+                                                }
+                                                checked={
+                                                  assessmentResult[key2]?.assessmentresultscore ===
+                                                  '1'
+                                                    ? true
+                                                    : false
+                                                }
+                                                required
+                                              />
+                                            </CTableDataCell>
+                                            <CTableDataCell className=" text-center">
+                                              <CFormCheck
+                                                button={{ color: 'primary', variant: 'outline' }}
+                                                label={<CIcon icon={cilStar} />}
+                                                id={`btn${key2}2`}
+                                                type="radio"
+                                                name={`currentvalue_${key2}`}
+                                                value={2}
+                                                onChange={(e) =>
+                                                  handleOnChange1(
+                                                    key2,
+                                                    e.target.value,
+                                                    val2.competency_id,
+                                                    null,
+                                                  )
+                                                }
+                                                checked={
+                                                  assessmentResult[key2]?.assessmentresultscore ===
+                                                  '2'
+                                                    ? true
+                                                    : false
+                                                }
+                                                required
+                                              />
+                                            </CTableDataCell>
+                                            <CTableDataCell className=" text-center">
+                                              <CFormCheck
+                                                button={{ color: 'primary', variant: 'outline' }}
+                                                label={<CIcon icon={cilStar} />}
+                                                id={`btn${key2}3`}
+                                                type="radio"
+                                                name={`currentvalue_${key2}`}
+                                                value={3}
+                                                onChange={(e) =>
+                                                  handleOnChange1(
+                                                    key2,
+                                                    e.target.value,
+                                                    val2.competency_id,
+                                                    null,
+                                                  )
+                                                }
+                                                checked={
+                                                  assessmentResult[key2]?.assessmentresultscore ===
+                                                  '3'
+                                                    ? true
+                                                    : false
+                                                }
+                                                required
+                                              />
+                                            </CTableDataCell>
+                                            <CTableDataCell className=" text-center">
+                                              <CFormCheck
+                                                button={{ color: 'primary', variant: 'outline' }}
+                                                label={<CIcon icon={cilStar} />}
+                                                id={`btn${key2}4`}
+                                                type="radio"
+                                                name={`currentvalue_${key2}`}
+                                                value={4}
+                                                onChange={(e) =>
+                                                  handleOnChange1(
+                                                    key2,
+                                                    e.target.value,
+                                                    val2.competency_id,
+                                                    null,
+                                                  )
+                                                }
+                                                checked={
+                                                  assessmentResult[key2]?.assessmentresultscore ===
+                                                  '4'
+                                                    ? true
+                                                    : false
+                                                }
+                                                required
+                                              />
+                                            </CTableDataCell>
+                                            <CTableDataCell className=" text-center">
+                                              <CFormCheck
+                                                button={{ color: 'primary', variant: 'outline' }}
+                                                label={<CIcon icon={cilStar} />}
+                                                id={`btn${key2}5`}
+                                                type="radio"
+                                                name={`currentvalue_${key2}`}
+                                                value={5}
+                                                onChange={(e) =>
+                                                  handleOnChange1(
+                                                    key2,
+                                                    e.target.value,
+                                                    val2.competency_id,
+                                                    null,
+                                                  )
+                                                }
+                                                checked={
+                                                  assessmentResult[key2]?.assessmentresultscore ===
+                                                  '5'
+                                                    ? true
+                                                    : false
+                                                }
+                                                required
+                                              />
+                                            </CTableDataCell>
+                                            <CTableDataCell>
+                                              <CFormTextarea
+                                                id="exampleFormControlTextarea1"
+                                                //label="Example textarea"
+                                                rows={1}
+                                                placeholder="comments..."
+                                                onChange={(e) =>
+                                                  handleOnChangeMessage(key2, e.target.value)
+                                                }
+                                                //text="Must be 8-20 words long."
+                                              />
+                                            </CTableDataCell>
+                                          </CTableRow>
+                                        )
+                                      })}
+                                  </CTableBody>
+                                ))}
                               </CTable>
                             )}
                           </CTabPane>
