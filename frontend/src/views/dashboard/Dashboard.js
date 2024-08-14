@@ -10,6 +10,7 @@ import { CRow, CCol } from '@coreui/react'
 
 //path to API call IMPORTANT!
 import packageJson from '../../../package.json'
+import DBTrainingRec from './DbTrainingRec'
 const { config } = packageJson
 
 //IMPORT COMPONENT
@@ -17,6 +18,7 @@ const DashboardInfo1 = React.lazy(() => import('./DashboardInfo1'))
 const DashboardInfo2 = React.lazy(() => import('./DashboardInfo2'))
 const DbDepartmentInfo = React.lazy(() => import('./DbDepartmentInfo'))
 const DbStaffInfo = React.lazy(() => import('./DbStaffInfo'))
+const DbTrainingRec = React.lazy(() => import('./DbTrainingRec'))
 
 const Dashboard = () => {
   const [isChange, setIsChange] = useState(false)
@@ -129,6 +131,9 @@ const Dashboard = () => {
         <CCol md={12}>{userType.role === 'admin' ? null : <DbStaffInfo />}</CCol>
         <CCol md={12}>
           <DashboardInfo1 assessmentlist={assessmentlist} />
+        </CCol>
+        <CCol md={12}>
+          <DbTrainingRec />
         </CCol>
         {/*<CCol md={6}>{userType.role !== 'admin' ? <DbDepartmentInfo /> : ''}</CCol>*/}
       </CRow>

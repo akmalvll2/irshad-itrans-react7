@@ -19,6 +19,7 @@ export const MyProvider = ({ children }) => {
   const [assessment, setAssessment] = useState([])
   const [assessmentResult, setAssessmentResult] = useState([])
   const [positionCompetency, setPositionCompetency] = useState([])
+  const [competencyTraining, setCompetencyTraining] = useState([])
   const [staffAssessor, setStaffAssessor] = useState([])
   const [loading, setLoading] = useState({
     staff: true,
@@ -31,6 +32,7 @@ export const MyProvider = ({ children }) => {
     assessment: true,
     assessmentResult: true,
     positionCompetency: true,
+    competencyTraining: true,
     staffAssessor: true,
   })
 
@@ -202,6 +204,19 @@ export const MyProvider = ({ children }) => {
     }
   }
 
+  const fetchCompetencyTraining = async () => {
+    try {
+      const response = await axios.get(
+        `${config.REACT_APP_API_ENDPOINT}/competencytraining/getallcompetencytraining`,
+      )
+      setCompetencyTraining(response.data)
+    } catch (error) {
+      console.log('Error: '.error)
+    } finally {
+      setLoading((prev) => ({ ...prev, competencyTraining: false }))
+    }
+  }
+
   useEffect(() => {
     fetchStaff()
     fetchStaffAssessor()
@@ -213,6 +228,7 @@ export const MyProvider = ({ children }) => {
     fetchAssessment()
     fetchAssessmentResult()
     fetchPositionCompetency()
+    fetchCompetencyTraining()
     fetchTraining()
   }, [])
 
@@ -231,6 +247,7 @@ export const MyProvider = ({ children }) => {
         training,
         assessmentResult,
         positionCompetency,
+        competencyTraining,
         loading,
       }}
     >

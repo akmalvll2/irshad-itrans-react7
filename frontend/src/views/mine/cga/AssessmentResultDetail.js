@@ -29,7 +29,7 @@ import {
 
 // Icon
 import CIcon from '@coreui/icons-react'
-import { cilFile } from '@coreui/icons'
+import { cilFile, cilWarning } from '@coreui/icons'
 
 const AssessmentResultDetail = ({
   visible,
@@ -66,17 +66,6 @@ const AssessmentResultDetail = ({
 
   const roundedResult = (data) => {
     return data !== null ? Number(data.toFixed(2)) : null
-  }
-
-  const getProgressColor = (score, expectedLevel) => {
-    const percentage = (score / expectedLevel) * 100
-    if (percentage >= 90) {
-      return 'success'
-    } else if (percentage >= 60) {
-      return 'warning'
-    } else {
-      return 'danger'
-    }
   }
 
   useEffect(() => {
@@ -160,7 +149,9 @@ const AssessmentResultDetail = ({
                     <CTableHeaderCell colSpan={2} className="text-center">
                       Result Summary
                     </CTableHeaderCell>
-                    <CTableHeaderCell rowSpan={2}>Total Average</CTableHeaderCell>
+                    <CTableHeaderCell rowSpan={2}>Total Score</CTableHeaderCell>
+                    <CTableHeaderCell rowSpan={2}>Total Gap</CTableHeaderCell> {/* New Column */}
+                    <CTableHeaderCell rowSpan={2}>Remarks</CTableHeaderCell> {/* New Column */}
                   </CTableRow>
                   <CTableRow>
                     <CTableHeaderCell className="text-center">Self</CTableHeaderCell>
@@ -185,11 +176,11 @@ const AssessmentResultDetail = ({
                         ).message
                         const totalAverage =
                           selfScore && superiorScore
-                            ? roundedResult(
-                                (selfScore * 0.3 + superiorScore * 0.7) /
-                                  val.position_competency_expected_level,
-                              )
+                            ? roundedResult(selfScore * 0.3 + superiorScore * 0.7)
                             : null
+
+                        const totalGap =
+                          totalAverage !== null ? roundedResult(5 - totalAverage) : null
 
                         return (
                           <CTableRow key={val.competency_id}>
@@ -202,29 +193,12 @@ const AssessmentResultDetail = ({
                                 <>
                                   <CProgress className="mb-2">
                                     <CProgressBar
-                                      value={
-                                        (selfScore / val.position_competency_expected_level) * 100
-                                      }
-                                      color={getProgressColor(
-                                        selfScore,
-                                        val.position_competency_expected_level,
-                                      )}
+                                      value={(selfScore / 5) * 100}
+                                      color="info" // Use a default color for the progress bar
                                     >
-                                      {selfScore} / {val.position_competency_expected_level}
+                                      {selfScore} / 5
                                     </CProgressBar>
                                   </CProgress>
-                                  <div>
-                                    <b>Gap:</b> {val.position_competency_expected_level - selfScore}
-                                  </div>
-                                  <div>
-                                    <b>Weighted:</b>{' '}
-                                    {roundedResult(
-                                      (val.position_competency_expected_level - selfScore) * 0.3,
-                                    )}
-                                  </div>
-                                  <div>
-                                    <b>Remarks:</b> {selfMessage}
-                                  </div>
                                 </>
                               ) : (
                                 <span className="text-danger">Incomplete</span>
@@ -235,32 +209,12 @@ const AssessmentResultDetail = ({
                                 <>
                                   <CProgress className="mb-2">
                                     <CProgressBar
-                                      value={
-                                        (superiorScore / val.position_competency_expected_level) *
-                                        100
-                                      }
-                                      color={getProgressColor(
-                                        superiorScore,
-                                        val.position_competency_expected_level,
-                                      )}
+                                      value={(superiorScore / 5) * 100}
+                                      color="info" // Use a default color for the progress bar
                                     >
-                                      {superiorScore} / {val.position_competency_expected_level}
+                                      {superiorScore} / 5
                                     </CProgressBar>
                                   </CProgress>
-                                  <div>
-                                    <b>Gap:</b>{' '}
-                                    {val.position_competency_expected_level - superiorScore}
-                                  </div>
-                                  <div>
-                                    <b>Weighted:</b>{' '}
-                                    {roundedResult(
-                                      (val.position_competency_expected_level - superiorScore) *
-                                        0.7,
-                                    )}
-                                  </div>
-                                  <div>
-                                    <b>Remarks:</b> {superiorMessage}
-                                  </div>
                                 </>
                               ) : (
                                 <span className="text-danger">Incomplete</span>
@@ -268,10 +222,35 @@ const AssessmentResultDetail = ({
                             </CTableDataCell>
                             <CTableDataCell className="text-center">
                               {totalAverage !== null ? (
-                                `${totalAverage}%`
+                                `${totalAverage}`
                               ) : (
                                 <span className="text-danger">Incomplete</span>
                               )}
+                            </CTableDataCell>
+                            <CTableDataCell className="text-center">
+                              {totalGap !== null ? (
+                                <div className="d-flex align-items-center">
+                                  {totalGap}
+                                  {totalGap > 2.6 && (
+                                    <CIcon
+                                      icon={cilWarning}
+                                      className="text-danger ms-2"
+                                      style={{ fontSize: '1.2rem' }}
+                                    />
+                                  )}
+                                </div>
+                              ) : (
+                                <span className="text-danger">Incomplete</span>
+                              )}
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              {/* Remarks Column */}
+                              <div>
+                                <b>Self:</b> {selfMessage || 'N/A'}
+                              </div>
+                              <div>
+                                <b>Superior:</b> {superiorMessage || 'N/A'}
+                              </div>
                             </CTableDataCell>
                           </CTableRow>
                         )
@@ -280,7 +259,7 @@ const AssessmentResultDetail = ({
                 ) : (
                   <CTableBody>
                     <CTableRow>
-                      <CTableDataCell colSpan={5} className="text-danger text-center">
+                      <CTableDataCell colSpan={8} className="text-danger text-center">
                         No Data Available
                       </CTableDataCell>
                     </CTableRow>
@@ -310,9 +289,9 @@ AssessmentResultDetail.propTypes = {
   visible: PropTypes.bool.isRequired,
   setVisible: PropTypes.func.isRequired,
   stafflist: PropTypes.array.isRequired,
-  jobcompetency: PropTypes.array,
+  jobcompetency: PropTypes.array.isRequired,
   assessmentresultlist: PropTypes.array.isRequired,
-  selectedStaff: PropTypes.number,
+  selectedStaff: PropTypes.string.isRequired,
 }
 
 export default AssessmentResultDetail

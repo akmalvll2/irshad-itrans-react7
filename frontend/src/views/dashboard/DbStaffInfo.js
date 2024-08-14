@@ -78,10 +78,6 @@ const DashboardInfo1 = () => {
                         <CTableDataCell>{val.position_name}</CTableDataCell>
                       </CTableRow>
                       <CTableRow>
-                        <CTableHeaderCell>Position Description</CTableHeaderCell>
-                        <CTableDataCell>{val.position_description}</CTableDataCell>
-                      </CTableRow>
-                      <CTableRow>
                         <CTableHeaderCell>Grade</CTableHeaderCell>
                         <CTableDataCell>{val.position_grade}</CTableDataCell>
                       </CTableRow>

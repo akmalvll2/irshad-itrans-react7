@@ -21,6 +21,7 @@ import {
   CAlert,
   CSpinner,
   CBadge,
+  CButton,
 } from '@coreui/react'
 import { userType } from 'src/userType'
 import CIcon from '@coreui/icons-react'
@@ -119,6 +120,7 @@ const DashboardInfo1 = ({ assessmentlist }) => {
                         <CTableRow>
                           <CTableHeaderCell>Assessment For</CTableHeaderCell>
                           <CTableHeaderCell>Status</CTableHeaderCell>
+                          <CTableHeaderCell>Action</CTableHeaderCell>
                         </CTableRow>
                       </CTableHead>
                       <CTableBody>
@@ -148,6 +150,15 @@ const DashboardInfo1 = ({ assessmentlist }) => {
                                   <CBadge color="danger">Incomplete</CBadge>
                                 )}
                               </CTableDataCell>
+                              <CTableDataCell>
+                                <CButton
+                                  color="link"
+                                  size="sm"
+                                  onClick={() => (window.location.href = '#/mine/cga')}
+                                >
+                                  Start Assessment
+                                </CButton>
+                              </CTableDataCell>
                             </CTableRow>
                           ))}
                       </CTableBody>
@@ -158,7 +169,9 @@ const DashboardInfo1 = ({ assessmentlist }) => {
             </CRow>
           </div>
         ) : (
-          <CAlert color="info">No Active Assessment</CAlert>
+          <CAlert color="info" className="m-2">
+            No Active Assessment
+          </CAlert>
         )}
       </CCard>
     </div>
