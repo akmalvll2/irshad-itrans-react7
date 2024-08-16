@@ -52,12 +52,11 @@ const DBTrainingRec = ({ assessmentlist }) => {
     loading.cluster ||
     loading.assessment ||
     loading.assessmentResult ||
-    loading.positionCompetency
+    loading.positionCompetency ||
+    loading.competencyTraining
   ) {
     return <CSpinner />
   }
-
-  console.log(training)
   return (
     <div>
       <CCard className=" my-2">
@@ -65,22 +64,26 @@ const DBTrainingRec = ({ assessmentlist }) => {
           <CIcon icon={cilClipboard} /> TRAINING RECOMMENDATION
         </CCardHeader>
         <CCardBody>
-          <CTable small responsive bordered>
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell>No</CTableHeaderCell>
-                <CTableHeaderCell>Training</CTableHeaderCell>
-                <CTableHeaderCell>Training Group</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              <CTableRow>
-                <CTableDataCell>1</CTableDataCell>
-                <CTableDataCell>Human Resource Management Training</CTableDataCell>
-                <CTableDataCell>Functional</CTableDataCell>
-              </CTableRow>
-            </CTableBody>
-          </CTable>
+          {positionCompetency?.length > 0 ? (
+            <CAlert color="info">No Data Available</CAlert>
+          ) : (
+            <CTable small responsive bordered>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell>No</CTableHeaderCell>
+                  <CTableHeaderCell>Training</CTableHeaderCell>
+                  <CTableHeaderCell>Training Group</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                <CTableRow>
+                  <CTableDataCell>1</CTableDataCell>
+                  <CTableDataCell>Human Resource Management Training</CTableDataCell>
+                  <CTableDataCell>Functional</CTableDataCell>
+                </CTableRow>
+              </CTableBody>
+            </CTable>
+          )}
         </CCardBody>
       </CCard>
     </div>

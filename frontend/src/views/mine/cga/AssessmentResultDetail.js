@@ -145,17 +145,27 @@ const AssessmentResultDetail = ({
                 <CTableHead color="dark">
                   <CTableRow>
                     <CTableHeaderCell rowSpan={2}>Competency</CTableHeaderCell>
-                    <CTableHeaderCell rowSpan={2}>Expected Level</CTableHeaderCell>
+                    <CTableHeaderCell rowSpan={2}>RCL</CTableHeaderCell>
                     <CTableHeaderCell colSpan={2} className="text-center">
                       Result Summary
                     </CTableHeaderCell>
-                    <CTableHeaderCell rowSpan={2}>Total Score</CTableHeaderCell>
-                    <CTableHeaderCell rowSpan={2}>Total Gap</CTableHeaderCell> {/* New Column */}
-                    <CTableHeaderCell rowSpan={2}>Remarks</CTableHeaderCell> {/* New Column */}
+                    <CTableHeaderCell rowSpan={2} className="text-center">
+                      Total Score
+                    </CTableHeaderCell>
+                    <CTableHeaderCell rowSpan={2} className="text-center">
+                      Total Gap
+                    </CTableHeaderCell>
+                    <CTableHeaderCell rowSpan={2} className="text-center">
+                      Remarks
+                    </CTableHeaderCell>
                   </CTableRow>
                   <CTableRow>
-                    <CTableHeaderCell className="text-center">Self</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Superior</CTableHeaderCell>
+                    <CTableHeaderCell style={{ width: '100px' }} className="text-center">
+                      Self
+                    </CTableHeaderCell>
+                    <CTableHeaderCell style={{ width: '100px' }} className="text-center">
+                      Superior
+                    </CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 {assessmentresultlist.filter((i) => i.staff_id === selectedStaff).length > 0 ? (
@@ -185,10 +195,10 @@ const AssessmentResultDetail = ({
                         return (
                           <CTableRow key={val.competency_id}>
                             <CTableDataCell>{val.competency_name}</CTableDataCell>
-                            <CTableDataCell>
+                            <CTableDataCell className="text-center">
                               {val.position_competency_expected_level}
                             </CTableDataCell>
-                            <CTableDataCell className="text-center">
+                            <CTableDataCell style={{ width: '100px' }} className="text-center">
                               {selfScore !== undefined ? (
                                 <>
                                   <CProgress className="mb-2">
@@ -204,7 +214,7 @@ const AssessmentResultDetail = ({
                                 <span className="text-danger">Incomplete</span>
                               )}
                             </CTableDataCell>
-                            <CTableDataCell className="text-center">
+                            <CTableDataCell style={{ width: '100px' }} className="text-center">
                               {superiorScore !== undefined ? (
                                 <>
                                   <CProgress className="mb-2">
@@ -230,7 +240,9 @@ const AssessmentResultDetail = ({
                             <CTableDataCell className="text-center">
                               {totalGap !== null ? (
                                 <div className="d-flex align-items-center">
-                                  {totalGap}
+                                  <div className={totalGap > 2.6 && 'text-danger'}>
+                                    <center>{totalGap}</center>
+                                  </div>
                                   {totalGap > 2.6 && (
                                     <CIcon
                                       icon={cilWarning}
@@ -270,13 +282,7 @@ const AssessmentResultDetail = ({
           </CCard>
         </CModalBody>
         <CModalFooter>
-          <CButton
-            size="sm"
-            color="secondary"
-            onClick={() => {
-              setVisible(false)
-            }}
-          >
+          <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
         </CModalFooter>
@@ -286,12 +292,12 @@ const AssessmentResultDetail = ({
 }
 
 AssessmentResultDetail.propTypes = {
-  visible: PropTypes.bool.isRequired,
-  setVisible: PropTypes.func.isRequired,
-  stafflist: PropTypes.array.isRequired,
-  jobcompetency: PropTypes.array.isRequired,
-  assessmentresultlist: PropTypes.array.isRequired,
-  selectedStaff: PropTypes.string.isRequired,
+  visible: PropTypes.bool,
+  setVisible: PropTypes.func,
+  stafflist: PropTypes.array,
+  jobcompetency: PropTypes.array,
+  assessmentresultlist: PropTypes.array,
+  selectedStaff: PropTypes.number,
 }
 
 export default AssessmentResultDetail

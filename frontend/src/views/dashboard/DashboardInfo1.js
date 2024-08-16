@@ -119,6 +119,7 @@ const DashboardInfo1 = ({ assessmentlist }) => {
                       <CTableHead color="dark">
                         <CTableRow>
                           <CTableHeaderCell>Assessment For</CTableHeaderCell>
+                          <CTableHeaderCell>As</CTableHeaderCell>
                           <CTableHeaderCell>Status</CTableHeaderCell>
                           <CTableHeaderCell>Action</CTableHeaderCell>
                         </CTableRow>
@@ -136,6 +137,15 @@ const DashboardInfo1 = ({ assessmentlist }) => {
                             <CTableRow key={key}>
                               <CTableDataCell>{val.staff_name}</CTableDataCell>
                               <CTableDataCell>
+                                {
+                                  staffAssessor?.find(
+                                    (i) =>
+                                      i.staff_id === val.staff_id &&
+                                      i.assessor_id.toString() === userType?.id,
+                                  ).staff_assessor_type
+                                }
+                              </CTableDataCell>
+                              <CTableDataCell>
                                 {assessmentResult?.filter(
                                   (i) =>
                                     moment().isBetween(
@@ -151,13 +161,23 @@ const DashboardInfo1 = ({ assessmentlist }) => {
                                 )}
                               </CTableDataCell>
                               <CTableDataCell>
-                                <CButton
-                                  color="link"
-                                  size="sm"
-                                  onClick={() => (window.location.href = '#/mine/cga')}
-                                >
-                                  Start Assessment
-                                </CButton>
+                                {assessmentResult?.filter(
+                                  (i) =>
+                                    moment().isBetween(
+                                      moment(i.assessment_start_date),
+                                      moment(i.assessment_end_date),
+                                    ) &&
+                                    i.assessor_id.toString() === userType?.id &&
+                                    i.staff_id === val.staff_id,
+                                ).length > 0 ? null : (
+                                  <CButton
+                                    color="link"
+                                    size="sm"
+                                    onClick={() => (window.location.href = '#/mine/cga')}
+                                  >
+                                    Start Assessment
+                                  </CButton>
+                                )}
                               </CTableDataCell>
                             </CTableRow>
                           ))}

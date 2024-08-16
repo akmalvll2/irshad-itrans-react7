@@ -68,6 +68,12 @@ const DashboardInfo1 = () => {
                   <CTable small responsive bordered key={key}>
                     <CTableBody>
                       <CTableRow>
+                        <CTableHeaderCell>ID</CTableHeaderCell>
+                        <CTableDataCell className="text-capitalize">
+                          {val.staff_id_number}
+                        </CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
                         <CTableHeaderCell>Name</CTableHeaderCell>
                         <CTableDataCell className="text-capitalize">
                           {val.staff_name}
@@ -162,7 +168,7 @@ const DashboardInfo1 = () => {
                             <CTableRow>
                               <CTableHeaderCell>No</CTableHeaderCell>
                               <CTableHeaderCell>Competency</CTableHeaderCell>
-                              <CTableHeaderCell>Required Level</CTableHeaderCell>
+                              <CTableHeaderCell>RCL</CTableHeaderCell>
                             </CTableRow>
                           </CTableHead>
                           <CTableBody>
