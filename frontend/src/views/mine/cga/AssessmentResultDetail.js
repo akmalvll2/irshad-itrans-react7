@@ -25,6 +25,7 @@ import {
   CProgressBar,
   CCardHeader,
   CSpinner,
+  CCardFooter,
 } from '@coreui/react'
 
 // Icon
@@ -68,6 +69,21 @@ const AssessmentResultDetail = ({
     return data !== null ? Number(data.toFixed(2)) : null
   }
 
+  const calculateTotalAverage = () => {
+    const competencies = jobcompetency.filter(
+      (i) => i.position_id === selectedStaffData?.position_id && i.cluster_id === selectedCluster,
+    )
+    const totalScores = competencies.reduce((total, val) => {
+      const selfScore = assessmentResult(val.competency_id, 'self').score
+      const superiorScore = assessmentResult(val.competency_id, 'superior').score
+      const totalAverage =
+        selfScore && superiorScore ? roundedResult(selfScore * 0.3 + superiorScore * 0.7) : null
+      return totalAverage !== null ? total + totalAverage : total
+    }, 0)
+    const totalAveragePercentage = totalScores / competencies.length // Converts the score out of 5 to a percentage
+    return roundedResult(totalAveragePercentage)
+  }
+
   useEffect(() => {
     setSelectedCluster(cluster[0]?.cluster_id)
   }, [])
@@ -84,6 +100,9 @@ const AssessmentResultDetail = ({
   ) {
     return <CSpinner />
   }
+
+  const totalAveragePercentage = calculateTotalAverage()
+
   return (
     <>
       <CModal
@@ -141,29 +160,49 @@ const AssessmentResultDetail = ({
                   </CButton>
                 ))}
               </CButtonGroup>
+              <br />
+              <br />
+              <CCard className="mb-4">
+                <CCardBody className="text-center">
+                  <h5>Total Average</h5>
+                  <h2 className="text-primary">
+                    {totalAveragePercentage ? `${totalAveragePercentage}` : 'N/A'}
+                  </h2>
+                </CCardBody>
+              </CCard>
               <CTable small responsive bordered>
                 <CTableHead color="dark">
                   <CTableRow>
-                    <CTableHeaderCell rowSpan={2}>Competency</CTableHeaderCell>
-                    <CTableHeaderCell rowSpan={2}>RCL</CTableHeaderCell>
+                    <CTableHeaderCell rowSpan={2} className="align-middle">
+                      Competency
+                    </CTableHeaderCell>
+                    <CTableHeaderCell rowSpan={2} className="align-middle">
+                      RCL
+                    </CTableHeaderCell>
                     <CTableHeaderCell colSpan={2} className="text-center">
                       Result Summary
                     </CTableHeaderCell>
-                    <CTableHeaderCell rowSpan={2} className="text-center">
+                    <CTableHeaderCell rowSpan={2} className="align-middle">
                       Total Score
                     </CTableHeaderCell>
-                    <CTableHeaderCell rowSpan={2} className="text-center">
+                    <CTableHeaderCell rowSpan={2} className="align-middle">
                       Total Gap
                     </CTableHeaderCell>
-                    <CTableHeaderCell rowSpan={2} className="text-center">
+                    <CTableHeaderCell rowSpan={2} className="align-middle">
                       Remarks
                     </CTableHeaderCell>
                   </CTableRow>
                   <CTableRow>
-                    <CTableHeaderCell style={{ width: '100px' }} className="text-center">
+                    <CTableHeaderCell
+                      style={{ width: '100px' }}
+                      className="align-middle text-center"
+                    >
                       Self
                     </CTableHeaderCell>
-                    <CTableHeaderCell style={{ width: '100px' }} className="text-center">
+                    <CTableHeaderCell
+                      style={{ width: '100px' }}
+                      className="align-middle text-center"
+                    >
                       Superior
                     </CTableHeaderCell>
                   </CTableRow>
@@ -194,18 +233,20 @@ const AssessmentResultDetail = ({
 
                         return (
                           <CTableRow key={val.competency_id}>
-                            <CTableDataCell>{val.competency_name}</CTableDataCell>
-                            <CTableDataCell className="text-center">
+                            <CTableDataCell className="align-middle">
+                              {val.competency_name}
+                            </CTableDataCell>
+                            <CTableDataCell className="align-middle text-center">
                               {val.position_competency_expected_level}
                             </CTableDataCell>
-                            <CTableDataCell style={{ width: '100px' }} className="text-center">
+                            <CTableDataCell
+                              style={{ width: '100px' }}
+                              className="align-middle text-center"
+                            >
                               {selfScore !== undefined ? (
                                 <>
                                   <CProgress className="mb-2">
-                                    <CProgressBar
-                                      value={(selfScore / 5) * 100}
-                                      color="info" // Use a default color for the progress bar
-                                    >
+                                    <CProgressBar value={(selfScore / 5) * 100} color="success">
                                       {selfScore} / 5
                                     </CProgressBar>
                                   </CProgress>
@@ -214,14 +255,14 @@ const AssessmentResultDetail = ({
                                 <span className="text-danger">Incomplete</span>
                               )}
                             </CTableDataCell>
-                            <CTableDataCell style={{ width: '100px' }} className="text-center">
+                            <CTableDataCell
+                              style={{ width: '100px' }}
+                              className="align-middle text-center"
+                            >
                               {superiorScore !== undefined ? (
                                 <>
                                   <CProgress className="mb-2">
-                                    <CProgressBar
-                                      value={(superiorScore / 5) * 100}
-                                      color="info" // Use a default color for the progress bar
-                                    >
+                                    <CProgressBar value={(superiorScore / 5) * 100} color="success">
                                       {superiorScore} / 5
                                     </CProgressBar>
                                   </CProgress>
@@ -230,39 +271,28 @@ const AssessmentResultDetail = ({
                                 <span className="text-danger">Incomplete</span>
                               )}
                             </CTableDataCell>
-                            <CTableDataCell className="text-center">
+                            <CTableDataCell className="align-middle text-center">
                               {totalAverage !== null ? (
                                 `${totalAverage}`
                               ) : (
                                 <span className="text-danger">Incomplete</span>
                               )}
                             </CTableDataCell>
-                            <CTableDataCell className="text-center">
+                            <CTableDataCell className="align-middle text-center">
                               {totalGap !== null ? (
-                                <div className="d-flex align-items-center">
-                                  <div className={totalGap > 2.6 && 'text-danger'}>
-                                    <center>{totalGap}</center>
-                                  </div>
-                                  {totalGap > 2.6 && (
-                                    <CIcon
-                                      icon={cilWarning}
-                                      className="text-danger ms-2"
-                                      style={{ fontSize: '1.2rem' }}
-                                    />
-                                  )}
-                                </div>
+                                <span className={totalGap > 2.6 ? 'text-danger' : ''}>
+                                  {totalGap} {totalGap > 2.6 ? <CIcon icon={cilWarning} /> : ''}
+                                </span>
                               ) : (
                                 <span className="text-danger">Incomplete</span>
                               )}
                             </CTableDataCell>
-                            <CTableDataCell>
-                              {/* Remarks Column */}
-                              <div>
-                                <b>Self:</b> {selfMessage || 'N/A'}
-                              </div>
-                              <div>
-                                <b>Superior:</b> {superiorMessage || 'N/A'}
-                              </div>
+                            <CTableDataCell className="align-middle">
+                              <b>Self : </b>
+                              {selfMessage}
+                              <br />
+                              <b>Superior : </b>
+                              {superiorMessage}
                             </CTableDataCell>
                           </CTableRow>
                         )
@@ -271,14 +301,20 @@ const AssessmentResultDetail = ({
                 ) : (
                   <CTableBody>
                     <CTableRow>
-                      <CTableDataCell colSpan={8} className="text-danger text-center">
-                        No Data Available
+                      <CTableDataCell colSpan={7} className="text-center">
+                        No Assessment Data Available
                       </CTableDataCell>
                     </CTableRow>
                   </CTableBody>
                 )}
               </CTable>
             </CCardBody>
+            <CCardFooter>
+              <small>
+                Note: The average percentage is calculated based on the weighted average of
+                self-assessment and superior assessment scores.
+              </small>
+            </CCardFooter>
           </CCard>
         </CModalBody>
         <CModalFooter>
@@ -297,7 +333,7 @@ AssessmentResultDetail.propTypes = {
   stafflist: PropTypes.array,
   jobcompetency: PropTypes.array,
   assessmentresultlist: PropTypes.array,
-  selectedStaff: PropTypes.number,
+  selectedStaff: PropTypes.string,
 }
 
 export default AssessmentResultDetail

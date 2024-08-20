@@ -25,6 +25,7 @@ const ReportTable2 = React.lazy(() => import('./ReportTable2'))
 const ReportTable3 = React.lazy(() => import('./ReportTable3'))
 const ReportExample1 = React.lazy(() => import('./ReportExample1'))
 const ReportExample2 = React.lazy(() => import('./ReportExample2'))
+const ReportDepartment1 = React.lazy(() => import('./ReportDepartment1'))
 
 const Report = () => {
   // SETTING INITIALIZE
@@ -243,6 +244,15 @@ const Report = () => {
                 Summary
               </CNavLink>
             </CNavItem>
+            <CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer', color: activeKey === 6 ? 'black' : 'ghostwhite' }}
+                active={activeKey === 6}
+                onClick={() => setActiveKey(6)}
+              >
+                Department Report
+              </CNavLink>
+            </CNavItem>
           </CNav>
         </CCardHeader>
         <CCardBody>
@@ -288,6 +298,9 @@ const Report = () => {
             </CTabPane>
             <CTabPane visible={activeKey === 5}>
               <ReportExample2 />
+            </CTabPane>
+            <CTabPane visible={activeKey === 6}>
+              <ReportDepartment1 />
             </CTabPane>
           </CTabContent>
         </CCardBody>

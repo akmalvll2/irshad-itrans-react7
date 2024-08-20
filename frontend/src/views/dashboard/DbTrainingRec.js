@@ -63,28 +63,28 @@ const DBTrainingRec = ({ assessmentlist }) => {
         <CCardHeader style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}>
           <CIcon icon={cilClipboard} /> TRAINING RECOMMENDATION
         </CCardHeader>
-        <CCardBody>
-          {positionCompetency?.length > 0 ? (
-            <CAlert color="info">No Data Available</CAlert>
-          ) : (
-            <CTable small responsive bordered>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell>No</CTableHeaderCell>
-                  <CTableHeaderCell>Training</CTableHeaderCell>
-                  <CTableHeaderCell>Training Group</CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                <CTableRow>
-                  <CTableDataCell>1</CTableDataCell>
-                  <CTableDataCell>Human Resource Management Training</CTableDataCell>
-                  <CTableDataCell>Functional</CTableDataCell>
-                </CTableRow>
-              </CTableBody>
-            </CTable>
-          )}
-        </CCardBody>
+        {positionCompetency?.length > 0 ? (
+          <CAlert color="info" className="m-2">
+            No Data Available
+          </CAlert>
+        ) : (
+          <CTable small responsive bordered>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>No</CTableHeaderCell>
+                <CTableHeaderCell>Training</CTableHeaderCell>
+                <CTableHeaderCell>Training Group</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              <CTableRow>
+                <CTableDataCell>1</CTableDataCell>
+                <CTableDataCell>Human Resource Management Training</CTableDataCell>
+                <CTableDataCell>Functional</CTableDataCell>
+              </CTableRow>
+            </CTableBody>
+          </CTable>
+        )}
       </CCard>
     </div>
   )
