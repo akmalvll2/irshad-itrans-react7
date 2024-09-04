@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import img2 from '../../../assets/images/4.png'
+import MyContext from '../data/MyContext'
 //path to API call IMPORTANT!
 import packageJson from '../../../../package.json'
 import {
@@ -10,6 +11,7 @@ import {
   CNav,
   CNavItem,
   CNavLink,
+  CSpinner,
   CTabContent,
   CTabPane,
 } from '@coreui/react'
@@ -28,6 +30,7 @@ const ReportExample2 = React.lazy(() => import('./ReportExample2'))
 const ReportDepartment1 = React.lazy(() => import('./ReportDepartment1'))
 
 const Report = () => {
+  const { loading, company } = useContext(MyContext)
   // SETTING INITIALIZE
   const [isChange, setIsChange] = useState(false)
   // DATABASE DATA ARRAY
@@ -154,6 +157,10 @@ const Report = () => {
   }, [isChange])
 
   const [activeKey, setActiveKey] = useState(1)
+
+  const selectedCompany = company[0]
+
+  if (loading.company) <CSpinner />
   return (
     <>
       {/*<ReportTable2
@@ -195,7 +202,10 @@ const Report = () => {
             backgroundPosition: 'center',
             color: 'navy',
           }}*/
-          style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
+          style={{
+            backgroundColor: `${selectedCompany?.company_system_primary_color}`,
+            color: 'ghostwhite',
+          }}
         >
           <CIcon icon={cilLibrary} /> REPORT AND ANALYSIS
           <CNav variant="tabs" className="card-header-tabs float-end">

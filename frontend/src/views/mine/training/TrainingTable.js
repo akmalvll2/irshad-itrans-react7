@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import img2 from '../../../assets/images/4.png'
+import MyContext from '../data/MyContext'
 import {
   CSpinner,
   CCard,
@@ -45,11 +46,15 @@ const TrainingTable = ({
   editTraining,
   role,
 }) => {
+  const { loading, company } = useContext(MyContext)
   const [groupFilter, setGroupFilter] = useState('All')
 
+  const selectedCompany = company[0]
   const filteredTraining = traininglist.filter((i) =>
     groupFilter === 'All' ? true : i.cluster_name === groupFilter,
   )
+
+  if (loading.company) <CSpinner />
   return (
     <>
       <div>
@@ -61,7 +66,10 @@ const TrainingTable = ({
               backgroundPosition: 'center',
               color: 'navy',
             }}*/
-            style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
+            style={{
+              backgroundColor: `${selectedCompany?.company_system_primary_color}`,
+              color: 'ghostwhite',
+            }}
           >
             <CIcon icon={cilLibrary} /> TRAINING
             {role === 'admin' ? (

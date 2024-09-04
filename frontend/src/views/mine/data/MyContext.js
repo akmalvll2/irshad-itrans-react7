@@ -9,6 +9,7 @@ const { config } = packageJson
 const MyContext = createContext()
 
 export const MyProvider = ({ children }) => {
+  const [company, setCompany] = useState([])
   const [staff, setStaff] = useState([])
   const [department, setDepartment] = useState([])
   const [position, setPosition] = useState([])
@@ -22,6 +23,7 @@ export const MyProvider = ({ children }) => {
   const [competencyTraining, setCompetencyTraining] = useState([])
   const [staffAssessor, setStaffAssessor] = useState([])
   const [loading, setLoading] = useState({
+    company: true,
     staff: true,
     department: true,
     position: true,
@@ -35,6 +37,18 @@ export const MyProvider = ({ children }) => {
     competencyTraining: true,
     staffAssessor: true,
   })
+
+  // .........COMPANY.......
+  const fetchCompany = async () => {
+    try {
+      const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/company/getallcompany`)
+      setCompany(response.data)
+    } catch (error) {
+      console.log('Error: '.error)
+    } finally {
+      setLoading((prev) => ({ ...prev, company: false }))
+    }
+  }
 
   // .........STAFF.........
   const fetchStaff = async () => {
@@ -218,6 +232,7 @@ export const MyProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    fetchCompany()
     fetchStaff()
     fetchStaffAssessor()
     fetchPosition()
@@ -235,6 +250,7 @@ export const MyProvider = ({ children }) => {
   return (
     <MyContext.Provider
       value={{
+        company,
         staff,
         staffAssessor,
         updateStaff,

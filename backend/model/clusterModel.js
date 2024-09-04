@@ -3,7 +3,7 @@ const db = require('../config/db')
 //READ ALL CLUSTER
 async function getAllCluster () {
     try {
-        const [rows] = await db.query('SELECT * FROM `cluster` ORDER BY cluster.cluster_name')
+        const [rows] = await db.query('SELECT * FROM `cluster` ORDER BY cluster.cluster_level')
         return rows
     } catch (error) {
         throw new Error(error.message)

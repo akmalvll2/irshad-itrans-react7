@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import img2 from '../../../assets/images/4.png'
+import MyContext from '../data/MyContext'
 import {
   CSpinner,
   CCard,
@@ -53,6 +54,11 @@ const AssessmentTable = ({
   setToggleSubmissionTable,
   role,
 }) => {
+  const { loading, company } = useContext(MyContext)
+
+  const selectedCompany = company[0]
+
+  if (loading.company) <CSpinner />
   return (
     <>
       <div>
@@ -64,7 +70,10 @@ const AssessmentTable = ({
               backgroundPosition: 'center',
               color: 'navy',
             }}*/
-            style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
+            style={{
+              backgroundColor: `${selectedCompany?.company_system_primary_color}`,
+              color: 'ghostwhite',
+            }}
           >
             <CIcon icon={cilLibrary} /> ASSESSMENT
             {role === 'admin' ? (

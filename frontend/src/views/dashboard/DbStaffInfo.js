@@ -34,14 +34,16 @@ import CIcon from '@coreui/icons-react'
 import { cilPeople, cilUser } from '@coreui/icons'
 
 const DashboardInfo1 = () => {
-  const { staff, positionCompetency, loading } = useContext(MyContext)
+  const { staff, cluster, positionCompetency, company, loading } = useContext(MyContext)
 
   const [activeKey, setActiveKey] = useState(1)
 
   const selectedStaff = staff?.find((i) => i.staff_id.toString() === userType?.id)
 
+  const selectedCompany = company[0]
+
   // loading state if the data are not available
-  if (loading.staff) {
+  if (loading.staff || loading.positionCompetency || loading.company || loading.cluster) {
     return <CSpinner />
   }
   return (
@@ -55,7 +57,10 @@ const DashboardInfo1 = () => {
             color: 'navy',
             textAlign: 'center',
           }}*/
-          style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
+          style={{
+            backgroundColor: `${selectedCompany.company_system_primary_color}`,
+            color: 'ghostwhite',
+          }}
         >
           <CIcon icon={cilUser} /> STAFF INFORMATION
         </CCardHeader>
@@ -69,23 +74,27 @@ const DashboardInfo1 = () => {
                     <CTableBody>
                       <CTableRow>
                         <CTableHeaderCell>ID</CTableHeaderCell>
-                        <CTableDataCell className="text-capitalize">
+                        <CTableDataCell className="text-uppercase">
                           {val.staff_id_number}
                         </CTableDataCell>
                       </CTableRow>
                       <CTableRow>
                         <CTableHeaderCell>Name</CTableHeaderCell>
-                        <CTableDataCell className="text-capitalize">
+                        <CTableDataCell className=" text-uppercase">
                           {val.staff_name}
                         </CTableDataCell>
                       </CTableRow>
                       <CTableRow>
                         <CTableHeaderCell>Position</CTableHeaderCell>
-                        <CTableDataCell>{val.position_name}</CTableDataCell>
+                        <CTableDataCell className=" text-uppercase">
+                          {val.position_name}
+                        </CTableDataCell>
                       </CTableRow>
                       <CTableRow>
                         <CTableHeaderCell>Grade</CTableHeaderCell>
-                        <CTableDataCell>{val.position_grade}</CTableDataCell>
+                        <CTableDataCell className=" text-uppercase">
+                          {val.position_grade}
+                        </CTableDataCell>
                       </CTableRow>
                       <CTableRow>
                         <CTableHeaderCell>Department</CTableHeaderCell>
@@ -112,175 +121,74 @@ const DashboardInfo1 = () => {
                     role="tablist"
                     className="card-header-tabs flex-column flex-sm-row"
                   >
-                    <CNavItem role="presentation">
-                      <CNavLink
-                        active={activeKey === 1}
-                        component="button"
-                        role="tab"
-                        aria-controls="home-tab-pane"
-                        aria-selected={activeKey === 1}
-                        onClick={() => setActiveKey(1)}
-                      >
-                        Core
-                      </CNavLink>
-                    </CNavItem>
-                    <CNavItem role="presentation">
-                      <CNavLink
-                        active={activeKey === 2}
-                        component="button"
-                        role="tab"
-                        aria-controls="profile-tab-pane"
-                        aria-selected={activeKey === 2}
-                        onClick={() => setActiveKey(2)}
-                      >
-                        Generic
-                      </CNavLink>
-                    </CNavItem>
-                    <CNavItem role="presentation">
-                      <CNavLink
-                        active={activeKey === 3}
-                        component="button"
-                        role="tab"
-                        aria-controls="profile-tab-pane"
-                        aria-selected={activeKey === 3}
-                        onClick={() => setActiveKey(3)}
-                      >
-                        Functional
-                      </CNavLink>
-                    </CNavItem>
+                    {cluster?.map((cls, clskey) => {
+                      return (
+                        <CNavItem role="presentation" key={clskey}>
+                          <CNavLink
+                            active={activeKey === clskey + 1}
+                            component="button"
+                            role="tab"
+                            aria-controls="home-tab-pane"
+                            aria-selected={activeKey === clskey + 1}
+                            onClick={() => setActiveKey(clskey + 1)}
+                          >
+                            {cls.cluster_name}
+                          </CNavLink>
+                        </CNavItem>
+                      )
+                    })}
                   </CNav>
                 </CCardHeader>
                 <CCardBody className="p-0">
                   <CTabContent>
-                    <CTabPane
-                      role="tabpanel"
-                      className="p-0"
-                      aria-labelledby="home-tab-pane"
-                      visible={activeKey === 1}
-                    >
-                      {positionCompetency?.filter(
-                        (i) =>
-                          i.position_id === selectedStaff?.position_id &&
-                          i.cluster_name.toString() === 'Core',
-                      ).length > 0 ? (
-                        <CTable small responsive className="m-0">
-                          <CTableHead>
-                            <CTableRow>
-                              <CTableHeaderCell>No</CTableHeaderCell>
-                              <CTableHeaderCell>Competency</CTableHeaderCell>
-                              <CTableHeaderCell>RCL</CTableHeaderCell>
-                            </CTableRow>
-                          </CTableHead>
-                          <CTableBody>
-                            {positionCompetency
-                              ?.filter(
-                                (i) =>
-                                  i.position_id === selectedStaff?.position_id &&
-                                  i.cluster_name.toString() === 'Core',
-                              )
-                              .map((val2, key2) => (
-                                <CTableRow key={key2}>
-                                  <CTableDataCell>{key2 + 1}.</CTableDataCell>
-                                  <CTableDataCell>{val2.competency_name}</CTableDataCell>
-                                  <CTableDataCell className=" d-flex align-items-center">
-                                    {val2.position_competency_expected_level}
-                                  </CTableDataCell>
+                    {cluster?.map((cls, clskey) => {
+                      return (
+                        <CTabPane
+                          role="tabpanel"
+                          className="p-0"
+                          aria-labelledby="home-tab-pane"
+                          visible={activeKey === clskey + 1}
+                          key={clskey + 1}
+                        >
+                          {positionCompetency?.filter(
+                            (i) =>
+                              i.position_id === selectedStaff?.position_id &&
+                              i.cluster_id === cls.cluster_id,
+                          ).length > 0 ? (
+                            <CTable small responsive className="m-0">
+                              <CTableHead>
+                                <CTableRow>
+                                  <CTableHeaderCell>No</CTableHeaderCell>
+                                  <CTableHeaderCell>Competency</CTableHeaderCell>
+                                  <CTableHeaderCell>RCL</CTableHeaderCell>
                                 </CTableRow>
-                              ))}
-                          </CTableBody>
-                        </CTable>
-                      ) : (
-                        <CAlert className="m-2" color="primary">
-                          No Data Available
-                        </CAlert>
-                      )}
-                    </CTabPane>
-                    <CTabPane
-                      role="tabpanel"
-                      className="p-0"
-                      aria-labelledby="home-tab-pane"
-                      visible={activeKey === 2}
-                    >
-                      {positionCompetency?.filter(
-                        (i) =>
-                          i.position_id === selectedStaff?.position_id &&
-                          i.cluster_name.toString() === 'Generic',
-                      ).length > 0 ? (
-                        <CTable small responsive className="m-0">
-                          <CTableHead>
-                            <CTableRow>
-                              <CTableHeaderCell>No</CTableHeaderCell>
-                              <CTableHeaderCell>Competency</CTableHeaderCell>
-                              <CTableHeaderCell>Required Level</CTableHeaderCell>
-                            </CTableRow>
-                          </CTableHead>
-                          <CTableBody>
-                            {positionCompetency
-                              ?.filter(
-                                (i) =>
-                                  i.position_id === selectedStaff?.position_id &&
-                                  i.cluster_name.toString() === 'Generic',
-                              )
-                              .map((val2, key2) => (
-                                <CTableRow key={key2}>
-                                  <CTableDataCell>{key2 + 1}.</CTableDataCell>
-                                  <CTableDataCell>{val2.competency_name}</CTableDataCell>
-                                  <CTableDataCell className=" d-flex align-items-center">
-                                    {val2.position_competency_expected_level}
-                                  </CTableDataCell>
-                                </CTableRow>
-                              ))}
-                          </CTableBody>
-                        </CTable>
-                      ) : (
-                        <CAlert className="m-2" color="primary">
-                          No Data Available
-                        </CAlert>
-                      )}
-                    </CTabPane>
-                    <CTabPane
-                      role="tabpanel"
-                      className="p-0"
-                      aria-labelledby="home-tab-pane"
-                      visible={activeKey === 3}
-                    >
-                      {positionCompetency?.filter(
-                        (i) =>
-                          i.position_id === selectedStaff?.position_id &&
-                          i.cluster_name.toString() === 'Functional',
-                      ).length > 0 ? (
-                        <CTable small responsive className="m-0">
-                          <CTableHead>
-                            <CTableRow>
-                              <CTableHeaderCell>No</CTableHeaderCell>
-                              <CTableHeaderCell>Competency</CTableHeaderCell>
-                              <CTableHeaderCell>Required Level</CTableHeaderCell>
-                            </CTableRow>
-                          </CTableHead>
-                          <CTableBody>
-                            {positionCompetency
-                              ?.filter(
-                                (i) =>
-                                  i.position_id === selectedStaff?.position_id &&
-                                  i.cluster_name.toString() === 'Functional',
-                              )
-                              .map((val2, key2) => (
-                                <CTableRow key={key2}>
-                                  <CTableDataCell>{key2 + 1}.</CTableDataCell>
-                                  <CTableDataCell>{val2.competency_name}</CTableDataCell>
-                                  <CTableDataCell className=" d-flex align-items-center">
-                                    {val2.position_competency_expected_level}
-                                  </CTableDataCell>
-                                </CTableRow>
-                              ))}
-                          </CTableBody>
-                        </CTable>
-                      ) : (
-                        <CAlert className="m-2" color="primary">
-                          No Data Available
-                        </CAlert>
-                      )}
-                    </CTabPane>
+                              </CTableHead>
+                              <CTableBody>
+                                {positionCompetency
+                                  ?.filter(
+                                    (i) =>
+                                      i.position_id === selectedStaff?.position_id &&
+                                      i.cluster_id === cls.cluster_id,
+                                  )
+                                  .map((val2, key2) => (
+                                    <CTableRow key={key2}>
+                                      <CTableDataCell>{key2 + 1}.</CTableDataCell>
+                                      <CTableDataCell>{val2.competency_name}</CTableDataCell>
+                                      <CTableDataCell className=" d-flex align-items-center">
+                                        {val2.position_competency_expected_level}
+                                      </CTableDataCell>
+                                    </CTableRow>
+                                  ))}
+                              </CTableBody>
+                            </CTable>
+                          ) : (
+                            <CAlert className="m-2" color="info">
+                              No Data Available
+                            </CAlert>
+                          )}
+                        </CTabPane>
+                      )
+                    })}
                   </CTabContent>
                 </CCardBody>
               </CCard>

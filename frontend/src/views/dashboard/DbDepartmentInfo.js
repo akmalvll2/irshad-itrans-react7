@@ -1,346 +1,324 @@
 import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
-import moment from 'moment'
-import img2 from '../../assets/images/4.png'
-
-//path to userType component
-import { userType } from 'src/userType'
-
 import MyContext from '../mine/data/MyContext'
-
-// IMPORT COREUI COMPONENT
 import {
   CRow,
   CCol,
   CCard,
   CCardBody,
   CCardHeader,
-  CTableBody,
-  CTableRow,
-  CTableDataCell,
-  CTable,
-  CTableHead,
-  CTableHeaderCell,
-  CAlert,
-  CCardSubtitle,
-  CCardText,
+  CWidgetStatsF,
+  CCardTitle,
   CSpinner,
+  CCardSubtitle,
 } from '@coreui/react'
-
+import CIcon from '@coreui/icons-react'
+import { cilClipboard, cilUser, cilUserPlus } from '@coreui/icons'
 import { CChart } from '@coreui/react-chartjs'
 
 const DashboardInfo1 = () => {
-  const { staff, department, positionCompetency, competency, position, loading } =
+  const { staff, department, positionCompetency, competency, position, company, loading } =
     useContext(MyContext)
 
-  // loading state if the data are not available
-  if (loading.staff || loading.department || loading.positionCompetency) {
+  const selectedCompany = company[0]
+
+  if (
+    loading.staff ||
+    loading.department ||
+    loading.positionCompetency ||
+    loading.competency ||
+    loading.company ||
+    loading.position
+  ) {
     return <CSpinner />
   }
+
   return (
     <div>
       <CCard className="my-2">
         <CCardHeader
           style={{
-            backgroundImage: `url(${img2})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            color: 'navy',
-            textAlign: 'center',
+            backgroundColor: `${selectedCompany.company_system_primary_color}`,
+            color: 'ghostwhite',
           }}
         >
-          Department Summary
+          <CIcon icon={cilClipboard} /> DEPARTMENT SUMMARY
         </CCardHeader>
         <CCardBody>
-          <b className="float-start">Department Information</b>
-          <hr />
           <CRow>
+            <CCol md={3}>
+              <CWidgetStatsF
+                className="mb-3"
+                color="primary"
+                icon={<CIcon icon={cilUser} height={24} />}
+                title="Number of Active Staff"
+                value="6"
+              />
+            </CCol>
+            <CCol md={3}>
+              <CWidgetStatsF
+                className="mb-3"
+                color="primary"
+                icon={<CIcon icon={cilUserPlus} height={24} />}
+                title="Number of Talent"
+                value="0"
+              />
+            </CCol>
+            <CCol md={6}>
+              <CCard>
+                <CCardBody>
+                  <CChart
+                    type="bar"
+                    data={{
+                      labels: ['A2', 'E1', 'E2', 'M2'],
+                      datasets: [
+                        {
+                          label: 'Number of Staff By Job Grade',
+                          backgroundColor: `${selectedCompany?.company_system_info_color}`,
+                          data: [1, 2, 2, 1],
+                        },
+                      ],
+                    }}
+                    labels="months"
+                    options={{
+                      plugins: {
+                        legend: {
+                          labels: {
+                            color: 'gray',
+                          },
+                        },
+                      },
+                      scales: {
+                        x: {
+                          grid: {
+                            color: 'whitesmoke',
+                          },
+                          ticks: {
+                            color: 'gray',
+                          },
+                        },
+                        y: {
+                          grid: {
+                            color: 'gray',
+                          },
+                          ticks: {
+                            color: 'gray',
+                          },
+                        },
+                      },
+                    }}
+                  />
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
+          <CRow className="mt-2">
             <CCol md={12}>
-              {department
-                ?.filter(
-                  (i) =>
-                    i.department_id ===
-                    staff.find((u) => u.staff_id.toString() === userType?.id)?.department_id,
-                )
-                .map((val) => (
-                  <CTable small responsive borderless align="middle" key={val.department_id}>
-                    <CTableBody>
-                      <CTableRow>
-                        <CTableHeaderCell className="text-secondary">Department</CTableHeaderCell>
-                        <CTableDataCell>{val.department_name}</CTableDataCell>
-                      </CTableRow>
-                      <CTableRow>
-                        <CTableHeaderCell className="text-secondary">
-                          Number of Staff
-                        </CTableHeaderCell>
-                        <CTableDataCell>
-                          {staff?.filter((i) => i.department_id === val.department_id).length}
-                        </CTableDataCell>
-                      </CTableRow>
-                      <CTableRow>
-                        <CTableHeaderCell className="text-secondary">
-                          Number of Relevance Competency
-                        </CTableHeaderCell>
-                        <CTableDataCell>
-                          {
-                            competency.filter(
-                              (competency) =>
-                                competency.cluster_name === 'Core' &&
-                                positionCompetency.some(
-                                  (positionCompetency) =>
-                                    positionCompetency.competency_id === competency.competency_id &&
-                                    position.some(
-                                      (position) =>
-                                        position.position_id === positionCompetency.position_id &&
-                                        staff.some(
-                                          (staffMember) =>
-                                            staffMember.position_id === position.position_id &&
-                                            staffMember.department_id ===
-                                              staff.find(
-                                                (u) => u.staff_id.toString() === userType?.id,
-                                              )?.department_id,
-                                        ),
-                                    ),
-                                ),
-                            ).length
-                          }{' '}
-                          Core <br />
-                          {
-                            competency.filter(
-                              (competency) =>
-                                competency.cluster_name === 'Generic' &&
-                                positionCompetency.some(
-                                  (positionCompetency) =>
-                                    positionCompetency.competency_id === competency.competency_id &&
-                                    position.some(
-                                      (position) =>
-                                        position.position_id === positionCompetency.position_id &&
-                                        staff.some(
-                                          (staffMember) =>
-                                            staffMember.position_id === position.position_id &&
-                                            staffMember.department_id ===
-                                              staff.find(
-                                                (u) => u.staff_id.toString() === userType?.id,
-                                              )?.department_id,
-                                        ),
-                                    ),
-                                ),
-                            ).length
-                          }{' '}
-                          Generic <br />
-                          {
-                            competency.filter(
-                              (competency) =>
-                                competency.cluster_name === 'Functional' &&
-                                positionCompetency.some(
-                                  (positionCompetency) =>
-                                    positionCompetency.competency_id === competency.competency_id &&
-                                    position.some(
-                                      (position) =>
-                                        position.position_id === positionCompetency.position_id &&
-                                        staff.some(
-                                          (staffMember) =>
-                                            staffMember.position_id === position.position_id &&
-                                            staffMember.department_id ===
-                                              staff.find(
-                                                (u) => u.staff_id.toString() === userType?.id,
-                                              )?.department_id,
-                                        ),
-                                    ),
-                                ),
-                            ).length
-                          }{' '}
-                          Functional
-                        </CTableDataCell>
-                      </CTableRow>
-                    </CTableBody>
-                  </CTable>
-                ))}
+              <CCard>
+                <CCardBody>
+                  <CRow>
+                    <CCol md={4}>
+                      <CCardTitle>Core Competencies Rating</CCardTitle>
+                      <CCard>
+                        <CCardBody className="text-center">
+                          <CCardSubtitle>Gap</CCardSubtitle>
+                          <CCardTitle className="text-danger">2.7/5</CCardTitle>
+                        </CCardBody>
+                      </CCard>
+                    </CCol>
+                    <CCol md={8}>
+                      <CChart
+                        type="bar"
+                        data={{
+                          labels: [
+                            'COMMUNICATION',
+                            'CORE VALUES & ETHICS',
+                            'DRIVING EXCELLENCE',
+                            'FOCUS & DISCIPLINE',
+                          ],
+                          datasets: [
+                            {
+                              label: 'Number of Staff By Job Grade',
+                              backgroundColor: `${selectedCompany?.company_system_info_color}`,
+                              data: [2, 3, 4, 1],
+                            },
+                          ],
+                        }}
+                        height={50}
+                        labels="months"
+                        options={{
+                          indexAxis: 'y',
+                          plugins: {
+                            legend: {
+                              labels: {
+                                color: 'gray',
+                              },
+                            },
+                          },
+                          scales: {
+                            x: {
+                              grid: {
+                                color: 'gray',
+                              },
+                              ticks: {
+                                color: 'gray',
+                              },
+                            },
+                            y: {
+                              grid: {
+                                color: 'whitesmoke',
+                              },
+                              ticks: {
+                                color: 'gray',
+                              },
+                            },
+                          },
+                        }}
+                      />
+                    </CCol>
+                  </CRow>
+                </CCardBody>
+              </CCard>
             </CCol>
           </CRow>
-          <b className="float-start">Training Recommendation</b>
-          <hr />
-          <CRow>
-            <CCol md={6}>
-              <CChart
-                type="line"
-                data={{
-                  labels: [
-                    'Microsoft',
-                    'HR System',
-                    'Programming',
-                    'Learning Management System',
-                    'Training Need Analysis',
-                    'UI/UX',
-                    'Software Design',
-                  ],
-                  datasets: [
-                    {
-                      label: 'Latest Assessment',
-                      backgroundColor: 'rgba(220, 220, 220, 0.2)',
-                      borderColor: 'rgba(220, 220, 220, 1)',
-                      pointBackgroundColor: 'rgba(220, 220, 220, 1)',
-                      pointBorderColor: '#fff',
-                      data: [40, 20, 12, 39, 10, 40, 39, 80, 40],
-                    },
-                    {
-                      label: 'Past Assessment',
-                      backgroundColor: 'rgba(151, 187, 205, 0.2)',
-                      borderColor: 'rgba(151, 187, 205, 1)',
-                      pointBackgroundColor: 'rgba(151, 187, 205, 1)',
-                      pointBorderColor: '#fff',
-                      data: [50, 12, 28, 29, 7, 25, 12, 70, 60],
-                    },
-                  ],
-                }}
-                options={{
-                  plugins: {
-                    legend: {
-                      labels: {
-                        color: 'gray',
-                      },
-                    },
-                  },
-                  scales: {
-                    x: {
-                      grid: {
-                        color: 'lightgray',
-                      },
-                      ticks: {
-                        color: 'gray',
-                      },
-                    },
-                    y: {
-                      grid: {
-                        color: 'lightgray',
-                      },
-                      ticks: {
-                        color: 'gray',
-                      },
-                    },
-                  },
-                }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CTable small responsive borderless>
-                <CTableBody>
-                  <CTableRow>
-                    <CTableHeaderCell className="text-secondary">
-                      Recommended Training
-                    </CTableHeaderCell>
-                    <CTableDataCell>
-                      - Microsoft Advance Training <br />
-                      - HR System Management <br />
-                      - Training Need Analysis Course <br />
-                    </CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell className="text-secondary">Past Training</CTableHeaderCell>
-                    <CTableDataCell>
-                      - Learning Management System Course <br />
-                    </CTableDataCell>
-                  </CTableRow>
-                </CTableBody>
-              </CTable>
+          <CRow className="mt-2">
+            <CCol md={12}>
+              <CCard>
+                <CCardBody>
+                  <CRow>
+                    <CCol md={4}>
+                      <CCardTitle>Generic Competencies Rating</CCardTitle>
+                      <CCard>
+                        <CCardBody className="text-center">
+                          <CCardSubtitle>Gap</CCardSubtitle>
+                          <CCardTitle className="text-danger">2.3/5</CCardTitle>
+                        </CCardBody>
+                      </CCard>
+                    </CCol>
+                    <CCol md={8}>
+                      <CChart
+                        type="bar"
+                        data={{
+                          labels: [
+                            'ADAPTABILITY',
+                            'ANALYTHICAL THINKING',
+                            'CHANGE MANAGEMENT',
+                            'CONFLICT MANAGEMENT',
+                          ],
+                          datasets: [
+                            {
+                              label: 'Number of Staff By Job Grade',
+                              backgroundColor: `${selectedCompany?.company_system_info_color}`,
+                              data: [2, 3, 4, 1],
+                            },
+                          ],
+                        }}
+                        height={50}
+                        labels="months"
+                        options={{
+                          indexAxis: 'y',
+                          plugins: {
+                            legend: {
+                              labels: {
+                                color: 'gray',
+                              },
+                            },
+                          },
+                          scales: {
+                            x: {
+                              grid: {
+                                color: 'gray',
+                              },
+                              ticks: {
+                                color: 'gray',
+                              },
+                            },
+                            y: {
+                              grid: {
+                                color: 'whitesmoke',
+                              },
+                              ticks: {
+                                color: 'gray',
+                              },
+                            },
+                          },
+                        }}
+                      />
+                    </CCol>
+                  </CRow>
+                </CCardBody>
+              </CCard>
             </CCol>
           </CRow>
-          <b className="float-start">Competency Performance</b>
-          <hr />
-          <CRow>
-            <CCol md={6}>
-              <CChart
-                type="bar"
-                data={{
-                  labels: [
-                    'Microsoft',
-                    'HR System',
-                    'Programming',
-                    'Learning Management System',
-                    'Training Need Analysis',
-                    'UI/UX',
-                    'Software Design',
-                  ],
-                  datasets: [
-                    {
-                      label: 'GitHub Commits',
-                      backgroundColor: '#C9C9C9',
-                      data: [40, 20, 12, 39, 10, 40, 39, 80, 40],
-                    },
-                  ],
-                }}
-                labels="months"
-                options={{
-                  plugins: {
-                    legend: {
-                      labels: {
-                        color: 'gray',
-                      },
-                    },
-                  },
-                  scales: {
-                    x: {
-                      grid: {
-                        color: 'lightgrey',
-                      },
-                      ticks: {
-                        color: 'gray',
-                      },
-                    },
-                    y: {
-                      grid: {
-                        color: 'lightgrey',
-                      },
-                      ticks: {
-                        color: 'gray',
-                      },
-                    },
-                  },
-                }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CTable small responsive borderless>
-                <CTableBody>
-                  <CTableRow>
-                    <CTableHeaderCell className="text-secondary">
-                      Excellence Competency
-                    </CTableHeaderCell>
-                    <CTableDataCell></CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell className="text-secondary">
-                      Critical Competency
-                    </CTableHeaderCell>
-                    <CTableDataCell></CTableDataCell>
-                  </CTableRow>
-                </CTableBody>
-              </CTable>
+          <CRow className="mt-2">
+            <CCol md={12}>
+              <CCard>
+                <CCardBody>
+                  <CRow>
+                    <CCol md={4}>
+                      <CCardTitle>Functional Competencies Rating</CCardTitle>
+                      <CCard>
+                        <CCardBody className="text-center">
+                          <CCardSubtitle>Gap</CCardSubtitle>
+                          <CCardTitle className="text-danger">2.5/5</CCardTitle>
+                        </CCardBody>
+                      </CCard>
+                    </CCol>
+                    <CCol md={8}>
+                      <CChart
+                        type="bar"
+                        data={{
+                          labels: [
+                            'COMPPLIANCE AND REGULATORY KNOWLEDGE',
+                            'CORRUPTION RISK ASSESSMENT',
+                            'BRIBERY AND CORRUPTION TRAINING AND AWARENESS',
+                            'IN-HOUSE RISK ASSESSMENT MODULE DEVELOPMENT',
+                            'ISO AUDIT PROCESS',
+                          ],
+                          datasets: [
+                            {
+                              label: 'Number of Staff By Job Grade',
+                              backgroundColor: `${selectedCompany?.company_system_info_color}`,
+                              data: [2, 3, 4, 1, 2],
+                            },
+                          ],
+                        }}
+                        height={50}
+                        labels="months"
+                        options={{
+                          indexAxis: 'y',
+                          plugins: {
+                            legend: {
+                              labels: {
+                                color: 'gray',
+                              },
+                            },
+                          },
+                          scales: {
+                            x: {
+                              grid: {
+                                color: 'gray',
+                              },
+                              ticks: {
+                                color: 'gray',
+                              },
+                            },
+                            y: {
+                              grid: {
+                                color: 'whitesmoke',
+                              },
+                              ticks: {
+                                color: 'gray',
+                              },
+                            },
+                          },
+                        }}
+                      />
+                    </CCol>
+                  </CRow>
+                </CCardBody>
+              </CCard>
             </CCol>
           </CRow>
-          {/* STAFF PERFORMANCE */}
-          {/*<b className="float-start">Staff Performance</b>
-          <hr />
-          <CTable small responsive bordered>
-            <CTableHead color="secondary">
-              <CTableRow>
-                <CTableHeaderCell>Staff</CTableHeaderCell>
-                <CTableHeaderCell>Position</CTableHeaderCell>
-                <CTableHeaderCell>Gap Rating</CTableHeaderCell>
-                <CTableHeaderCell>Excellent Competency</CTableHeaderCell>
-                <CTableHeaderCell>Critical Competency</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              <CTableRow>
-                <CTableDataCell>Amirhamzah</CTableDataCell>
-              </CTableRow>
-              <CTableRow>
-                <CTableDataCell>Badrul Akmal</CTableDataCell>
-              </CTableRow>
-            </CTableBody>
-          </CTable>
-          */}
         </CCardBody>
       </CCard>
     </div>

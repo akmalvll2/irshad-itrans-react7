@@ -90,6 +90,11 @@ const AssessmentFormUser = ({
     setAssessmentResult(newArray)
   }
 
+  const listfunc = (data) => {
+    const listItems = data?.split(/\s*#\s*/).filter((item) => item.trim() !== '')
+    return listItems
+  }
+
   var indcount = 0
 
   if (
@@ -909,6 +914,7 @@ const AssessmentFormUser = ({
                                     <CTableRow>
                                       <CTableHeaderCell>No</CTableHeaderCell>
                                       <CTableHeaderCell>Competency</CTableHeaderCell>
+                                      <CTableHeaderCell>RCL</CTableHeaderCell>
                                       <CTableHeaderCell>1</CTableHeaderCell>
                                       <CTableHeaderCell>2</CTableHeaderCell>
                                       <CTableHeaderCell>3</CTableHeaderCell>
@@ -930,7 +936,7 @@ const AssessmentFormUser = ({
                                   <CTableBody key={clusterkey}>
                                     <CTableRow className="table-dark">
                                       <CTableHeaderCell
-                                        colSpan={8}
+                                        colSpan={9}
                                         className="text-center"
                                         style={{ fontWeight: 'bold' }}
                                       >
@@ -959,16 +965,81 @@ const AssessmentFormUser = ({
                                                     {val2.competency_description}
                                                   </p>
                                                   <p>
-                                                    <b>Group:</b> {val2.cluster_name}
+                                                    <b>Group:</b>{' '}
+                                                    <CBadge color={val2.cluster_color}>
+                                                      {val2.cluster_name}
+                                                    </CBadge>
                                                   </p>
+                                                  <CTable small responsive bordered>
+                                                    <CTableBody>
+                                                      <CTableRow>
+                                                        <CTableHeaderCell>Level 1</CTableHeaderCell>
+                                                        <CTableHeaderCell>Level 2</CTableHeaderCell>
+                                                        <CTableHeaderCell>Level 3</CTableHeaderCell>
+                                                        <CTableHeaderCell>Level 4</CTableHeaderCell>
+                                                        <CTableHeaderCell>Level 5</CTableHeaderCell>
+                                                      </CTableRow>
+                                                      <CTableRow>
+                                                        <CTableDataCell>
+                                                          <ul>
+                                                            {listfunc(val2.competency_level1)?.map(
+                                                              (i) => (
+                                                                <li key={i.id}>{i}</li>
+                                                              ),
+                                                            )}
+                                                          </ul>
+                                                        </CTableDataCell>
+                                                        <CTableDataCell>
+                                                          <ul>
+                                                            {listfunc(val2.competency_level2)?.map(
+                                                              (i) => (
+                                                                <li key={i.id}>{i}</li>
+                                                              ),
+                                                            )}
+                                                          </ul>
+                                                        </CTableDataCell>
+                                                        <CTableDataCell>
+                                                          <ul>
+                                                            {listfunc(val2.competency_level3)?.map(
+                                                              (i) => (
+                                                                <li key={i.id}>{i}</li>
+                                                              ),
+                                                            )}
+                                                          </ul>
+                                                        </CTableDataCell>
+                                                        <CTableDataCell>
+                                                          <ul>
+                                                            {listfunc(val2.competency_level4)?.map(
+                                                              (i) => (
+                                                                <li key={i.id}>{i}</li>
+                                                              ),
+                                                            )}
+                                                          </ul>
+                                                        </CTableDataCell>
+                                                        <CTableDataCell>
+                                                          <ul>
+                                                            {listfunc(val2.competency_level5)?.map(
+                                                              (i) => (
+                                                                <li key={i.id}>{i}</li>
+                                                              ),
+                                                            )}
+                                                          </ul>
+                                                        </CTableDataCell>
+                                                      </CTableRow>
+                                                    </CTableBody>
+                                                  </CTable>
                                                 </div>
                                               }
                                               placement="auto"
                                               trigger={['hover', 'focus']}
                                               title="Detail"
+                                              style={{ width: '1000px', maxWidth: '1000px' }}
                                             >
                                               <CIcon className="mx-2" icon={cilInfo} />
                                             </CPopover>
+                                          </CTableDataCell>
+                                          <CTableDataCell>
+                                            {val2.position_competency_expected_level}
                                           </CTableDataCell>
                                           {[1, 2, 3, 4, 5].map((level) => (
                                             <CTableDataCell className="text-center" key={level}>

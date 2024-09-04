@@ -29,6 +29,7 @@ import { cilClipboard } from '@coreui/icons'
 
 const DashboardInfo1 = ({ assessmentlist }) => {
   const {
+    company,
     staff,
     staffAssessor,
     position,
@@ -42,6 +43,7 @@ const DashboardInfo1 = ({ assessmentlist }) => {
   } = useContext(MyContext)
 
   if (
+    loading.company ||
     loading.staff ||
     loading.staffAssessor ||
     loading.position ||
@@ -65,7 +67,11 @@ const DashboardInfo1 = ({ assessmentlist }) => {
             color: 'navy',
             textAlign: 'center',
           }}*/
-          style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
+          //className="bg-primary text-white"
+          style={{
+            backgroundColor: `${company[0]?.company_system_primary_color}`,
+            color: `whitesmoke`,
+          }}
         >
           <CIcon icon={cilClipboard} /> ACTIVE ASSESSMENT
         </CCardHeader>
@@ -118,8 +124,8 @@ const DashboardInfo1 = ({ assessmentlist }) => {
                     <CTable small responsive bordered className="m-0">
                       <CTableHead color="dark">
                         <CTableRow>
-                          <CTableHeaderCell>Assessment For</CTableHeaderCell>
-                          <CTableHeaderCell>As</CTableHeaderCell>
+                          <CTableHeaderCell>Name</CTableHeaderCell>
+                          <CTableHeaderCell>Type</CTableHeaderCell>
                           <CTableHeaderCell>Status</CTableHeaderCell>
                           <CTableHeaderCell>Action</CTableHeaderCell>
                         </CTableRow>

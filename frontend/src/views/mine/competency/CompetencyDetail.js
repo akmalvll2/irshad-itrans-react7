@@ -12,6 +12,7 @@ import {
   CTableBody,
   CTableRow,
   CTableDataCell,
+  CTableHeaderCell,
 } from '@coreui/react'
 
 //icon
@@ -37,6 +38,7 @@ const CompetencyDetail = ({
         visible={visible}
         onClose={() => setVisible(false)}
         aria-labelledby="StaticBackdropExampleLabel"
+        size="xl"
       >
         <CModalHeader>
           <CModalTitle id="StaticBackdropExampleLabel">Competency Detail</CModalTitle>
@@ -45,6 +47,10 @@ const CompetencyDetail = ({
           {competencydata
             ?.filter((fil) => fil.competency_id === viewCompetency)
             .map((val, key) => {
+              const listfunc = (data) => {
+                const listItems = data?.split(/\s*#\s*/).filter((item) => item.trim() !== '')
+                return listItems
+              }
               return (
                 <div key={key}>
                   <CTable small bordered stripedColumns>
@@ -60,8 +66,60 @@ const CompetencyDetail = ({
                         </CTableDataCell>
                       </CTableRow>
                       <CTableRow>
-                        <CTableDataCell>Description:</CTableDataCell>
+                        <CTableDataCell>Definition:</CTableDataCell>
                         <CTableDataCell>{val.competency_description}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell colSpan={2}>
+                          <CTable small responsive bordered>
+                            <CTableBody>
+                              <CTableRow>
+                                <CTableHeaderCell>Level 1</CTableHeaderCell>
+                                <CTableHeaderCell>Level 2</CTableHeaderCell>
+                                <CTableHeaderCell>Level 3</CTableHeaderCell>
+                                <CTableHeaderCell>Level 4</CTableHeaderCell>
+                                <CTableHeaderCell>Level 5</CTableHeaderCell>
+                              </CTableRow>
+                              <CTableRow>
+                                <CTableDataCell>
+                                  <ul>
+                                    {listfunc(val.competency_level1)?.map((li, likey) => (
+                                      <li key={likey}>{li}</li>
+                                    ))}
+                                  </ul>
+                                </CTableDataCell>
+                                <CTableDataCell>
+                                  <ul>
+                                    {listfunc(val.competency_level2)?.map((li, likey) => (
+                                      <li key={likey}>{li}</li>
+                                    ))}
+                                  </ul>
+                                </CTableDataCell>
+                                <CTableDataCell>
+                                  <ul>
+                                    {listfunc(val.competency_level3)?.map((li, likey) => (
+                                      <li key={likey}>{li}</li>
+                                    ))}
+                                  </ul>
+                                </CTableDataCell>
+                                <CTableDataCell>
+                                  <ul>
+                                    {listfunc(val.competency_level4)?.map((li, likey) => (
+                                      <li key={likey}>{li}</li>
+                                    ))}
+                                  </ul>
+                                </CTableDataCell>
+                                <CTableDataCell>
+                                  <ul>
+                                    {listfunc(val.competency_level5)?.map((li, likey) => (
+                                      <li key={likey}>{li}</li>
+                                    ))}
+                                  </ul>
+                                </CTableDataCell>
+                              </CTableRow>
+                            </CTableBody>
+                          </CTable>
+                        </CTableDataCell>
                       </CTableRow>
                       {indicatorlist
                         .filter((i) => i.competency_id === val.competency_id)

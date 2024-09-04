@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import img2 from '../../../assets/images/4.png'
+import MyContext from '../data/MyContext'
 import {
   CSpinner,
   CCard,
@@ -62,13 +63,18 @@ const EmployeeTable = ({
   assessors,
   role,
 }) => {
+  const { loading, company } = useContext(MyContext)
   const [activeKey, setActiveKey] = useState(1)
   const [positionFilter, setPositionFilter] = useState('All')
   const [departmentFilter, setDepartmentFilter] = useState('All')
 
+  const selectedCompany = company[0]
+
   const filteredEmployee = employeelist.filter((i) =>
     departmentFilter === 'All' ? true : i.department_id.toString() === departmentFilter,
   )
+
+  if (loading.company) <CSpinner />
   return (
     <>
       <div>
@@ -80,7 +86,10 @@ const EmployeeTable = ({
               backgroundPosition: 'center',
               color: 'navy',
             }}*/
-            style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
+            style={{
+              backgroundColor: `${selectedCompany?.company_system_primary_color}`,
+              color: 'ghostwhite',
+            }}
           >
             <CIcon icon={cilLibrary} /> EMPLOYEE
             {role === 'admin' ? (
@@ -186,7 +195,7 @@ const EmployeeTable = ({
                         <CTableHead color="dark">
                           <CTableRow>
                             <CTableHeaderCell>
-                              <CFormCheck type="checkbox" />
+                              {/*<CFormCheck type="checkbox" />*/}
                               <span className="mx-2">No</span>
                             </CTableHeaderCell>
                             <CTableHeaderCell>Employee</CTableHeaderCell>
@@ -198,7 +207,7 @@ const EmployeeTable = ({
                             return (
                               <CTableRow key={key}>
                                 <CTableDataCell>
-                                  <CFormCheck type="checkbox" />
+                                  {/*<CFormCheck type="checkbox" />*/}
                                   <span className="mx-2">{key + 1}</span>
                                 </CTableDataCell>
                                 <CTableDataCell>

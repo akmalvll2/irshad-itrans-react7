@@ -42,7 +42,7 @@ const DashboardInfo2 = ({
               labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
               datasets: [
                 {
-                  backgroundColor: 'rgba(100,100,100,.1)',
+                  backgroundColor: 'rgba(0,0,0,.1)',
                   borderColor: 'rgba(200,200,200,.55)',
                   pointHoverBackgroundColor: '#fff',
                   borderWidth: 2,
@@ -80,7 +80,7 @@ const DashboardInfo2 = ({
             }}
           />
         }
-        style={{ '--cui-card-cap-bg': '#3b5998' }}
+        style={{ '--cui-card-cap-bg': '#001F60' }}
         values={[
           { title: 'STAFF', value: employeelist?.length },
           { title: 'DEPARTMENT', value: departmentlist?.length },

@@ -28,6 +28,7 @@ import { cilClipboard } from '@coreui/icons'
 
 const DBTrainingRec = ({ assessmentlist }) => {
   const {
+    company,
     staff,
     staffAssessor,
     position,
@@ -42,7 +43,10 @@ const DBTrainingRec = ({ assessmentlist }) => {
     loading,
   } = useContext(MyContext)
 
+  const selectedCompany = company[0]
+
   if (
+    loading.company ||
     loading.staff ||
     loading.staffAssessor ||
     loading.position ||
@@ -60,7 +64,12 @@ const DBTrainingRec = ({ assessmentlist }) => {
   return (
     <div>
       <CCard className=" my-2">
-        <CCardHeader style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}>
+        <CCardHeader
+          style={{
+            backgroundColor: `${selectedCompany?.company_system_primary_color}`,
+            color: 'ghostwhite',
+          }}
+        >
           <CIcon icon={cilClipboard} /> TRAINING RECOMMENDATION
         </CCardHeader>
         {positionCompetency?.length > 0 ? (

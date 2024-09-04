@@ -164,7 +164,7 @@ const AssessmentResultDetail = ({
               <br />
               <CCard className="mb-4">
                 <CCardBody className="text-center">
-                  <h5>Total Average</h5>
+                  <h5>Average Score</h5>
                   <h2 className="text-primary">
                     {totalAveragePercentage ? `${totalAveragePercentage}` : 'N/A'}
                   </h2>

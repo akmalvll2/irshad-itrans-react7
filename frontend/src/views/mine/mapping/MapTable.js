@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import img2 from '../../../assets/images/4.png'
+import MyContext from '../data/MyContext'
 import {
   CSpinner,
   CCard,
@@ -52,7 +53,12 @@ const MapTable = ({
   setToggleMapAssessor,
   setstaffid,
 }) => {
+  const { loading, company } = useContext(MyContext)
   const [activeKey, setActiveKey] = useState(1)
+
+  const selectedCompany = company[0]
+
+  if (loading.company) <CSpinner />
   return (
     <>
       <CCard>
@@ -64,7 +70,10 @@ const MapTable = ({
             color: 'navy',
             paddingBottom: '0px',
           }}*/
-          style={{ backgroundColor: '#3b5998', color: 'ghostwhite' }}
+          style={{
+            backgroundColor: `${selectedCompany?.company_system_primary_color}`,
+            color: 'ghostwhite',
+          }}
         >
           <CIcon icon={cilLibrary} /> MAPPING
         </CCardHeader>
