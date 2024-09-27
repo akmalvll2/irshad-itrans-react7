@@ -3,7 +3,7 @@ const db = require('../config/db')
 //READ ALL DEPARTMENT
 async function getAllDepartment () {
     try {
-        const [rows] = await db.query('SELECT * FROM department ORDER BY department.department_name')
+        const [rows] = await db.query('SELECT * FROM department JOIN division ON division.division_id = department.division_id ORDER BY department.department_name')
         return rows
     } catch (error) {
         throw new Error(error.message)

@@ -142,7 +142,7 @@ const DashboardInfo1 = ({ assessmentlist }) => {
                           .map((val, key) => (
                             <CTableRow key={key}>
                               <CTableDataCell>{val.staff_name}</CTableDataCell>
-                              <CTableDataCell>
+                              <CTableDataCell className="text-capitalize">
                                 {
                                   staffAssessor?.find(
                                     (i) =>

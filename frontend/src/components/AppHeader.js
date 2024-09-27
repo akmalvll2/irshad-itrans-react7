@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
+import MyContext from 'src/views/mine/data/MyContext'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CContainer,
@@ -9,6 +10,7 @@ import {
   CHeaderNav,
   CHeaderToggler,
   CNavItem,
+  CSpinner,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilMenu } from '@coreui/icons'
@@ -23,6 +25,7 @@ import packageJson from '../../package.json'
 const { config } = packageJson
 
 const AppHeader = () => {
+  const { company, loading } = useContext(MyContext)
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
@@ -46,6 +49,8 @@ const AppHeader = () => {
     fetchAppName()
   }, [])
 
+  if (loading.company) return <CSpinner />
+
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
@@ -58,8 +63,10 @@ const AppHeader = () => {
         <CHeaderBrand className="mx-auto d-md-none" to="/">
           {/*<CIcon icon={logo1} height={48} alt="Logo" />*/}
         </CHeaderBrand>
-        <CHeaderNav className="d-none d-md-flex me-auto">
+        {/*className="d-none d-md-flex me-auto bg-info"*/}
+        <CHeaderNav>
           <CNavItem>
+            <h5>{company[0]?.company_system_name}</h5>
             {/*<h6>
               {appname?.map((item) => item.setting_app_name)} ({' '}
               {appname?.map((item) => item.setting_app_short_name)} )

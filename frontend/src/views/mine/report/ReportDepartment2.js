@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import MyContext from '../mine/data/MyContext'
+import MyContext from '../data/MyContext'
 import { userType } from 'src/userType'
 import moment from 'moment'
 import {
@@ -18,12 +18,13 @@ import {
   COffcanvasHeader,
   CCloseButton,
   COffcanvasTitle,
+  CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilClipboard, cilUser, cilUserPlus } from '@coreui/icons'
 import { CChart } from '@coreui/react-chartjs'
 
-const DashboardInfo1 = () => {
+const ReportDepartment2 = () => {
   const {
     staff,
     cluster,
@@ -38,10 +39,10 @@ const DashboardInfo1 = () => {
   } = useContext(MyContext)
   const [competencylist, setcompetencylist] = useState([])
   const [visible, setVisible] = useState()
+  const [selectedDepartment, setSelectedDepartment] = useState()
   const selectedCompany = company[0]
 
-  const currentStaffInfo = staff?.find((i) => i.staff_id.toString() === userType.id)
-  const activeStaff = staff?.filter((i) => i.department_id === currentStaffInfo?.department_id)
+  const activeStaff = staff?.filter((i) => i.department_id.toString() === selectedDepartment)
 
   // Data for Graph 'Number of Staff By Job Grade'
   const firstGraph = () => {
@@ -62,21 +63,6 @@ const DashboardInfo1 = () => {
     return currentEndDate.isAfter(latestEndDate) ? current : latest
   }, assessment[0])
 
-  const assessmentScore = (competencyid, type) => {
-    const score = assessmentResult.find(
-      (i) =>
-        i.assessment_id === latestAssessment?.assessment_id &&
-        i.competency_id === competencyid &&
-        i.staff_assessor_type === type,
-    )?.assessment_result_score
-
-    return { score }
-  }
-
-  const roundedResult = (data) => {
-    return data !== null ? Number(data.toFixed(2)) : null
-  }
-
   const calculateOverallAverage = (type) => {
     if (competencylist.filter((i) => i.competencytype === type).length === 0) return 0
 
@@ -96,7 +82,7 @@ const DashboardInfo1 = () => {
           assessmentResult.filter(
             (i) =>
               i.competency_id === comp.competency_id &&
-              i.department_id === currentStaffInfo?.department_id,
+              i.department_id.toString() === selectedDepartment,
           ),
         ),
       ]
@@ -179,13 +165,26 @@ const DashboardInfo1 = () => {
           <CIcon icon={cilClipboard} /> DEPARTMENT SUMMARY
         </CCardHeader>
         <CCardBody>
+          <CFormSelect className="mb-2" onChange={(e) => setSelectedDepartment(e.target.value)}>
+            <option value="">...Select Department...</option>
+            {department?.map((val, key) => (
+              <option key={key} value={val.department_id}>
+                {val.department_name}
+              </option>
+            ))}
+          </CFormSelect>
           <CRow>
             <CCol md={6}>
               <CRow>
                 <CCol md={12}>
                   <CCard className="mb-2">
                     <CCardBody>
-                      <CCardTitle>{currentStaffInfo?.department_name}</CCardTitle>
+                      <CCardTitle>
+                        {
+                          department?.find((i) => i.department_id.toString() === selectedDepartment)
+                            ?.department_name
+                        }
+                      </CCardTitle>
                     </CCardBody>
                   </CCard>
                 </CCol>
@@ -297,7 +296,7 @@ const DashboardInfo1 = () => {
                             <CRow>
                               <CCol md={12}>
                                 <CCard>
-                                  <CCardBody>
+                                  <CCardBody className="text-center">
                                     <h6>Score</h6>
                                     <CCardTitle>
                                       <b>{calculateOverallAverage(val.cluster_name)}</b>
@@ -424,4 +423,4 @@ const DashboardInfo1 = () => {
   )
 }
 
-export default DashboardInfo1
+export default ReportDepartment2

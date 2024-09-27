@@ -65,7 +65,7 @@ async function mailPasswordEmployee(employeeid,employeedata) {
 //READ ALL EMPLOYEE
 async function getAllEmployee() {
     try {
-        const [rows] = await db.query('SELECT * FROM staff JOIN department ON department.department_id = staff.department_id JOIN position ON position.position_id = staff.position_id ORDER BY staff.staff_name')
+        const [rows] = await db.query('SELECT * FROM staff JOIN department ON department.department_id = staff.department_id JOIN division ON department.division_id = division.division_id JOIN position ON position.position_id = staff.position_id ORDER BY staff.staff_name')
         return rows
     } catch (error) {
         throw new Error(error.message)

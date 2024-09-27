@@ -16,6 +16,7 @@ const AssessmentDetail = React.lazy(() => import('./AssessmentDetail'))
 const AssessmentEdit = React.lazy(() => import('./AssessmentEdit'))
 const AssessmentFormAdmin = React.lazy(() => import('./AssessmentFormAdmin'))
 const AssessmentFormUser = React.lazy(() => import('./AssessmentFormUser'))
+const AssessmentForm1 = React.lazy(() => import('./AssessmentForm1'))
 const AssessmentFormCBI = React.lazy(() => import('./AssessmentFormCBI'))
 const AssessmentStatusTable = React.lazy(() => import('./AssessmentStatusTable'))
 const AssessmentFormLeadership = React.lazy(() => import('./AssessmentFormLeadership'))
@@ -251,7 +252,7 @@ const Assessment = () => {
           assessmentid={viewAssessment}
           assessors={assessors}
         />
-        {assessmentlist?.find((i) => i.assessment_id === viewAssessment)?.assessment_type ===
+        {/*assessmentlist?.find((i) => i.assessment_id === viewAssessment)?.assessment_type ===
         'functional' ? (
           <AssessmentFormUser
             visible={toggleFormUser}
@@ -266,7 +267,13 @@ const Assessment = () => {
             assessmentdata={assessmentlist}
             indicators={indicators}
           />
-        ) : null}
+        ) : null*/}
+        <AssessmentForm1
+          visible={toggleFormUser}
+          setVisible={setToggleFormUser}
+          assessmentid={viewAssessment}
+          createAssessmentResult={createAssessmentResult}
+        />
         <AssessmentStatusTable
           visible={toggleSubmissionTable}
           setVisible={setToggleSubmissionTable}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import img2 from '../../../assets/images/4.png'
 import MyContext from '../data/MyContext'
+import { userType } from 'src/userType'
 //path to API call IMPORTANT!
 import packageJson from '../../../../package.json'
 import {
@@ -28,6 +29,8 @@ const ReportTable3 = React.lazy(() => import('./ReportTable3'))
 const ReportExample1 = React.lazy(() => import('./ReportExample1'))
 const ReportExample2 = React.lazy(() => import('./ReportExample2'))
 const ReportDepartment1 = React.lazy(() => import('./ReportDepartment1'))
+const DbDepartmentInfo = React.lazy(() => import('../../dashboard/DbDepartmentInfo'))
+const ReportDepartment2 = React.lazy(() => import('./ReportDepartment2'))
 
 const Report = () => {
   const { loading, company } = useContext(MyContext)
@@ -195,18 +198,7 @@ const Report = () => {
               />
       */}
       <CCard>
-        <CCardHeader
-          /*style={{
-            backgroundImage: `url(${img2})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            color: 'navy',
-          }}*/
-          style={{
-            backgroundColor: `${selectedCompany?.company_system_primary_color}`,
-            color: 'ghostwhite',
-          }}
-        >
+        <CCardHeader>
           <CIcon icon={cilLibrary} /> REPORT AND ANALYSIS
           <CNav variant="tabs" className="card-header-tabs float-end">
             <CNavItem>
@@ -215,105 +207,125 @@ const Report = () => {
                 active={activeKey === 1}
                 onClick={() => setActiveKey(1)}
               >
-                Overall
-              </CNavLink>
-            </CNavItem>
-            <CNavItem>
-              <CNavLink
-                style={{ cursor: 'pointer', color: activeKey === 2 ? 'black' : 'ghostwhite' }}
-                active={activeKey === 2}
-                onClick={() => setActiveKey(2)}
-              >
-                Report 1
-              </CNavLink>
-            </CNavItem>
-            <CNavItem>
-              <CNavLink
-                style={{ cursor: 'pointer', color: activeKey === 3 ? 'black' : 'ghostwhite' }}
-                active={activeKey === 3}
-                onClick={() => setActiveKey(3)}
-              >
-                Report 2
-              </CNavLink>
-            </CNavItem>
-            <CNavItem>
-              <CNavLink
-                style={{ cursor: 'pointer', color: activeKey === 4 ? 'black' : 'ghostwhite' }}
-                active={activeKey === 4}
-                onClick={() => setActiveKey(4)}
-              >
-                Report 3
-              </CNavLink>
-            </CNavItem>
-            <CNavItem>
-              <CNavLink
-                style={{ cursor: 'pointer', color: activeKey === 5 ? 'black' : 'ghostwhite' }}
-                active={activeKey === 5}
-                onClick={() => setActiveKey(5)}
-              >
-                Summary
-              </CNavLink>
-            </CNavItem>
-            <CNavItem>
-              <CNavLink
-                style={{ cursor: 'pointer', color: activeKey === 6 ? 'black' : 'ghostwhite' }}
-                active={activeKey === 6}
-                onClick={() => setActiveKey(6)}
-              >
-                Department Report
+                Department
               </CNavLink>
             </CNavItem>
           </CNav>
+          {/*userType?.role === 'admin' ? (
+            <CNav variant="tabs" className="card-header-tabs float-end">
+              <CNavItem>
+                <CNavLink
+                  style={{ cursor: 'pointer', color: activeKey === 1 ? 'black' : 'ghostwhite' }}
+                  active={activeKey === 1}
+                  onClick={() => setActiveKey(1)}
+                >
+                  Overall
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink
+                  style={{ cursor: 'pointer', color: activeKey === 2 ? 'black' : 'ghostwhite' }}
+                  active={activeKey === 2}
+                  onClick={() => setActiveKey(2)}
+                >
+                  Report 1
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink
+                  style={{ cursor: 'pointer', color: activeKey === 3 ? 'black' : 'ghostwhite' }}
+                  active={activeKey === 3}
+                  onClick={() => setActiveKey(3)}
+                >
+                  Report 2
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink
+                  style={{ cursor: 'pointer', color: activeKey === 4 ? 'black' : 'ghostwhite' }}
+                  active={activeKey === 4}
+                  onClick={() => setActiveKey(4)}
+                >
+                  Report 3
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink
+                  style={{ cursor: 'pointer', color: activeKey === 5 ? 'black' : 'ghostwhite' }}
+                  active={activeKey === 5}
+                  onClick={() => setActiveKey(5)}
+                >
+                  Summary
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink
+                  style={{ cursor: 'pointer', color: activeKey === 6 ? 'black' : 'ghostwhite' }}
+                  active={activeKey === 6}
+                  onClick={() => setActiveKey(6)}
+                >
+                  Department Report
+                </CNavLink>
+              </CNavItem>
+            </CNav>
+          ) : null*/}
         </CCardHeader>
-        <CCardBody>
-          <CTabContent>
-            <CTabPane visible={activeKey === 1}>
-              <ReportExample1 />
-            </CTabPane>
-            <CTabPane visible={activeKey === 2}>
-              <ReportTable1
-                stafflist={stafflist}
-                departmentlist={departmentlist}
-                positionlist={positionlist}
-                jobcompetency={jobcompetency}
-                clusterlist={clusterlist}
-                assessmentlist={assessmentlist}
-                assessmentresult={assessmentresult}
-                competencylist={competencylist}
-              />
-            </CTabPane>
-            <CTabPane visible={activeKey === 3}>
-              <ReportTable2
-                stafflist={stafflist}
-                departmentlist={departmentlist}
-                positionlist={positionlist}
-                jobcompetency={jobcompetency}
-                clusterlist={clusterlist}
-                assessmentlist={assessmentlist}
-                assessmentresult={assessmentresult}
-                competencylist={competencylist}
-              />
-            </CTabPane>
-            <CTabPane visible={activeKey === 4}>
-              <ReportTable3
-                stafflist={stafflist}
-                departmentlist={departmentlist}
-                positionlist={positionlist}
-                jobcompetency={jobcompetency}
-                clusterlist={clusterlist}
-                assessmentlist={assessmentlist}
-                assessmentresult={assessmentresult}
-                competencylist={competencylist}
-              />
-            </CTabPane>
-            <CTabPane visible={activeKey === 5}>
-              <ReportExample2 />
-            </CTabPane>
-            <CTabPane visible={activeKey === 6}>
-              <ReportDepartment1 />
-            </CTabPane>
-          </CTabContent>
-        </CCardBody>
+        <CTabContent>
+          <CTabPane visible={activeKey === 1}>
+            <ReportDepartment2 />
+          </CTabPane>
+        </CTabContent>
+        {/*userType?.role === 'admin' ? (
+            <CTabContent>
+              <CTabPane visible={activeKey === 1}>
+                <ReportExample1 />
+              </CTabPane>
+              <CTabPane visible={activeKey === 2}>
+                <ReportTable1
+                  stafflist={stafflist}
+                  departmentlist={departmentlist}
+                  positionlist={positionlist}
+                  jobcompetency={jobcompetency}
+                  clusterlist={clusterlist}
+                  assessmentlist={assessmentlist}
+                  assessmentresult={assessmentresult}
+                  competencylist={competencylist}
+                />
+              </CTabPane>
+              <CTabPane visible={activeKey === 3}>
+                <ReportTable2
+                  stafflist={stafflist}
+                  departmentlist={departmentlist}
+                  positionlist={positionlist}
+                  jobcompetency={jobcompetency}
+                  clusterlist={clusterlist}
+                  assessmentlist={assessmentlist}
+                  assessmentresult={assessmentresult}
+                  competencylist={competencylist}
+                />
+              </CTabPane>
+              <CTabPane visible={activeKey === 4}>
+                <ReportTable3
+                  stafflist={stafflist}
+                  departmentlist={departmentlist}
+                  positionlist={positionlist}
+                  jobcompetency={jobcompetency}
+                  clusterlist={clusterlist}
+                  assessmentlist={assessmentlist}
+                  assessmentresult={assessmentresult}
+                  competencylist={competencylist}
+                />
+              </CTabPane>
+              <CTabPane visible={activeKey === 5}>
+                <ReportExample2 />
+              </CTabPane>
+              <CTabPane visible={activeKey === 6}>
+                <ReportDepartment1 />
+              </CTabPane>
+            </CTabContent>
+          ) : (
+            <DbDepartmentInfo />
+          )*/}
       </CCard>
     </>
   )

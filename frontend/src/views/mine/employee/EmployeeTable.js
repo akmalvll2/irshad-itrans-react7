@@ -211,7 +211,11 @@ const EmployeeTable = ({
                                   <span className="mx-2">{key + 1}</span>
                                 </CTableDataCell>
                                 <CTableDataCell>
-                                  <CAvatar className="m-2 float-start" src={val.staff_image} />
+                                  <CAvatar
+                                    className="m-2 float-start bg-light"
+                                    src={val.staff_image}
+                                    size="lg"
+                                  />
                                   {val.staff_name}
                                   <br />
                                   <CBadge className="mx-1" size="sm" color="secondary">

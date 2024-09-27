@@ -97,6 +97,12 @@ const DashboardInfo1 = () => {
                         </CTableDataCell>
                       </CTableRow>
                       <CTableRow>
+                        <CTableHeaderCell>Division</CTableHeaderCell>
+                        <CTableDataCell className=" text-uppercase">
+                          {val.division_name}
+                        </CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
                         <CTableHeaderCell>Department</CTableHeaderCell>
                         <CTableDataCell className=" text-uppercase">
                           {val.department_name}

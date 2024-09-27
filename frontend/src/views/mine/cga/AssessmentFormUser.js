@@ -33,6 +33,7 @@ import {
   CTabPane,
   CPopover,
   CSpinner,
+  CTooltip,
 } from '@coreui/react'
 
 //icon
@@ -131,7 +132,7 @@ const AssessmentFormUser = ({
             </CModalTitle>
           </CModalHeader>
           <CModalBody>
-            <CAlert color="secondary">
+            {/*<CAlert color="secondary">
               <ul>
                 <li>
                   Hover on <CIcon className="mx-2" icon={cilInfo} /> icon to view detail information
@@ -170,7 +171,7 @@ const AssessmentFormUser = ({
                   </ol>
                 </li>
               </ul>
-            </CAlert>
+            </CAlert>*/}
             <CFormSelect
               label="Please choose assessed individual"
               size="sm"
@@ -305,7 +306,14 @@ const AssessmentFormUser = ({
                                               <CTableHead>
                                                 <CTableRow>
                                                   <CTableHeaderCell>Indicator</CTableHeaderCell>
-                                                  <CTableHeaderCell>1</CTableHeaderCell>
+                                                  <CTableHeaderCell>
+                                                    <CTooltip
+                                                      content="This top tooltip is themed via CSS variables."
+                                                      placement="top"
+                                                    >
+                                                      1
+                                                    </CTooltip>
+                                                  </CTableHeaderCell>
                                                   <CTableHeaderCell>2</CTableHeaderCell>
                                                   <CTableHeaderCell>3</CTableHeaderCell>
                                                   <CTableHeaderCell>4</CTableHeaderCell>
@@ -915,11 +923,31 @@ const AssessmentFormUser = ({
                                       <CTableHeaderCell>No</CTableHeaderCell>
                                       <CTableHeaderCell>Competency</CTableHeaderCell>
                                       <CTableHeaderCell>RCL</CTableHeaderCell>
-                                      <CTableHeaderCell>1</CTableHeaderCell>
-                                      <CTableHeaderCell>2</CTableHeaderCell>
-                                      <CTableHeaderCell>3</CTableHeaderCell>
-                                      <CTableHeaderCell>4</CTableHeaderCell>
-                                      <CTableHeaderCell>5</CTableHeaderCell>
+                                      <CTableHeaderCell>
+                                        <CTooltip content="Foundation" placement="top">
+                                          <div>1</div>
+                                        </CTooltip>
+                                      </CTableHeaderCell>
+                                      <CTableHeaderCell>
+                                        <CTooltip content="Intermediate" placement="top">
+                                          <div>2</div>
+                                        </CTooltip>
+                                      </CTableHeaderCell>
+                                      <CTableHeaderCell>
+                                        <CTooltip content="Proficient" placement="top">
+                                          <div>3</div>
+                                        </CTooltip>
+                                      </CTableHeaderCell>
+                                      <CTableHeaderCell>
+                                        <CTooltip content="Expert" placement="top">
+                                          <div>4</div>
+                                        </CTooltip>
+                                      </CTableHeaderCell>
+                                      <CTableHeaderCell>
+                                        <CTooltip content="Mastery" placement="top">
+                                          <div>5</div>
+                                        </CTooltip>
+                                      </CTableHeaderCell>
                                       <CTableHeaderCell>Remarks</CTableHeaderCell>
                                     </CTableRow>
                                   ) : (

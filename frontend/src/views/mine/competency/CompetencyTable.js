@@ -46,7 +46,7 @@ const CompetencyTable = ({
   editCompetency,
   role,
 }) => {
-  const { loading, company } = useContext(MyContext)
+  const { loading, company, cluster } = useContext(MyContext)
   const [groupFilter, setGroupFilter] = useState('All')
 
   const selectedCompany = company[0]
@@ -54,7 +54,7 @@ const CompetencyTable = ({
     groupFilter === 'All' ? true : i.cluster_name === groupFilter,
   )
 
-  if (loading.company) <CSpinner />
+  if (loading.company || loading.cluster) <CSpinner />
   return (
     <>
       <div>
@@ -144,33 +144,18 @@ const CompetencyTable = ({
                 >
                   All
                 </CButton>
-                <CButton
-                  color="secondary"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setGroupFilter('Core')}
-                  active={groupFilter === 'Core' ? true : false}
-                >
-                  Core
-                </CButton>
-                <CButton
-                  color="secondary"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setGroupFilter('Generic')}
-                  active={groupFilter === 'Generic' ? true : false}
-                >
-                  Generic
-                </CButton>
-                <CButton
-                  color="secondary"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setGroupFilter('Functional')}
-                  active={groupFilter === 'Functional' ? true : false}
-                >
-                  Functional
-                </CButton>
+                {cluster?.map((cls, clskey) => (
+                  <CButton
+                    key={clskey}
+                    color="secondary"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setGroupFilter(cls.cluster_name)}
+                    active={groupFilter === cls.cluster_name ? true : false}
+                  >
+                    {cls.cluster_name}
+                  </CButton>
+                ))}
               </CButtonGroup>
             </CAlert>
             {filteredCompetency.length > 0 ? (

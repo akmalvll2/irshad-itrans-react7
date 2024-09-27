@@ -6,7 +6,21 @@ import axios from 'axios'
 import { userType } from 'src/userType'
 
 // IMPORT COREUI COMPONENT
-import { CRow, CCol } from '@coreui/react'
+import {
+  CRow,
+  CCol,
+  CCard,
+  CCardHeader,
+  CCardBody,
+  CCardTitle,
+  CCardText,
+  CNav,
+  CNavItem,
+  CNavLink,
+  CButton,
+  CTabContent,
+  CTabPane,
+} from '@coreui/react'
 
 //path to API call IMPORTANT!
 import packageJson from '../../../package.json'
@@ -19,6 +33,7 @@ const DashboardInfo2 = React.lazy(() => import('./DashboardInfo2'))
 const DbDepartmentInfo = React.lazy(() => import('./DbDepartmentInfo'))
 const DbStaffInfo = React.lazy(() => import('./DbStaffInfo'))
 const DbTrainingRec = React.lazy(() => import('./DbTrainingRec'))
+const DbIdp = React.lazy(() => import('./DbIdp'))
 
 const Dashboard = () => {
   const [isChange, setIsChange] = useState(false)
@@ -28,6 +43,7 @@ const Dashboard = () => {
   const [competencylist, setCompetencylist] = useState([])
   const [traininglist, setTraininglist] = useState([])
   const [joblist, setJoblist] = useState([])
+  const [activeKey, setActiveKey] = useState(1)
 
   useEffect(() => {
     //READ EMPLOYEE API
@@ -112,31 +128,74 @@ const Dashboard = () => {
   }, [isChange])
   return (
     <>
-      <CRow>
-        <CCol>
-          {userType.role === 'admin' || 'user' ? (
-            <DashboardInfo2
-              employeelist={employeelist}
-              departmentlist={departmentlist}
-              competencylist={competencylist}
-              traininglist={traininglist}
-              joblist={joblist}
-            />
-          ) : (
-            ''
-          )}
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol md={12}>{userType.role === 'admin' ? null : <DbStaffInfo />}</CCol>
-        <CCol md={12}>
-          <DashboardInfo1 assessmentlist={assessmentlist} />
-        </CCol>
-        <CCol md={12}>
-          <DbTrainingRec />
-        </CCol>
-        <CCol md={12}>{userType.role !== 'admin' ? <DbDepartmentInfo /> : ''}</CCol>
-      </CRow>
+      <CCard className="text-center">
+        <CCardHeader>
+          <CNav variant="tabs" className="card-header-tabs">
+            <CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer' }}
+                active={activeKey === 1}
+                onClick={() => setActiveKey(1)}
+              >
+                Profile
+              </CNavLink>
+            </CNavItem>
+            {employeelist?.find((i) => i.staff_id.toString() === userType?.id)
+              ?.position_department_report === 1 ? (
+              <CNavItem>
+                <CNavLink
+                  style={{ cursor: 'pointer' }}
+                  active={activeKey === 2}
+                  onClick={() => setActiveKey(2)}
+                >
+                  Department
+                </CNavLink>
+              </CNavItem>
+            ) : null}
+          </CNav>
+        </CCardHeader>
+        <CCardBody>
+          <CTabContent>
+            <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 1}>
+              <CRow>
+                <CCol>
+                  {userType.role === 'admin' ? (
+                    <DashboardInfo2
+                      employeelist={employeelist}
+                      departmentlist={departmentlist}
+                      competencylist={competencylist}
+                      traininglist={traininglist}
+                      joblist={joblist}
+                    />
+                  ) : (
+                    ''
+                  )}
+                </CCol>
+              </CRow>
+              <CRow>
+                <CCol md={12}>{userType.role === 'admin' ? null : <DbStaffInfo />}</CCol>
+                <CCol md={12}>
+                  <DashboardInfo1 assessmentlist={assessmentlist} />
+                </CCol>
+                {userType?.role !== 'admin' ? (
+                  <CCol md={12}>
+                    <DbTrainingRec />
+                  </CCol>
+                ) : null}
+                {userType?.role !== 'admin' ? (
+                  <CCol md={12}>
+                    <DbIdp />
+                  </CCol>
+                ) : null}
+                {/*<CCol md={12}>{userType.role !== 'admin' ? <DbDepartmentInfo /> : ''}</CCol>*/}
+              </CRow>
+            </CTabPane>
+            <CTabPane role="tabpanel" aria-labelledby="home-tab" visible={activeKey === 2}>
+              <DbDepartmentInfo />
+            </CTabPane>
+          </CTabContent>
+        </CCardBody>
+      </CCard>
     </>
   )
 }
