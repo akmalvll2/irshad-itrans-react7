@@ -2,7 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 
-import { CImage, CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
+import {
+  CImage,
+  CSidebar,
+  CSidebarBrand,
+  CSidebarNav,
+  CSidebarToggler,
+  CNavTitle,
+} from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
 import { AppSidebarNav } from './AppSidebarNav'
@@ -11,8 +18,8 @@ import { kopetrologo } from 'src/assets/brand/kopetrologo'
 import { logo } from 'src/assets/brand/logo'
 import logo1 from 'src/assets/logo-itrans.png'
 
-import SimpleBar from 'simplebar-react'
-import 'simplebar/dist/simplebar.min.css'
+//import SimpleBar from 'simplebar-react'
+//import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
 import navigation from '../_nav'
@@ -65,9 +72,7 @@ const AppSidebar = () => {
         {/*<h6 className="sidebar-brand-narrow">iTRANS</h6>*/}
       </CSidebarBrand>
       <CSidebarNav>
-        <SimpleBar>
-          <AppSidebarNav items={navigation} />
-        </SimpleBar>
+        <AppSidebarNav items={navigation} />
       </CSidebarNav>
       <CSidebarToggler
         className="d-none d-lg-flex"

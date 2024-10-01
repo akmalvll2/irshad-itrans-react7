@@ -203,11 +203,20 @@ const Report = () => {
           <CNav variant="tabs" className="card-header-tabs float-end">
             <CNavItem>
               <CNavLink
-                style={{ cursor: 'pointer', color: activeKey === 1 ? 'black' : 'ghostwhite' }}
+                style={{ cursor: 'pointer', color: activeKey === 1 ? 'black' : 'gray' }}
                 active={activeKey === 1}
                 onClick={() => setActiveKey(1)}
               >
                 Department
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer', color: activeKey === 2 ? 'black' : 'gray' }}
+                active={activeKey === 2}
+                onClick={() => setActiveKey(2)}
+              >
+                Overall
               </CNavLink>
             </CNavItem>
           </CNav>
@@ -270,62 +279,61 @@ const Report = () => {
             </CNav>
           ) : null*/}
         </CCardHeader>
-        <CTabContent>
-          <CTabPane visible={activeKey === 1}>
-            <ReportDepartment2 />
-          </CTabPane>
-        </CTabContent>
-        {/*userType?.role === 'admin' ? (
-            <CTabContent>
-              <CTabPane visible={activeKey === 1}>
-                <ReportExample1 />
-              </CTabPane>
-              <CTabPane visible={activeKey === 2}>
-                <ReportTable1
-                  stafflist={stafflist}
-                  departmentlist={departmentlist}
-                  positionlist={positionlist}
-                  jobcompetency={jobcompetency}
-                  clusterlist={clusterlist}
-                  assessmentlist={assessmentlist}
-                  assessmentresult={assessmentresult}
-                  competencylist={competencylist}
-                />
-              </CTabPane>
-              <CTabPane visible={activeKey === 3}>
-                <ReportTable2
-                  stafflist={stafflist}
-                  departmentlist={departmentlist}
-                  positionlist={positionlist}
-                  jobcompetency={jobcompetency}
-                  clusterlist={clusterlist}
-                  assessmentlist={assessmentlist}
-                  assessmentresult={assessmentresult}
-                  competencylist={competencylist}
-                />
-              </CTabPane>
-              <CTabPane visible={activeKey === 4}>
-                <ReportTable3
-                  stafflist={stafflist}
-                  departmentlist={departmentlist}
-                  positionlist={positionlist}
-                  jobcompetency={jobcompetency}
-                  clusterlist={clusterlist}
-                  assessmentlist={assessmentlist}
-                  assessmentresult={assessmentresult}
-                  competencylist={competencylist}
-                />
-              </CTabPane>
-              <CTabPane visible={activeKey === 5}>
-                <ReportExample2 />
-              </CTabPane>
-              <CTabPane visible={activeKey === 6}>
-                <ReportDepartment1 />
-              </CTabPane>
-            </CTabContent>
-          ) : (
-            <DbDepartmentInfo />
-          )*/}
+
+        {userType?.role === 'admin' ? (
+          <CTabContent>
+            {/*<CTabPane visible={activeKey === 1}>
+              <ReportDepartment2 />
+            </CTabPane>*/}
+            <CTabPane visible={activeKey === 2}>
+              <ReportExample1 />
+            </CTabPane>
+            {/*<CTabPane visible={activeKey === 2}>
+              <ReportTable1
+                stafflist={stafflist}
+                departmentlist={departmentlist}
+                positionlist={positionlist}
+                jobcompetency={jobcompetency}
+                clusterlist={clusterlist}
+                assessmentlist={assessmentlist}
+                assessmentresult={assessmentresult}
+                competencylist={competencylist}
+              />
+            </CTabPane>
+            <CTabPane visible={activeKey === 3}>
+              <ReportTable2
+                stafflist={stafflist}
+                departmentlist={departmentlist}
+                positionlist={positionlist}
+                jobcompetency={jobcompetency}
+                clusterlist={clusterlist}
+                assessmentlist={assessmentlist}
+                assessmentresult={assessmentresult}
+                competencylist={competencylist}
+              />
+            </CTabPane>
+            <CTabPane visible={activeKey === 4}>
+              <ReportTable3
+                stafflist={stafflist}
+                departmentlist={departmentlist}
+                positionlist={positionlist}
+                jobcompetency={jobcompetency}
+                clusterlist={clusterlist}
+                assessmentlist={assessmentlist}
+                assessmentresult={assessmentresult}
+                competencylist={competencylist}
+              />
+            </CTabPane>
+            <CTabPane visible={activeKey === 5}>
+              <ReportExample2 />
+            </CTabPane>
+            <CTabPane visible={activeKey === 6}>
+              <ReportDepartment1 />
+            </CTabPane>*/}
+          </CTabContent>
+        ) : (
+          <DbDepartmentInfo />
+        )}
       </CCard>
     </>
   )
