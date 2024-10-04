@@ -61,6 +61,7 @@ const DashboardInfo1 = () => {
             backgroundColor: `${selectedCompany.company_system_primary_color}`,
             color: 'ghostwhite',
           }}
+          className="text-center"
         >
           <CIcon icon={cilUser} /> STAFF INFORMATION
         </CCardHeader>

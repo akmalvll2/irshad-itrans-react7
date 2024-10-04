@@ -72,6 +72,7 @@ const DashboardInfo1 = ({ assessmentlist }) => {
             backgroundColor: `${company[0]?.company_system_primary_color}`,
             color: `whitesmoke`,
           }}
+          className="text-center"
         >
           <CIcon icon={cilClipboard} /> ACTIVE ASSESSMENT
         </CCardHeader>

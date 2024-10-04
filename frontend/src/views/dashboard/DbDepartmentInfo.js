@@ -267,19 +267,18 @@ const DashboardInfo1 = () => {
                   <CCardBody>
                     <CRow>
                       <CCol md={4}>
-                        <CCardTitle>{val.cluster_name} Competencies Rating</CCardTitle>
+                        <CCardTitle>Average {val.cluster_name} Competency Score</CCardTitle>
                         <CButton
                           variant="outline"
                           color="dark"
                           style={{ width: '100%' }}
                           onClick={() => setVisible(val.cluster_id)}
+                          className="d-flex align-items-center justify-content-center"
                         >
-                          <span className="text-center">
-                            <h6>Score</h6>
-                            <h5>
-                              <b>{calculateOverallAverage(val.cluster_name)}</b>
-                            </h5>
-                          </span>
+                          <h5>
+                            <b>{calculateOverallAverage(val.cluster_name)}</b>
+                          </h5>
+                          <h6>/5</h6>
                         </CButton>
                         <COffcanvas
                           placement="start"
@@ -288,9 +287,7 @@ const DashboardInfo1 = () => {
                           onHide={() => setVisible(null)}
                         >
                           <COffcanvasHeader>
-                            <COffcanvasTitle>
-                              {val.cluster_name} Competencies Rating
-                            </COffcanvasTitle>
+                            <COffcanvasTitle>{val.cluster_name} Competency Score</COffcanvasTitle>
                             <CCloseButton className="text-reset" onClick={() => setVisible(null)} />
                           </COffcanvasHeader>
                           <COffcanvasBody>
@@ -298,10 +295,13 @@ const DashboardInfo1 = () => {
                               <CCol md={12}>
                                 <CCard>
                                   <CCardBody>
-                                    <h6>Score</h6>
-                                    <CCardTitle>
-                                      <b>{calculateOverallAverage(val.cluster_name)}</b>
-                                    </CCardTitle>
+                                    <h6>Average Score</h6>
+                                    <span className="d-flex justify-content-center align-items-center">
+                                      <h4>
+                                        <b>{calculateOverallAverage(val.cluster_name)}</b>
+                                      </h4>
+                                      <h5>/5</h5>
+                                    </span>
                                   </CCardBody>
                                 </CCard>
                               </CCol>
@@ -316,7 +316,8 @@ const DashboardInfo1 = () => {
                                       .map((comp) => comp.competencyname),
                                     datasets: [
                                       {
-                                        label: 'Competency by Rating',
+                                        label: 'Overall Competency by Score',
+                                        barPercentage: '1',
                                         maxBarThickness: 10,
                                         backgroundColor: `${selectedCompany?.company_system_info_color}`,
                                         data: competencylist
@@ -338,6 +339,8 @@ const DashboardInfo1 = () => {
                                     },
                                     scales: {
                                       x: {
+                                        min: 0,
+                                        max: 5,
                                         grid: {
                                           color: 'gray',
                                         },
@@ -371,7 +374,7 @@ const DashboardInfo1 = () => {
                               .map((comp) => comp.competencyname),
                             datasets: [
                               {
-                                label: 'Competency by Rating',
+                                label: 'Top 5 Competency by Score',
                                 backgroundColor: `${selectedCompany?.company_system_info_color}`,
                                 data: competencylist
                                   ?.filter((i) => i.competencytype === val.cluster_name)
@@ -393,6 +396,8 @@ const DashboardInfo1 = () => {
                             },
                             scales: {
                               x: {
+                                min: 0,
+                                max: 5,
                                 grid: {
                                   color: 'gray',
                                 },

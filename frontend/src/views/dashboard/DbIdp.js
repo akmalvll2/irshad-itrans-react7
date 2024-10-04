@@ -103,6 +103,7 @@ const DbIdp = () => {
             backgroundColor: `${selectedCompany.company_system_primary_color}`,
             color: 'ghostwhite',
           }}
+          className="text-center"
         >
           <CIcon icon={cilClipboard} /> INDIVIDUAL DEVELOPMENT PLAN
         </CCardHeader>
@@ -146,7 +147,9 @@ const DbIdp = () => {
                 .map((com, comkey) => (
                   <CTableRow key={comkey}>
                     <CTableDataCell>{com.competency_name}</CTableDataCell>
-                    <CTableDataCell>{com.position_competency_expected_level}</CTableDataCell>
+                    <CTableDataCell className="text-center">
+                      {com.position_competency_expected_level}
+                    </CTableDataCell>
                     <CTableDataCell>
                       {assessmentResultScore(com.competency_id, 'self').score}(
                       {roundedResult(assessmentResultScore(com.competency_id, 'self').score * 0.3)})

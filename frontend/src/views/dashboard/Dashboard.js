@@ -128,7 +128,7 @@ const Dashboard = () => {
   }, [isChange])
   return (
     <>
-      <CCard className="text-center">
+      <CCard>
         <CCardHeader>
           <CNav variant="tabs" className="card-header-tabs">
             <CNavItem>

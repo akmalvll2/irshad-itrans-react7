@@ -35,6 +35,7 @@ import {
   CAccordionItem,
   CAccordionHeader,
   CBadge,
+  CCardSubtitle,
 } from '@coreui/react'
 
 import CIcon from '@coreui/icons-react'
@@ -218,6 +219,76 @@ const AssessmentForm1 = ({ visible, setVisible, assessmentid, createAssessmentRe
                         <CCol md={10}>{selectedStaff?.department_name}</CCol>
                       </CRow>
                     </CCardImageOverlay>
+                  </CCard>
+                  <CCard>
+                    <CCardBody className="p-2">
+                      <CTable bordered small responsive className="m2">
+                        <CTableHead color="light">
+                          <CTableRow>
+                            <CTableHeaderCell>Star</CTableHeaderCell>
+                            <CTableHeaderCell>Star Rating Description</CTableHeaderCell>
+                          </CTableRow>
+                        </CTableHead>
+                        <CTableBody>
+                          <CTableRow>
+                            <CTableDataCell className=" align-middle text-center">
+                              <h6>
+                                1 <CIcon icon={cilStar} />
+                              </h6>
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              Possesses minimal knowledge or experience, applies with direction and
+                              guidance and is learning on developing skills
+                            </CTableDataCell>
+                          </CTableRow>
+                          <CTableRow>
+                            <CTableDataCell className=" align-middle text-center">
+                              <h6>
+                                2 <CIcon icon={cilStar} />
+                              </h6>
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              Possesses moderate knowledge and experience, applies effectively with
+                              some direction and guidance, starting to develop credibility
+                            </CTableDataCell>
+                          </CTableRow>
+                          <CTableRow>
+                            <CTableDataCell className=" align-middle text-center">
+                              <h6>
+                                3 <CIcon icon={cilStar} />
+                              </h6>
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              Possesses thorough knowledge and broad experience, recognized as
+                              credible, applies effectively and advises others in typical situations
+                            </CTableDataCell>
+                          </CTableRow>
+                          <CTableRow>
+                            <CTableDataCell className=" align-middle text-center">
+                              <h6>
+                                4 <CIcon icon={cilStar} />
+                              </h6>
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              Possesses substantial knowledge and extensive experience, applies
+                              effectively and leads others in complex situations
+                            </CTableDataCell>
+                          </CTableRow>
+                          <CTableRow>
+                            <CTableDataCell className=" align-middle text-center">
+                              <h6>
+                                5 <CIcon icon={cilStar} />
+                              </h6>
+                            </CTableDataCell>
+                            <CTableDataCell>
+                              Possesses extensive expertise and experience, effectively navigates
+                              complex situations, is recognized as a leader in the field, and
+                              provides thought leadership while setting strategic direction
+                            </CTableDataCell>
+                          </CTableRow>
+                        </CTableBody>
+                      </CTable>
+                    </CCardBody>
                   </CCard>
                 </CCol>
                 <CCol md={8}>

@@ -82,7 +82,7 @@ const ReportDepartment2 = () => {
           assessmentResult.filter(
             (i) =>
               i.competency_id === comp.competency_id &&
-              i.department_id.toString() === selectedDepartment,
+              i.department_id?.toString() === selectedDepartment,
           ),
         ),
       ]

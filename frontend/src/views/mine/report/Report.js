@@ -282,9 +282,9 @@ const Report = () => {
 
         {userType?.role === 'admin' ? (
           <CTabContent>
-            {/*<CTabPane visible={activeKey === 1}>
+            <CTabPane visible={activeKey === 1}>
               <ReportDepartment2 />
-            </CTabPane>*/}
+            </CTabPane>
             <CTabPane visible={activeKey === 2}>
               <ReportExample1 />
             </CTabPane>
