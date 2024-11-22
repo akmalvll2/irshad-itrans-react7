@@ -9,6 +9,7 @@ import {
   CCard,
   CCardBody,
   CCardHeader,
+  CContainer,
   CNav,
   CNavItem,
   CNavLink,
@@ -198,7 +199,12 @@ const Report = () => {
               />
       */}
       <CCard>
-        <CCardHeader>
+        <CCardHeader
+          style={{
+            backgroundColor: `${selectedCompany?.company_system_primary_color}`,
+            color: 'ghostwhite',
+          }}
+        >
           <CIcon icon={cilLibrary} /> REPORT AND ANALYSIS
           <CNav variant="tabs" className="card-header-tabs float-end">
             <CNavItem>
@@ -216,7 +222,16 @@ const Report = () => {
                 active={activeKey === 2}
                 onClick={() => setActiveKey(2)}
               >
-                Overall
+                Training Recommendation
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer', color: activeKey === 3 ? 'black' : 'gray' }}
+                active={activeKey === 3}
+                onClick={() => setActiveKey(3)}
+              >
+                Generate Report (Test)
               </CNavLink>
             </CNavItem>
           </CNav>
@@ -279,16 +294,19 @@ const Report = () => {
             </CNav>
           ) : null*/}
         </CCardHeader>
-
-        {userType?.role === 'admin' ? (
-          <CTabContent>
-            <CTabPane visible={activeKey === 1}>
-              <ReportDepartment2 />
-            </CTabPane>
-            <CTabPane visible={activeKey === 2}>
-              <ReportExample1 />
-            </CTabPane>
-            {/*<CTabPane visible={activeKey === 2}>
+        <CTabContent>
+          <CTabPane visible={activeKey === 1}>
+            <ReportDepartment2 />
+          </CTabPane>
+          <CTabPane visible={activeKey === 2}>
+            <ReportExample1 />
+          </CTabPane>
+          <CTabPane visible={activeKey === 3}>
+            <CContainer>
+              <ReportExample2 />
+            </CContainer>
+          </CTabPane>
+          {/*<CTabPane visible={activeKey === 2}>
               <ReportTable1
                 stafflist={stafflist}
                 departmentlist={departmentlist}
@@ -330,10 +348,7 @@ const Report = () => {
             <CTabPane visible={activeKey === 6}>
               <ReportDepartment1 />
             </CTabPane>*/}
-          </CTabContent>
-        ) : (
-          <DbDepartmentInfo />
-        )}
+        </CTabContent>
       </CCard>
     </>
   )

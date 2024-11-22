@@ -81,7 +81,7 @@ const Settings = ({ visible, setVisible }) => {
           <CModalTitle>Settings</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CNav variant="tabs">
+          <CNav variant="pills" role="tablist">
             {userType?.role === 'admin' && (
               <CNavItem>
                 <CNavLink

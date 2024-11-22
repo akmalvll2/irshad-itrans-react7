@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import img2 from '../../../assets/images/4.png'
+import { usePDF } from 'react-to-pdf'
+import moment from 'moment'
 import {
   CCard,
   CCardHeader,
@@ -34,6 +36,7 @@ import {
   CModalBody,
   CModalFooter,
   CFormInput,
+  CBadge,
 } from '@coreui/react'
 
 import { CChart } from '@coreui/react-chartjs'
@@ -42,7 +45,7 @@ import MyContext from '../data/MyContext'
 
 //icon
 import CIcon from '@coreui/icons-react'
-import { cilPlus, cilSave, cilCheckAlt } from '@coreui/icons'
+import { cilPlus, cilSave, cilCheckAlt, cilFile } from '@coreui/icons'
 
 const ReportTable1 = () => {
   const [visible, setVisible] = useState(false)
@@ -57,8 +60,12 @@ const ReportTable1 = () => {
     assessment,
     assessmentResult,
     positionCompetency,
+    competencyTraining,
     loading,
   } = useContext(MyContext)
+  const { toPDF, targetRef } = usePDF({
+    filename: `Recommended_Training_${moment().format('DDMMYYYY')}`,
+  })
   const [selectedAssessment, setSelectedAssessment] = useState()
   const roundedResult = (data) => {
     var res
@@ -148,7 +155,8 @@ const ReportTable1 = () => {
     loading.cluster ||
     loading.assessment ||
     loading.assessmentResult ||
-    loading.positionCompetency
+    loading.positionCompetency ||
+    loading.competencyTraining
   ) {
     return <CSpinner />
   }
@@ -237,8 +245,8 @@ const ReportTable1 = () => {
                     {[...recTrainingCore]
                       .sort((a, b) => b.nostaff - a.nostaff)
                       .slice(0, 5)
-                      .map((val) => (
-                        <CTableRow key={val.id}>
+                      .map((val, key) => (
+                        <CTableRow key={key}>
                           <CTableDataCell>{val.competency}</CTableDataCell>
                           <CTableDataCell>
                             <CProgress value={val.nostaff}>{val.nostaff}</CProgress>
@@ -335,8 +343,8 @@ const ReportTable1 = () => {
                     {[...recTrainingGeneric]
                       .sort((a, b) => b.nostaff - a.nostaff)
                       .slice(0, 5)
-                      .map((val) => (
-                        <CTableRow key={val.id}>
+                      .map((val, key) => (
+                        <CTableRow key={key}>
                           <CTableDataCell>{val.competency}</CTableDataCell>
                           <CTableDataCell>
                             <CProgress value={val.nostaff}>{val.nostaff}</CProgress>
@@ -433,8 +441,8 @@ const ReportTable1 = () => {
                     {[...recTrainingFunctional]
                       .sort((a, b) => b.nostaff - a.nostaff)
                       .slice(0, 5)
-                      .map((val) => (
-                        <CTableRow key={val.id}>
+                      .map((val, key) => (
+                        <CTableRow key={key}>
                           <CTableDataCell>{val.competency}</CTableDataCell>
                           <CTableDataCell>
                             <CProgress value={val.nostaff}>{val.nostaff}</CProgress>
@@ -470,72 +478,105 @@ const ReportTable1 = () => {
           setSelectedCompetency('')
         }}
       >
-        <CModalHeader>
-          <CModalTitle>
-            Training :{' '}
-            {competency.find((i) => i.competency_id === selectedCompetency)?.competency_name}
-          </CModalTitle>
-        </CModalHeader>
-        <CTable small responsive className="m-0">
-          <CTableHead color="dark">
-            <CTableRow>
-              <CTableHeaderCell>No</CTableHeaderCell>
-              <CTableHeaderCell>Staff</CTableHeaderCell>
-              <CTableHeaderCell>Position</CTableHeaderCell>
-              <CTableHeaderCell>Department</CTableHeaderCell>
-              <CTableHeaderCell>Competency Score</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {staff
-              .filter((i) =>
-                (positionCompetency.find(
-                  (u) => u.position_id === i.position_id && u.competency_id === selectedCompetency,
-                )?.position_competency_expected_level -
-                  score(i.staff_id, selectedCompetency, 'self')) *
-                  0.3 +
-                  (positionCompetency.find(
-                    (u) =>
-                      u.position_id === i.position_id && u.competency_id === selectedCompetency,
-                  )?.position_competency_expected_level -
-                    score(i.staff_id, selectedCompetency, 'superior')) *
-                    0.7 >
-                1.5
-                  ? true
-                  : false,
-              )
-              .map((val, id) => (
-                <CTableRow key={id}>
-                  <CTableDataCell>{id + 1}</CTableDataCell>
-                  <CTableDataCell>{val.staff_name}</CTableDataCell>
-                  <CTableDataCell>{val.position_name}</CTableDataCell>
-                  <CTableDataCell>{val.department_name}</CTableDataCell>
-                  <CTableDataCell>
-                    {roundedResult(
+        <CModalBody ref={targetRef}>
+          <CRow>
+            <CCol md={4}>
+              <h6>Competency :</h6>
+            </CCol>
+            <CCol md={8}>
+              {competency.find((i) => i.competency_id === selectedCompetency)?.competency_name}
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol md={4}>
+              <h6>Recommended Training :</h6>
+            </CCol>
+            <CCol md={8}>
+              {competencyTraining.filter((i) => i.competency_id === selectedCompetency).length >
+              0 ? (
+                competencyTraining
+                  .filter((i) => i.competency_id === selectedCompetency)
+                  .map((ct, ctkey) => <p key={ctkey}>{ct.training_name}</p>)
+              ) : (
+                <CBadge color="danger">No Training Mapped</CBadge>
+              )}
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol md={12}>
+              <h6>List of Staff Recommended to Attend this Training :</h6>
+            </CCol>
+            <CCol md={12}>
+              <CTable small responsive bordered className="m-0">
+                <CTableHead color="light">
+                  <CTableRow>
+                    <CTableHeaderCell>No</CTableHeaderCell>
+                    <CTableHeaderCell>Staff</CTableHeaderCell>
+                    <CTableHeaderCell>Position</CTableHeaderCell>
+                    <CTableHeaderCell>Department</CTableHeaderCell>
+                    <CTableHeaderCell>Competency Score</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {staff
+                    .filter((i) =>
                       (positionCompetency.find(
                         (u) =>
-                          u.position_id === val.position_id &&
-                          u.competency_id === selectedCompetency,
+                          u.position_id === i.position_id && u.competency_id === selectedCompetency,
                       )?.position_competency_expected_level -
-                        score(val.staff_id, selectedCompetency, 'self')) *
+                        score(i.staff_id, selectedCompetency, 'self')) *
                         0.3 +
                         (positionCompetency.find(
                           (u) =>
-                            u.position_id === val.position_id &&
+                            u.position_id === i.position_id &&
                             u.competency_id === selectedCompetency,
                         )?.position_competency_expected_level -
-                          score(val.staff_id, selectedCompetency, 'superior')) *
-                          0.7,
-                    )}
-                  </CTableDataCell>
-                </CTableRow>
-              ))}
-          </CTableBody>
-        </CTable>
+                          score(i.staff_id, selectedCompetency, 'superior')) *
+                          0.7 >
+                      1.5
+                        ? true
+                        : false,
+                    )
+                    .map((val, id) => (
+                      <CTableRow key={id}>
+                        <CTableDataCell>{id + 1}</CTableDataCell>
+                        <CTableDataCell>{val.staff_name}</CTableDataCell>
+                        <CTableDataCell>{val.position_name}</CTableDataCell>
+                        <CTableDataCell>{val.department_name}</CTableDataCell>
+                        <CTableDataCell>
+                          {roundedResult(
+                            (positionCompetency.find(
+                              (u) =>
+                                u.position_id === val.position_id &&
+                                u.competency_id === selectedCompetency,
+                            )?.position_competency_expected_level -
+                              score(val.staff_id, selectedCompetency, 'self')) *
+                              0.3 +
+                              (positionCompetency.find(
+                                (u) =>
+                                  u.position_id === val.position_id &&
+                                  u.competency_id === selectedCompetency,
+                              )?.position_competency_expected_level -
+                                score(val.staff_id, selectedCompetency, 'superior')) *
+                                0.7,
+                          )}
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))}
+                </CTableBody>
+              </CTable>
+            </CCol>
+          </CRow>
+        </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton>
+          <CButtonGroup>
+            <CButton size="sm" color="secondary" variant="outline" onClick={() => toPDF()}>
+              Save PDF <CIcon icon={cilFile} />
+            </CButton>
+            <CButton color="secondary" onClick={() => setVisible(false)}>
+              Close
+            </CButton>
+          </CButtonGroup>
         </CModalFooter>
       </CModal>
     </>

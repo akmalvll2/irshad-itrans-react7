@@ -210,7 +210,7 @@ const EmployeeTable = ({
                                   {/*<CFormCheck type="checkbox" />*/}
                                   <span className="mx-2">{key + 1}</span>
                                 </CTableDataCell>
-                                <CTableDataCell>
+                                <CTableDataCell style={{ textTransform: 'uppercase' }}>
                                   <CAvatar
                                     className="m-2 float-start bg-light"
                                     src={val.staff_image}

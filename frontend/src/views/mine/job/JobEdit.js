@@ -12,8 +12,11 @@ import {
   CTableBody,
   CTableRow,
   CTableDataCell,
+  CFormLabel,
   CForm,
   CFormInput,
+  CFormSelect,
+  CFormCheck,
 } from '@coreui/react'
 
 //icon
@@ -26,6 +29,8 @@ const JobEdit = ({ visible, setVisible, jobdata, jobid, updatedjob }) => {
     jobname: '',
     jobgrade: '',
     jobdescription: '',
+    jobcategory: '',
+    jobviewdepartment: '',
   })
 
   const onChangeHandle = (e) => {
@@ -47,7 +52,9 @@ const JobEdit = ({ visible, setVisible, jobdata, jobid, updatedjob }) => {
         jobid: selectedJob?.position_id,
         jobname: selectedJob?.position_name,
         jobgrade: selectedJob?.position_grade,
-        jobdescription: selectedJob?.department_description,
+        jobdescription: selectedJob?.position_description,
+        jobcategory: selectedJob?.position_category,
+        jobviewdepartment: selectedJob?.position_department_report.toString(),
       })
     }
   }, [jobid])
@@ -61,7 +68,7 @@ const JobEdit = ({ visible, setVisible, jobdata, jobid, updatedjob }) => {
       >
         <CForm onSubmit={onSubmitHandle}>
           <CModalHeader closeButton={false}>
-            <CModalTitle id="StaticBackdropExampleLabel">Department Edit</CModalTitle>
+            <CModalTitle id="StaticBackdropExampleLabel">Position Edit</CModalTitle>
           </CModalHeader>
           <CModalBody>
             {jobdata
@@ -94,6 +101,39 @@ const JobEdit = ({ visible, setVisible, jobdata, jobid, updatedjob }) => {
                       label="Description"
                       defaultValue={val.position_description}
                       onChange={onChangeHandle}
+                      required
+                    />
+                    <CFormSelect
+                      label="Category"
+                      name="jobcategory"
+                      onChange={onChangeHandle}
+                      defaultValue={val.position_category}
+                      required
+                    >
+                      <option value="">..Category..</option>
+                      <option value="Top Management">Top Management</option>
+                      <option value="Senior Management">Senior Management</option>
+                      <option value="Middle Management">Middle Management</option>
+                      <option value="Individual Contributor">Individual Contributor</option>
+                      <option value="Support Staff">Support Staff</option>
+                    </CFormSelect>
+                    <CFormLabel className="mt-2">Can View Department Report ?</CFormLabel>
+                    <CFormCheck
+                      type="radio"
+                      name="jobviewdepartment"
+                      onChange={onChangeHandle}
+                      label="No"
+                      value="0"
+                      defaultChecked={updateddata.jobviewdepartment === '0' ? true : false}
+                      required
+                    />
+                    <CFormCheck
+                      type="radio"
+                      name="jobviewdepartment"
+                      onChange={onChangeHandle}
+                      label="Yes"
+                      value="1"
+                      defaultChecked={updateddata.jobviewdepartment === '1' ? true : false}
                       required
                     />
                   </div>

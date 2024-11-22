@@ -66,7 +66,7 @@ const AppHeader = () => {
         {/*className="d-none d-md-flex me-auto bg-info"*/}
         <CHeaderNav>
           <CNavItem>
-            <h5>{company[0]?.company_system_name}</h5>
+            <h3>{company[0]?.company_system_name}</h3>
             {/*<h6>
               {appname?.map((item) => item.setting_app_name)} ({' '}
               {appname?.map((item) => item.setting_app_short_name)} )

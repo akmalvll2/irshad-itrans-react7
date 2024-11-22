@@ -59,6 +59,16 @@ const JobDetail = ({
                         <CTableDataCell>Description:</CTableDataCell>
                         <CTableDataCell>{val.position_description}</CTableDataCell>
                       </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Category:</CTableDataCell>
+                        <CTableDataCell>{val.position_category}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
+                        <CTableDataCell>Allowed View Department Summary ?:</CTableDataCell>
+                        <CTableDataCell>
+                          {val.position_department_report === 1 ? 'Yes' : 'No'}
+                        </CTableDataCell>
+                      </CTableRow>
                     </CTableBody>
                   </CTable>
                   <span className=" text-black-50">

@@ -39,10 +39,14 @@ const ReportDepartment2 = () => {
   } = useContext(MyContext)
   const [competencylist, setcompetencylist] = useState([])
   const [visible, setVisible] = useState()
-  const [selectedDepartment, setSelectedDepartment] = useState()
+  const [selectedDepartment, setSelectedDepartment] = useState('')
   const selectedCompany = company[0]
 
-  const activeStaff = staff?.filter((i) => i.department_id.toString() === selectedDepartment)
+  const activeStaff = staff?.filter((i) =>
+    selectedDepartment
+      ? i.department_id.toString() === selectedDepartment
+      : i.department_id !== null,
+  )
 
   // Data for Graph 'Number of Staff By Job Grade'
   const firstGraph = () => {
@@ -75,14 +79,22 @@ const ReportDepartment2 = () => {
     )
   }
 
+  const filteredCompetency = competency?.filter((i) =>
+    selectedDepartment
+      ? positionCompetency.some(
+          (u) =>
+            u.competency_id === i.competency_id &&
+            activeStaff.some((p) => p.position_id === u.position_id),
+        )
+      : i.competency !== null,
+  )
+
   useEffect(() => {
-    const newCompetency = competency?.map((comp) => {
+    const newCompetency = filteredCompetency.map((comp) => {
       const staffIds = [
         ...new Set(
-          assessmentResult.filter(
-            (i) =>
-              i.competency_id === comp.competency_id &&
-              i.department_id?.toString() === selectedDepartment,
+          assessmentResult.filter((i) =>
+            selectedDepartment ? i.competency_id === comp.competency_id : i.department_id !== null,
           ),
         ),
       ]
@@ -137,7 +149,7 @@ const ReportDepartment2 = () => {
 
     // set the competencylist with the newCompetency
     setcompetencylist(sortedNewCompetency)
-  }, [competencylist])
+  }, [assessmentResult, latestAssessment, selectedDepartment])
 
   if (
     loading.staff ||
@@ -155,12 +167,12 @@ const ReportDepartment2 = () => {
 
   return (
     <div>
-      <CCard className="my-2">
+      <CCard className="m-2">
         <CCardHeader
-          style={{
-            backgroundColor: `${selectedCompany.company_system_primary_color}`,
-            color: 'ghostwhite',
-          }}
+        //style={{
+        //  backgroundColor: `${selectedCompany.company_system_primary_color}`,
+        //  color: 'ghostwhite',
+        //}}
         >
           <CIcon icon={cilClipboard} /> DEPARTMENT SUMMARY
         </CCardHeader>
@@ -190,7 +202,7 @@ const ReportDepartment2 = () => {
                 </CCol>
               </CRow>
               <CRow>
-                <CCol md={6}>
+                <CCol md={12}>
                   <CWidgetStatsF
                     className="mb-3"
                     color="primary"
@@ -200,7 +212,7 @@ const ReportDepartment2 = () => {
                     style={{ maxHeight: '100%' }}
                   />
                 </CCol>
-                <CCol md={6}>
+                {/*<CCol md={6}>
                   <CWidgetStatsF
                     className="mb-3"
                     color="primary"
@@ -208,7 +220,7 @@ const ReportDepartment2 = () => {
                     title="Number of Talent"
                     value="0"
                   />
-                </CCol>
+                </CCol>*/}
               </CRow>
             </CCol>
             <CCol md={6}>
@@ -242,6 +254,7 @@ const ReportDepartment2 = () => {
                           },
                           ticks: {
                             color: 'gray',
+                            stepSize: 1,
                           },
                         },
                         y: {
@@ -250,6 +263,7 @@ const ReportDepartment2 = () => {
                           },
                           ticks: {
                             color: 'gray',
+                            stepSize: 1,
                           },
                         },
                       },
@@ -266,19 +280,18 @@ const ReportDepartment2 = () => {
                   <CCardBody>
                     <CRow>
                       <CCol md={4}>
-                        <CCardTitle>{val.cluster_name} Competencies Rating</CCardTitle>
+                        <CCardTitle>Average {val.cluster_name} Competency Score</CCardTitle>
                         <CButton
                           variant="outline"
                           color="dark"
                           style={{ width: '100%' }}
                           onClick={() => setVisible(val.cluster_id)}
+                          className="d-flex align-items-center justify-content-center"
                         >
-                          <span className="text-center">
-                            <h6>Score</h6>
-                            <h5>
-                              <b>{calculateOverallAverage(val.cluster_name)}</b>
-                            </h5>
-                          </span>
+                          <h5>
+                            <b>{calculateOverallAverage(val.cluster_name)}</b>
+                          </h5>
+                          <h6>/5</h6>
                         </CButton>
                         <COffcanvas
                           placement="start"
@@ -287,9 +300,7 @@ const ReportDepartment2 = () => {
                           onHide={() => setVisible(null)}
                         >
                           <COffcanvasHeader>
-                            <COffcanvasTitle>
-                              {val.cluster_name} Competencies Rating
-                            </COffcanvasTitle>
+                            <COffcanvasTitle>{val.cluster_name} Competency Score</COffcanvasTitle>
                             <CCloseButton className="text-reset" onClick={() => setVisible(null)} />
                           </COffcanvasHeader>
                           <COffcanvasBody>
@@ -315,8 +326,8 @@ const ReportDepartment2 = () => {
                                       .map((comp) => comp.competencyname),
                                     datasets: [
                                       {
-                                        label: 'Competency by Rating',
-                                        maxBarThickness: 10,
+                                        label: 'Overall Competency by Score',
+                                        barThickness: 20,
                                         backgroundColor: `${selectedCompany?.company_system_info_color}`,
                                         data: competencylist
                                           ?.filter((i) => i.competencytype === val.cluster_name)
@@ -337,6 +348,8 @@ const ReportDepartment2 = () => {
                                     },
                                     scales: {
                                       x: {
+                                        min: 0,
+                                        max: 5,
                                         grid: {
                                           color: 'gray',
                                         },
@@ -370,7 +383,7 @@ const ReportDepartment2 = () => {
                               .map((comp) => comp.competencyname),
                             datasets: [
                               {
-                                label: 'Competency by Rating',
+                                label: 'Top 5 Competency by Score',
                                 backgroundColor: `${selectedCompany?.company_system_info_color}`,
                                 data: competencylist
                                   ?.filter((i) => i.competencytype === val.cluster_name)
@@ -392,6 +405,8 @@ const ReportDepartment2 = () => {
                             },
                             scales: {
                               x: {
+                                min: 1,
+                                max: 5,
                                 grid: {
                                   color: 'gray',
                                 },

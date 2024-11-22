@@ -74,11 +74,11 @@ const CompetencyDetail = ({
                           <CTable small responsive bordered>
                             <CTableBody>
                               <CTableRow>
-                                <CTableHeaderCell>Level 1</CTableHeaderCell>
-                                <CTableHeaderCell>Level 2</CTableHeaderCell>
-                                <CTableHeaderCell>Level 3</CTableHeaderCell>
-                                <CTableHeaderCell>Level 4</CTableHeaderCell>
-                                <CTableHeaderCell>Level 5</CTableHeaderCell>
+                                <CTableHeaderCell>Level 1 - Foundation</CTableHeaderCell>
+                                <CTableHeaderCell>Level 2 - Intermediate</CTableHeaderCell>
+                                <CTableHeaderCell>Level 3 - Proficient</CTableHeaderCell>
+                                <CTableHeaderCell>Level 4 - Expert</CTableHeaderCell>
+                                <CTableHeaderCell>Level 5 - Mastery</CTableHeaderCell>
                               </CTableRow>
                               <CTableRow>
                                 <CTableDataCell>

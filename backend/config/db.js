@@ -1,5 +1,6 @@
 const mysql = require('mysql2/promise');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const fs = require('fs');
 require('dotenv').config();
 
 //FUNCTION TO CHANGE PASSWORD TO HASHED 
@@ -14,9 +15,10 @@ const connection = mysql.createPool({
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
+  multipleStatements: true,
 });
 
-async function ensureTablesExist() {
+/*async function ensureTablesExist() {
   const tables = [
     `CREATE TABLE IF NOT EXISTS \`assessment\` (
       assessment_id int(255) NOT NULL AUTO_INCREMENT,
@@ -208,6 +210,45 @@ async function ensureTablesExist() {
   for (const query of tables) {
     await connection.query(query);
   }
+}*/
+
+async function setupDatabase() {
+  try {
+    // Check if tables exist
+    const [tables] = await connection.query(
+      "SHOW TABLES"
+    );
+
+    if (tables.length > 0) {
+      console.log("Tables already exist. No action needed.");
+      return;
+    }
+
+    console.log("No tables found. Creating tables...");
+
+    // Read the SQL file containing the schema
+    const sqlSchema = fs.readFileSync('./config/schema.sql', 'utf8');
+    const sqlStatements = sqlSchema
+      .split(';')
+      .map(stmt => stmt.trim())
+      .filter(stmt => stmt.length > 0);
+
+    // Execute each statement to create tables
+    for (const statement of sqlStatements) {
+      try {
+        //console.log("Executing SQL:", statement); // Log each statement
+        await connection.query(statement);
+      } catch (err) {
+        console.error("Error executing SQL:", statement, err.message);
+        break; // Stop further execution to debug the issue
+      }
+    }
+
+    console.log("All tables have been created successfully.");
+    await connection.end();
+  } catch (error) {
+    console.error("Error setting up the database:", error.message);
+  }
 }
 
 async function ensureCompanyAdminExists() {
@@ -224,7 +265,7 @@ async function ensureCompanyAdminExists() {
   }
 }
 
-ensureTablesExist()
+setupDatabase()
 .then(() => ensureCompanyAdminExists())
 .catch(err => {
   console.error('Error ensuring tables exist:', err);

@@ -89,16 +89,20 @@ const DashboardInfo1 = () => {
     )
   }
 
+  const filteredCompetency = competency?.filter((i) =>
+    currentStaffInfo
+      ? positionCompetency.some(
+          (u) =>
+            u.competency_id === i.competency_id &&
+            activeStaff.some((p) => p.position_id === u.position_id),
+        )
+      : i.competency !== null,
+  )
+
   useEffect(() => {
-    const newCompetency = competency?.map((comp) => {
+    const newCompetency = filteredCompetency?.map((comp) => {
       const staffIds = [
-        ...new Set(
-          assessmentResult.filter(
-            (i) =>
-              i.competency_id === comp.competency_id &&
-              i.department_id === currentStaffInfo?.department_id,
-          ),
-        ),
+        ...new Set(assessmentResult.filter((i) => i.competency_id === comp.competency_id)),
       ]
 
       let totalScore = 0
@@ -151,7 +155,7 @@ const DashboardInfo1 = () => {
 
     // set the competencylist with the newCompetency
     setcompetencylist(sortedNewCompetency)
-  }, [competencylist])
+  }, [competency, assessmentResult, latestAssessment, currentStaffInfo])
 
   if (
     loading.staff ||
@@ -191,7 +195,7 @@ const DashboardInfo1 = () => {
                 </CCol>
               </CRow>
               <CRow>
-                <CCol md={6}>
+                <CCol md={12}>
                   <CWidgetStatsF
                     className="mb-3"
                     color="primary"
@@ -201,7 +205,7 @@ const DashboardInfo1 = () => {
                     style={{ maxHeight: '100%' }}
                   />
                 </CCol>
-                <CCol md={6}>
+                {/*<CCol md={6}>
                   <CWidgetStatsF
                     className="mb-3"
                     color="primary"
@@ -209,7 +213,7 @@ const DashboardInfo1 = () => {
                     title="Number of Talent"
                     value="0"
                   />
-                </CCol>
+                </CCol>*/}
               </CRow>
             </CCol>
             <CCol md={6}>
@@ -251,6 +255,7 @@ const DashboardInfo1 = () => {
                           },
                           ticks: {
                             color: 'gray',
+                            stepSize: 1,
                           },
                         },
                       },

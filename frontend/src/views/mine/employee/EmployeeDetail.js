@@ -445,7 +445,7 @@ const EmployeeDetail = ({
                   }
                 }}
               >
-                <CIcon icon={cilInbox} /> Generate Password
+                <CIcon icon={cilInbox} /> Email Notification
               </CButton>
               <CButton
                 size="sm"

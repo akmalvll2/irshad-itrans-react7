@@ -101,7 +101,10 @@ const MapJobCompetency = ({
         <CModalHeader>
           <CModalTitle id="StaticBackdropExampleLabel">
             Position Competency Mapping <br /> ({' '}
-            <span className="text-black-50">{selectedPosition[0]?.position_name}</span> )
+            <span className="text-black-50">
+              {selectedPosition[0]?.position_name} ({selectedPosition[0]?.position_grade})
+            </span>{' '}
+            )
           </CModalTitle>
         </CModalHeader>
         <CForm onSubmit={handleSubmit}>

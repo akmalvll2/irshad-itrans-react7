@@ -13,7 +13,7 @@ async function getAllDepartment () {
 //CREATE DEPARTMENT
 async function createDepartment (departmentdata) {
     try {
-        const [result] = await db.query('INSERT INTO department(department_name, department_description) VALUES (?,?)', [departmentdata.departmentname,departmentdata.departmentdescription])
+        const [result] = await db.query('INSERT INTO department(department_name, department_description, division_id) VALUES (?,?,?)', [departmentdata.departmentname,departmentdata.departmentdescription,departmentdata.divisionid])
         return result.insertId
     } catch (error) {
         throw new Error(error.message)

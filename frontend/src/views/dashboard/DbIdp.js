@@ -20,6 +20,7 @@ import {
   CTableDataCell,
   CButtonGroup,
   CButton,
+  CAlert,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilClipboard, cilWarning, cilCheckAlt, cilCircle } from '@coreui/icons'
@@ -39,7 +40,7 @@ const DbIdp = () => {
     loading,
   } = useContext(MyContext)
 
-  const [selectedCluster, setSelectedCluster] = useState()
+  const [selectedCluster, setSelectedCluster] = useState(cluster[0]?.cluster_id)
 
   const selectedCompany = company[0]
 
@@ -58,13 +59,14 @@ const DbIdp = () => {
   )
 
   const assessmentResultScore = (competencyid, type) => {
-    const score = assessmentResult.find(
-      (i) =>
-        i.assessment_id === latestAssessment?.assessment_id &&
-        i.competency_id === competencyid &&
-        i.staff_id === selectedStaff?.staff_id &&
-        i.staff_assessor_type === type,
-    )?.assessment_result_score
+    const score =
+      assessmentResult.find(
+        (i) =>
+          i.assessment_id === latestAssessment?.assessment_id &&
+          i.competency_id === competencyid &&
+          i.staff_id === selectedStaff?.staff_id &&
+          i.staff_assessor_type === type,
+      )?.assessment_result_score ?? 0
 
     const message = assessmentResult.find(
       (i) =>
@@ -78,7 +80,7 @@ const DbIdp = () => {
   }
 
   const roundedResult = (data) => {
-    return data !== null ? Number(data.toFixed(2)) : null
+    return data !== null ? Number(data.toFixed(2)) : 0
   }
 
   if (
@@ -116,13 +118,14 @@ const DbIdp = () => {
                 className="mb-2"
                 key={key}
                 value={val.cluster_id}
-                onClick={(e) => setSelectedCluster(e.target.value)}
+                onClick={(e) => setSelectedCluster(val.cluster_id)}
+                active={selectedCluster === val.cluster_id}
               >
                 {val.cluster_name}
               </CButton>
             ))}
           </CButtonGroup>
-          <CTable small responsive strip bordered hover>
+          <CTable small responsive bordered hover>
             <CTableHead color="light">
               <CTableRow>
                 <CTableHeaderCell rowSpan={2}>Competency</CTableHeaderCell>
@@ -142,68 +145,84 @@ const DbIdp = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {selectedPosition
-                ?.filter((i) => i.cluster_id.toString() === selectedCluster)
-                .map((com, comkey) => (
-                  <CTableRow key={comkey}>
-                    <CTableDataCell>{com.competency_name}</CTableDataCell>
-                    <CTableDataCell className="text-center">
-                      {com.position_competency_expected_level}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {assessmentResultScore(com.competency_id, 'self').score}(
-                      {roundedResult(assessmentResultScore(com.competency_id, 'self').score * 0.3)})
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {assessmentResultScore(com.competency_id, 'superior').score}(
-                      {roundedResult(
-                        assessmentResultScore(com.competency_id, 'superior').score * 0.7,
-                      )}
-                      )
-                    </CTableDataCell>
-                    <CTableDataCell className="border-end-2">
-                      {roundedResult(
-                        assessmentResultScore(com.competency_id, 'self').score * 0.3 +
+              {selectedPosition?.filter((i) => i.cluster_id === selectedCluster).length > 0 ? (
+                selectedPosition
+                  ?.filter((i) => i.cluster_id === selectedCluster)
+                  .map((com, comkey) => (
+                    <CTableRow key={comkey}>
+                      <CTableDataCell>{com.competency_name}</CTableDataCell>
+                      <CTableDataCell className="text-center">
+                        {com.position_competency_expected_level}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {assessmentResultScore(com.competency_id, 'self').score}(
+                        {roundedResult(
+                          assessmentResultScore(com.competency_id, 'self').score * 0.3,
+                        )}
+                        )
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {assessmentResultScore(com.competency_id, 'superior').score}(
+                        {roundedResult(
                           assessmentResultScore(com.competency_id, 'superior').score * 0.7,
-                      )}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {roundedResult(
-                        assessmentResultScore(com.competency_id, 'self').score * 0.3 +
-                          assessmentResultScore(com.competency_id, 'superior').score * 0.7,
-                      ) < 2.4 ? (
+                        )}
+                        )
+                      </CTableDataCell>
+                      <CTableDataCell className="border-end-2">
+                        {roundedResult(
+                          assessmentResultScore(com.competency_id, 'self').score * 0.3 +
+                            assessmentResultScore(com.competency_id, 'superior').score * 0.7,
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {roundedResult(
+                          assessmentResultScore(com.competency_id, 'self').score * 0.3 +
+                            assessmentResultScore(com.competency_id, 'superior').score * 0.7,
+                        ) < 2.4 ? (
+                          <CIcon className="text-danger" icon={cilCheckAlt} />
+                        ) : (
+                          '...'
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {roundedResult(
+                          assessmentResultScore(com.competency_id, 'self').score * 0.3 +
+                            assessmentResultScore(com.competency_id, 'superior').score * 0.7,
+                        ) < 3.5 ? (
+                          <CIcon className="text-danger" icon={cilCheckAlt} />
+                        ) : (
+                          '...'
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {roundedResult(
+                          assessmentResultScore(com.competency_id, 'self').score * 0.3 +
+                            assessmentResultScore(com.competency_id, 'superior').score * 0.7,
+                        ) < 4.5 ? (
+                          <CIcon className="text-danger" icon={cilCheckAlt} />
+                        ) : (
+                          '...'
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell>
                         <CIcon className="text-danger" icon={cilCheckAlt} />
-                      ) : (
-                        '...'
-                      )}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {roundedResult(
-                        assessmentResultScore(com.competency_id, 'self').score * 0.3 +
-                          assessmentResultScore(com.competency_id, 'superior').score * 0.7,
-                      ) < 3.5 ? (
-                        <CIcon className="text-danger" icon={cilCheckAlt} />
-                      ) : (
-                        '...'
-                      )}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      {roundedResult(
-                        assessmentResultScore(com.competency_id, 'self').score * 0.3 +
-                          assessmentResultScore(com.competency_id, 'superior').score * 0.7,
-                      ) < 4.5 ? (
-                        <CIcon className="text-danger" icon={cilCheckAlt} />
-                      ) : (
-                        '...'
-                      )}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CIcon className="text-danger" icon={cilCheckAlt} />
-                    </CTableDataCell>
-                  </CTableRow>
-                ))}
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))
+              ) : (
+                <CTableRow>
+                  <CTableDataCell colSpan={9}>
+                    <CAlert color="info" className="m-0">
+                      No Competency Data Available
+                    </CAlert>
+                  </CTableDataCell>
+                </CTableRow>
+              )}
             </CTableBody>
           </CTable>
+          <span className="text-secondary">
+            * Please refresh the page if the score did not update after submitting assessment
+          </span>
         </CCardBody>
       </CCard>
     </>

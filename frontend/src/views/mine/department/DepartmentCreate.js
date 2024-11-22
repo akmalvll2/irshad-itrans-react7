@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import MyContext from '../data/MyContext'
 import PropTypes from 'prop-types'
 import {
   CModal,
@@ -9,9 +10,12 @@ import {
   CButton,
   CForm,
   CFormInput,
+  CSpinner,
+  CFormSelect,
 } from '@coreui/react'
 
 const DepartmentCreate = ({ visible, setVisible, createDepartment }) => {
+  const { loading, division } = useContext(MyContext)
   const [departmentData, setDepartmentData] = useState({})
 
   const handleInputChange = (e) => {
@@ -24,6 +28,8 @@ const DepartmentCreate = ({ visible, setVisible, createDepartment }) => {
     createDepartment(departmentData)
     setVisible(!visible)
   }
+
+  if (loading.division) <CSpinner />
   return (
     <>
       <CModal
@@ -55,6 +61,19 @@ const DepartmentCreate = ({ visible, setVisible, createDepartment }) => {
               onChange={handleInputChange}
               required
             />
+            <CFormSelect
+              label="Division"
+              name="divisionid"
+              onChange={(e) => handleInputChange(e)}
+              required
+            >
+              <option value={''}>...Division...</option>
+              {division?.map((val, key) => (
+                <option key={key} value={val.division_id}>
+                  {val.division_name}
+                </option>
+              ))}
+            </CFormSelect>
           </CModalBody>
           <CModalFooter>
             <CButton size="sm" color="primary" type="submit">

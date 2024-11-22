@@ -34,6 +34,7 @@ import {
   cilMagnifyingGlass,
   cilPencil,
   cilLibrary,
+  cilChartPie,
 } from '@coreui/icons'
 
 const CompetencyTable = ({
@@ -98,37 +99,14 @@ const CompetencyTable = ({
               <CCol lg={3}>
                 <CWidgetStatsF
                   className="mb-3"
-                  color="primary"
-                  //icon={<CIcon icon={cilChartPie} height={24} />}
+                  color={
+                    groupFilter !== 'All'
+                      ? cluster?.find((i) => i.cluster_name === groupFilter).cluster_color
+                      : 'secondary'
+                  }
+                  icon={<CIcon icon={cilChartPie} height={24} />}
                   title="TOTAL COMPETENCY"
-                  value={competencylist.length}
-                />
-              </CCol>
-              <CCol lg={3}>
-                <CWidgetStatsF
-                  className="mb-3"
-                  color="warning"
-                  //icon={<CIcon icon={cilChartPie} height={24} />}
-                  title="TOTAL CORE COMPETENCY"
-                  value={competencylist.filter((i) => i.cluster_name === 'Core').length}
-                />
-              </CCol>
-              <CCol lg={3}>
-                <CWidgetStatsF
-                  className="mb-3"
-                  color="success"
-                  //icon={<CIcon icon={cilChartPie} height={24} />}
-                  title="TOTAL GENERIC COMPETENCY"
-                  value={competencylist.filter((i) => i.cluster_name === 'Generic').length}
-                />
-              </CCol>
-              <CCol lg={3}>
-                <CWidgetStatsF
-                  className="mb-3"
-                  color="info"
-                  //icon={<CIcon icon={cilChartPie} height={24} />}
-                  title="TOTAL FUNCTIONAL COMPETENCY"
-                  value={competencylist.filter((i) => i.cluster_name === 'Functional').length}
+                  value={filteredCompetency?.length}
                 />
               </CCol>
             </CRow>
@@ -136,7 +114,11 @@ const CompetencyTable = ({
               <h6>Filter</h6>
               <CButtonGroup>
                 <CButton
-                  color="secondary"
+                  color={
+                    groupFilter !== 'All'
+                      ? cluster?.find((i) => i.cluster_name === groupFilter).cluster_color
+                      : 'secondary'
+                  }
                   variant="outline"
                   size="sm"
                   onClick={() => setGroupFilter('All')}
@@ -147,7 +129,11 @@ const CompetencyTable = ({
                 {cluster?.map((cls, clskey) => (
                   <CButton
                     key={clskey}
-                    color="secondary"
+                    color={
+                      groupFilter !== 'All'
+                        ? cluster?.find((i) => i.cluster_name === groupFilter).cluster_color
+                        : 'secondary'
+                    }
                     variant="outline"
                     size="sm"
                     onClick={() => setGroupFilter(cls.cluster_name)}

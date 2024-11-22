@@ -61,8 +61,9 @@ const AssessmentCreate = ({ visible, setVisible, createAssessment }) => {
                 >
                   <option>..assessment type..</option>
                   <option value="leadership">Leadership</option>
-                  <option value="functional">Competency Gap</option>
+                  <option value="gap">Competency Gap</option>
                   <option value="cbi">Competency Based Interview</option>
+                  <option value="rating">Rating Based Assessment</option>
                 </CFormSelect>
                 {/*
                   <CFormLabel>Assessment Type</CFormLabel>

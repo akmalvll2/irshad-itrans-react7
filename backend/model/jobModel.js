@@ -13,7 +13,7 @@ async function getAllJob () {
 //CREATE JOB
 async function createJob (jobdata) {
     try {
-        const [result] = await db.query('INSERT INTO `position` (position_name,position_grade,position_description) VALUES (?,?,?)', [jobdata.jobname,jobdata.jobgrade,jobdata.jobdescription])
+        const [result] = await db.query('INSERT INTO `position` (position_name,position_grade,position_description,position_category,position_department_report) VALUES (?,?,?,?,?)', [jobdata.jobname,jobdata.jobgrade,jobdata.jobdescription,jobdata.jobcategory,jobdata.jobviewdepartment])
         return result.insertId
     } catch (error) {
         throw new Error(error.message)
@@ -33,7 +33,7 @@ async function deleteJob (jobid) {
 //UPDATE JOB
 async function updateJob (jobid,jobdata) {
     try {
-        const [result] = await db.query('UPDATE `position` SET position.position_name = ? , position.position_grade = ?, position.position_description = ? WHERE position.position_id = ?', [jobdata.jobname,jobdata.jobgrade,jobdata.jobdescription,jobid])
+        const [result] = await db.query('UPDATE `position` SET position.position_name = ? , position.position_grade = ?, position.position_description = ?, position.position_category = ?, position.position_department_report = ? WHERE position.position_id = ?', [jobdata.jobname,jobdata.jobgrade,jobdata.jobdescription,jobdata.jobcategory,jobdata.jobviewdepartment,jobid])
         return "Position Updated"
     } catch (error) {
         throw new Error(error.message)

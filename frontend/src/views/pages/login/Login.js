@@ -176,8 +176,11 @@ const Login = ({ setToken }) => {
               <CCardBody>
                 <CCardImage src={appname[0]?.company_logo} className="p-2 " />
                 <h5 style={{ fontFamily: 'proxima-nova', textTransform: 'uppercase' }}>
-                  {appname[0]?.company_name} ( {appname[0]?.company_short_name} )
+                  {appname[0]?.company_name}
                 </h5>
+                <h6 style={{ fontFamily: 'proxima-nova', textTransform: 'uppercase' }}>
+                  ( {appname[0]?.company_short_name} )
+                </h6>
                 <CForm onSubmit={handleSubmit}>
                   <p className="text-medium-emphasis">Sign In to your account</p>
                   <CAlert

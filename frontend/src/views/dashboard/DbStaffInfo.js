@@ -167,7 +167,7 @@ const DashboardInfo1 = () => {
                                 <CTableRow>
                                   <CTableHeaderCell>No</CTableHeaderCell>
                                   <CTableHeaderCell>Competency</CTableHeaderCell>
-                                  <CTableHeaderCell>RCL</CTableHeaderCell>
+                                  <CTableHeaderCell className="text-center">RCL</CTableHeaderCell>
                                 </CTableRow>
                               </CTableHead>
                               <CTableBody>
@@ -181,7 +181,7 @@ const DashboardInfo1 = () => {
                                     <CTableRow key={key2}>
                                       <CTableDataCell>{key2 + 1}.</CTableDataCell>
                                       <CTableDataCell>{val2.competency_name}</CTableDataCell>
-                                      <CTableDataCell className=" d-flex align-items-center">
+                                      <CTableDataCell className="text-center">
                                         {val2.position_competency_expected_level}
                                       </CTableDataCell>
                                     </CTableRow>

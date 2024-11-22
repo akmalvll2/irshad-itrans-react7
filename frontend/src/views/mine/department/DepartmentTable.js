@@ -49,6 +49,8 @@ const DepartmentTable = ({
 
   const selectedCompany = company[0]
 
+  console.log(departmentlist)
+
   if (loading.company) <CSpinner />
   return (
     <>

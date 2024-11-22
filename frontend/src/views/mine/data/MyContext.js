@@ -12,6 +12,7 @@ export const MyProvider = ({ children }) => {
   const [company, setCompany] = useState([])
   const [staff, setStaff] = useState([])
   const [department, setDepartment] = useState([])
+  const [division, setDivision] = useState([])
   const [position, setPosition] = useState([])
   const [competency, setCompetency] = useState([])
   const [indicator, setIndicator] = useState([])
@@ -26,6 +27,7 @@ export const MyProvider = ({ children }) => {
     company: true,
     staff: true,
     department: true,
+    division: true,
     position: true,
     competency: true,
     indicator: true,
@@ -128,6 +130,18 @@ export const MyProvider = ({ children }) => {
     }
   }
 
+  // ........DIVISION.............
+  const fetchDivision = async () => {
+    try {
+      const response = await axios.get(`${config.REACT_APP_API_ENDPOINT}/division/getalldivision`)
+      setDivision(response.data)
+    } catch (error) {
+      console.log('Error: '.error)
+    } finally {
+      setLoading((prev) => ({ ...prev, division: false }))
+    }
+  }
+
   // ........COMPETENCY...........
   const fetchCompetency = async () => {
     try {
@@ -221,7 +235,7 @@ export const MyProvider = ({ children }) => {
   const fetchCompetencyTraining = async () => {
     try {
       const response = await axios.get(
-        `${config.REACT_APP_API_ENDPOINT}/competencytraining/getallcompetencytraining`,
+        `${config.REACT_APP_API_ENDPOINT}/trainingcompetency/getalltrainingcompetency`,
       )
       setCompetencyTraining(response.data)
     } catch (error) {
@@ -237,6 +251,7 @@ export const MyProvider = ({ children }) => {
     fetchStaffAssessor()
     fetchPosition()
     fetchDepartment()
+    fetchDivision()
     fetchCompetency()
     fetchIndicator()
     fetchCluster()
@@ -255,6 +270,7 @@ export const MyProvider = ({ children }) => {
         staffAssessor,
         updateStaff,
         department,
+        division,
         position,
         competency,
         indicator,

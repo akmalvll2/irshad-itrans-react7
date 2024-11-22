@@ -101,7 +101,7 @@ const DBTrainingRec = ({ assessmentlist }) => {
 }
 
 DBTrainingRec.propTypes = {
-  assessmentlist: PropTypes.array.isRequired,
+  assessmentlist: PropTypes.array,
 }
 
 export default DBTrainingRec

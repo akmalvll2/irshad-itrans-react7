@@ -224,12 +224,27 @@ const AssessmentResultDetail = ({
                           'superior',
                         ).message
                         const totalAverage =
-                          selfScore && superiorScore
+                          selfScore &&
+                          superiorScore &&
+                          assessmentresultlist[0].assessment_type === 'gap'
+                            ? roundedResult(
+                                5 -
+                                  ((val.position_competency_expected_level - selfScore) * 0.3 +
+                                    (val.position_competency_expected_level - superiorScore) * 0.7),
+                              )
+                            : selfScore &&
+                              superiorScore &&
+                              assessmentresultlist[0].assessment_type === 'rating'
                             ? roundedResult(selfScore * 0.3 + superiorScore * 0.7)
                             : null
 
                         const totalGap =
-                          totalAverage !== null ? roundedResult(5 - totalAverage) : null
+                          totalAverage !== null
+                            ? roundedResult(5 - totalAverage)
+                            : totalAverage !== null &&
+                              assessmentresultlist[0].assessment_type === 'gap'
+                            ? roundedResult(totalAverage)
+                            : null
 
                         return (
                           <CTableRow key={val.competency_id}>
@@ -333,7 +348,7 @@ AssessmentResultDetail.propTypes = {
   stafflist: PropTypes.array,
   jobcompetency: PropTypes.array,
   assessmentresultlist: PropTypes.array,
-  selectedStaff: PropTypes.string,
+  selectedStaff: PropTypes.number,
 }
 
 export default AssessmentResultDetail

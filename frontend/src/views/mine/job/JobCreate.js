@@ -9,6 +9,9 @@ import {
   CButton,
   CForm,
   CFormInput,
+  CFormSelect,
+  CFormCheck,
+  CFormLabel,
 } from '@coreui/react'
 
 const JobCreate = ({ visible, setVisible, createJob }) => {
@@ -23,6 +26,7 @@ const JobCreate = ({ visible, setVisible, createJob }) => {
     e.preventDefault()
     createJob(jobData)
     setVisible(!visible)
+    setJobData({})
   }
   return (
     <>
@@ -62,6 +66,38 @@ const JobCreate = ({ visible, setVisible, createJob }) => {
               label="Position Description"
               placeholder="eg. Execute task or project based on job scope"
               onChange={handleInputChange}
+              required
+            />
+            <CFormSelect
+              label="Position Category"
+              name="jobcategory"
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">..Category..</option>
+              <option value="Top Management">Top Management</option>
+              <option value="Senior Management">Senior Management</option>
+              <option value="Middle Management">Middle Management</option>
+              <option value="Individual Contributor">Individual Contributor</option>
+              <option value="Support Staff">Support Staff</option>
+            </CFormSelect>
+            <CFormLabel className="mt-2">Can View Department Report ?</CFormLabel>
+            <CFormCheck
+              type="radio"
+              name="jobviewdepartment"
+              onChange={handleInputChange}
+              label="No"
+              value={0}
+              checked={jobData.jobviewdepartment === '0'}
+              required
+            />
+            <CFormCheck
+              type="radio"
+              name="jobviewdepartment"
+              onChange={handleInputChange}
+              label="Yes"
+              value={1}
+              checked={jobData.jobviewdepartment === '1'}
               required
             />
           </CModalBody>
