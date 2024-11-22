@@ -82,39 +82,39 @@ const CompetencyDetail = ({
                               </CTableRow>
                               <CTableRow>
                                 <CTableDataCell>
-                                  <ul>
+                                  <ol>
                                     {listfunc(val.competency_level1)?.map((li, likey) => (
                                       <li key={likey}>{li}</li>
                                     ))}
-                                  </ul>
+                                  </ol>
                                 </CTableDataCell>
                                 <CTableDataCell>
-                                  <ul>
+                                  <ol>
                                     {listfunc(val.competency_level2)?.map((li, likey) => (
                                       <li key={likey}>{li}</li>
                                     ))}
-                                  </ul>
+                                  </ol>
                                 </CTableDataCell>
                                 <CTableDataCell>
-                                  <ul>
+                                  <ol>
                                     {listfunc(val.competency_level3)?.map((li, likey) => (
                                       <li key={likey}>{li}</li>
                                     ))}
-                                  </ul>
+                                  </ol>
                                 </CTableDataCell>
                                 <CTableDataCell>
-                                  <ul>
+                                  <ol>
                                     {listfunc(val.competency_level4)?.map((li, likey) => (
                                       <li key={likey}>{li}</li>
                                     ))}
-                                  </ul>
+                                  </ol>
                                 </CTableDataCell>
                                 <CTableDataCell>
-                                  <ul>
+                                  <ol>
                                     {listfunc(val.competency_level5)?.map((li, likey) => (
                                       <li key={likey}>{li}</li>
                                     ))}
-                                  </ul>
+                                  </ol>
                                 </CTableDataCell>
                               </CTableRow>
                             </CTableBody>

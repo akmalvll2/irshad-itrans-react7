@@ -52,6 +52,10 @@ const TrainingDetail = ({
                         <CTableDataCell>{val.training_description}</CTableDataCell>
                       </CTableRow>
                       <CTableRow>
+                        <CTableDataCell>Origin:</CTableDataCell>
+                        <CTableDataCell>{val.training_origin}</CTableDataCell>
+                      </CTableRow>
+                      <CTableRow>
                         <CTableDataCell>Group:</CTableDataCell>
                         <CTableDataCell>
                           {

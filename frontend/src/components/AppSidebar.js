@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 
@@ -9,6 +9,7 @@ import {
   CSidebarNav,
   CSidebarToggler,
   CNavTitle,
+  CSpinner,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
@@ -21,6 +22,8 @@ import logo1 from 'src/assets/logo-itrans.png'
 //import SimpleBar from 'simplebar-react'
 //import 'simplebar/dist/simplebar.min.css'
 
+import MyContext from 'src/views/mine/data/MyContext'
+
 // sidebar nav config
 import navigation from '../_nav'
 
@@ -31,6 +34,8 @@ const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  const { loading, company } = useContext(MyContext)
 
   const [setting, setSetting] = useState([])
   const [logoSrc, setLogoSrc] = useState('logo-itrans.png')
@@ -51,6 +56,8 @@ const AppSidebar = () => {
     fetchSetting()
   }, [])
 
+  if (loading.company) return <CSpinner />
+
   return (
     <CSidebar
       position="fixed"
@@ -63,7 +70,7 @@ const AppSidebar = () => {
       <CSidebarBrand
         className="d-none d-md-flex"
         to="/"
-        style={{ backgroundColor: 'white', color: 'gray', padding: 50, maxHeight: 113 }}
+        style={{ backgroundColor: 'white', color: 'gray', padding: 30, maxHeight: 113 }}
       >
         {/*<CIcon className="sidebar-brand-full" icon={kopetrologo} height={35} />*/}
         <CImage className="sidebar-brand-full" src={setting[0]?.company_logo} fluid />
@@ -71,7 +78,7 @@ const AppSidebar = () => {
         {/*<CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />*/}
         {/*<h6 className="sidebar-brand-narrow">iTRANS</h6>*/}
       </CSidebarBrand>
-      <CSidebarNav>
+      <CSidebarNav style={{ backgroundColor: company[0].company_system_primary_color }}>
         <AppSidebarNav items={navigation} />
       </CSidebarNav>
       <CSidebarToggler

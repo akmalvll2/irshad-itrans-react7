@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -6,13 +6,28 @@ import { CBadge } from '@coreui/react'
 
 import { userType } from 'src/userType'
 
+import MyContext from 'src/views/mine/data/MyContext'
+
 /*const userType = [
   {
     data: { type: 'admin' },
   },
 ]*/
 
+const navItemCSS = `
+  .nav-item {
+    background-color: var(--primary-color);
+    transition: 0.2s all ease;
+  }
+
+  .nav-item:hover {
+    background-color: var(--primary-color-light);
+  }
+  .nav-item-active:hover {
+    background `
+
 export const AppSidebarNav = ({ items }) => {
+  const { loading, company } = useContext(MyContext)
   const location = useLocation()
   const navLink = (name, icon, badge) => {
     return (
@@ -33,7 +48,9 @@ export const AppSidebarNav = ({ items }) => {
     const Component = component
     return userType?.role === 'admin' || (userType?.role === 'user' && item.role === 'both') ? (
       <Component
+        className="nav-item"
         //style={name === 'Assessment' ? { backgroundColor: `steelblue` } : null}
+        style={{ backgroundColor: company[0].company_system_primary_color }}
         {...(rest.to &&
           !rest.items && {
             component: NavLink,
