@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import MyContext from '../data/MyContext'
 import { userType } from 'src/userType'
 import moment from 'moment'
@@ -67,18 +67,6 @@ const ReportDepartment2 = () => {
     return currentEndDate.isAfter(latestEndDate) ? current : latest
   }, assessment[0])
 
-  const calculateOverallAverage = (type) => {
-    if (competencylist.filter((i) => i.competencytype === type).length === 0) return 0
-
-    const totalRatings = competencylist
-      .filter((i) => i.competencytype === type)
-      .reduce((total, item) => total + parseFloat(item.competencyrating), 0)
-
-    return (totalRatings / competencylist.filter((i) => i.competencytype === type).length).toFixed(
-      2,
-    )
-  }
-
   const filteredCompetency = competency?.filter((i) =>
     selectedDepartment
       ? positionCompetency.some(
@@ -89,14 +77,25 @@ const ReportDepartment2 = () => {
       : i.competency !== null,
   )
 
+  const calculateOverallAverage = useCallback(
+    (type) => {
+      if (competencylist.filter((i) => i.competencytype === type).length === 0) return 0
+
+      const totalRatings = competencylist
+        .filter((i) => i.competencytype === type)
+        .reduce((total, item) => total + parseFloat(item.competencyrating), 0)
+
+      return (
+        totalRatings / competencylist.filter((i) => i.competencytype === type).length
+      ).toFixed(2)
+    },
+    [competencylist],
+  )
+
   useEffect(() => {
     const newCompetency = filteredCompetency.map((comp) => {
       const staffIds = [
-        ...new Set(
-          assessmentResult.filter((i) =>
-            selectedDepartment ? i.competency_id === comp.competency_id : i.department_id !== null,
-          ),
-        ),
+        ...new Set(assessmentResult.filter((i) => i.competency_id === comp.competency_id)),
       ]
 
       let totalScore = 0
@@ -149,7 +148,7 @@ const ReportDepartment2 = () => {
 
     // set the competencylist with the newCompetency
     setcompetencylist(sortedNewCompetency)
-  }, [assessmentResult, latestAssessment, selectedDepartment])
+  }, [selectedDepartment])
 
   if (
     loading.staff ||
@@ -244,6 +243,10 @@ const ReportDepartment2 = () => {
                         legend: {
                           labels: {
                             color: 'gray',
+                            font: {
+                              family: 'Arial', // Set the font family for x-axis ticks
+                              size: 14, // Font size for x-axis ticks
+                            },
                           },
                         },
                       },
@@ -255,6 +258,10 @@ const ReportDepartment2 = () => {
                           ticks: {
                             color: 'gray',
                             stepSize: 1,
+                            font: {
+                              family: 'Arial', // Set the font family for x-axis ticks
+                              size: 14, // Font size for x-axis ticks
+                            },
                           },
                         },
                         y: {
@@ -264,6 +271,10 @@ const ReportDepartment2 = () => {
                           ticks: {
                             color: 'gray',
                             stepSize: 1,
+                            font: {
+                              family: 'Arial', // Set the font family for x-axis ticks
+                              size: 14, // Font size for x-axis ticks
+                            },
                           },
                         },
                       },
@@ -343,6 +354,10 @@ const ReportDepartment2 = () => {
                                       legend: {
                                         labels: {
                                           color: 'gray',
+                                          font: {
+                                            family: 'Arial', // Set the font family for x-axis ticks
+                                            size: 14, // Font size for x-axis ticks
+                                          },
                                         },
                                       },
                                     },
@@ -355,6 +370,10 @@ const ReportDepartment2 = () => {
                                         },
                                         ticks: {
                                           color: 'gray',
+                                          font: {
+                                            family: 'Arial', // Set the font family for x-axis ticks
+                                            size: 14, // Font size for x-axis ticks
+                                          },
                                         },
                                       },
                                       y: {
@@ -363,6 +382,10 @@ const ReportDepartment2 = () => {
                                         },
                                         ticks: {
                                           color: 'gray',
+                                          font: {
+                                            family: 'Arial', // Set the font family for x-axis ticks
+                                            size: 14, // Font size for x-axis ticks
+                                          },
                                         },
                                       },
                                     },
@@ -400,18 +423,26 @@ const ReportDepartment2 = () => {
                               legend: {
                                 labels: {
                                   color: 'gray',
+                                  font: {
+                                    family: 'Arial', // Set the font family for x-axis ticks
+                                    size: 14, // Font size for x-axis ticks
+                                  },
                                 },
                               },
                             },
                             scales: {
                               x: {
-                                min: 1,
+                                min: 0,
                                 max: 5,
                                 grid: {
                                   color: 'gray',
                                 },
                                 ticks: {
                                   color: 'gray',
+                                  font: {
+                                    family: 'Arial', // Set the font family for x-axis ticks
+                                    size: 14, // Font size for x-axis ticks
+                                  },
                                 },
                               },
                               y: {
@@ -420,6 +451,10 @@ const ReportDepartment2 = () => {
                                 },
                                 ticks: {
                                   color: 'gray',
+                                  font: {
+                                    family: 'Arial', // Set the font family for x-axis ticks
+                                    size: 14, // Font size for x-axis ticks
+                                  },
                                 },
                               },
                             },

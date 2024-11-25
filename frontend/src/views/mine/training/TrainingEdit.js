@@ -77,7 +77,7 @@ const TrainingEdit = ({
                       type="text"
                       name="trainingname"
                       className="mb-3"
-                      label="Training Name"
+                      label="Training Title"
                       defaultValue={val.training_name}
                       onChange={onChangeHandle}
                       required

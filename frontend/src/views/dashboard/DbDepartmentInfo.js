@@ -237,6 +237,10 @@ const DashboardInfo1 = () => {
                         legend: {
                           labels: {
                             color: 'gray',
+                            font: {
+                              family: 'Arial', // Set the font family for x-axis ticks
+                              size: 14, // Font size for x-axis ticks
+                            },
                           },
                         },
                       },
@@ -247,6 +251,10 @@ const DashboardInfo1 = () => {
                           },
                           ticks: {
                             color: 'gray',
+                            font: {
+                              family: 'Arial', // Set the font family for x-axis ticks
+                              size: 14, // Font size for x-axis ticks
+                            },
                           },
                         },
                         y: {
@@ -256,6 +264,10 @@ const DashboardInfo1 = () => {
                           ticks: {
                             color: 'gray',
                             stepSize: 1,
+                            font: {
+                              family: 'Arial', // Set the font family for x-axis ticks
+                              size: 14, // Font size for x-axis ticks
+                            },
                           },
                         },
                       },
@@ -339,6 +351,20 @@ const DashboardInfo1 = () => {
                                       legend: {
                                         labels: {
                                           color: 'gray',
+                                          font: {
+                                            family: 'Arial', // Set the font family for legend labels
+                                            size: 14, // Font size for legend
+                                          },
+                                        },
+                                      },
+                                      tooltip: {
+                                        bodyFont: {
+                                          family: 'Arial', // Set the font family for tooltip content
+                                          size: 14, // Font size for tooltip content
+                                        },
+                                        titleFont: {
+                                          family: 'Arial', // Set the font family for tooltip title
+                                          size: 14, // Font size for tooltip title
                                         },
                                       },
                                     },
@@ -351,6 +377,10 @@ const DashboardInfo1 = () => {
                                         },
                                         ticks: {
                                           color: 'gray',
+                                          font: {
+                                            family: 'Arial', // Set the font family for x-axis ticks
+                                            size: 14, // Font size for x-axis ticks
+                                          },
                                         },
                                       },
                                       y: {
@@ -359,6 +389,10 @@ const DashboardInfo1 = () => {
                                         },
                                         ticks: {
                                           color: 'gray',
+                                          font: {
+                                            family: 'Arial', // Set the font family for y-axis ticks
+                                            size: 14, // Font size for y-axis ticks
+                                          },
                                         },
                                       },
                                     },
@@ -396,6 +430,10 @@ const DashboardInfo1 = () => {
                               legend: {
                                 labels: {
                                   color: 'gray',
+                                  font: {
+                                    family: 'Arial', // Set the font family for x-axis ticks
+                                    size: 14, // Font size for x-axis ticks
+                                  },
                                 },
                               },
                             },
@@ -408,6 +446,10 @@ const DashboardInfo1 = () => {
                                 },
                                 ticks: {
                                   color: 'gray',
+                                  font: {
+                                    family: 'Arial', // Set the font family for x-axis ticks
+                                    size: 14, // Font size for x-axis ticks
+                                  },
                                 },
                               },
                               y: {
@@ -416,6 +458,10 @@ const DashboardInfo1 = () => {
                                 },
                                 ticks: {
                                   color: 'gray',
+                                  font: {
+                                    family: 'Arial', // Set the font family for x-axis ticks
+                                    size: 14, // Font size for x-axis ticks
+                                  },
                                 },
                               },
                             },

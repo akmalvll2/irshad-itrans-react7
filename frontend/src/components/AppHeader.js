@@ -52,7 +52,21 @@ const AppHeader = () => {
   if (loading.company) return <CSpinner />
 
   return (
-    <CHeader position="sticky" className="mb-4">
+    <CHeader
+      position="sticky"
+      className="mb-4 bg-white-500"
+      style={
+        {
+          /*
+        backgroundImage:
+          'url("https://img.freepik.com/free-photo/geometric-composition_24972-787.jpg?t=st=1732519258~exp=1732522858~hmac=82328bc36f39b67a441d007f81d962bdab7a4123b24b8db2cea1929e3fb31626&w=900")',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+      */
+        }
+      }
+    >
       <CContainer fluid>
         <CHeaderToggler
           className="ps-1"
@@ -66,7 +80,9 @@ const AppHeader = () => {
         {/*className="d-none d-md-flex me-auto bg-info"*/}
         <CHeaderNav>
           <CNavItem>
-            <h3>{company[0]?.company_system_name}</h3>
+            <h4 style={{ color: company[0]?.company_system_info_color }}>
+              {company[0]?.company_system_name}
+            </h4>
             {/*<h6>
               {appname?.map((item) => item.setting_app_name)} ({' '}
               {appname?.map((item) => item.setting_app_short_name)} )

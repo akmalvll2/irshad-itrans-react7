@@ -44,7 +44,7 @@ const TrainingDetail = ({
                   <CTable small bordered stripedColumns>
                     <CTableBody>
                       <CTableRow>
-                        <CTableDataCell>Name:</CTableDataCell>
+                        <CTableDataCell>Title:</CTableDataCell>
                         <CTableDataCell>{val.training_name}</CTableDataCell>
                       </CTableRow>
                       <CTableRow>

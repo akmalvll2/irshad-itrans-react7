@@ -18,6 +18,7 @@ import {
   CCarouselItem,
   CCarouselCaption,
   CImage,
+  CCardTitle,
 } from '@coreui/react'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
@@ -131,10 +132,11 @@ const Login = ({ setToken }) => {
           height: '100vh',
           backgroundColor: 'whitesmoke',
           //backgroundImage: `url(https://images.unsplash.com/photo-1663947718652-fa32fb546da2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`, // Use the imported image
-          backgroundImage: `url(https://wallpaper.dog/large/11032627.png)`, // Use the imported image
+          //backgroundImage: `url(https://wallpaper.dog/large/11032627.png)`, // Use the imported image
+          backgroundImage: `url(https://img.freepik.com/free-vector/realistic-design-technology-background_23-2148426705.jpg?t=st=1732518077~exp=1732521677~hmac=7d97bf16a4ebe6040ff66864108545c8c36aeac2309828808b0b755035a9bd89&w=900)`, // Use the imported image
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.8, // Adjust the opacity as needed
+          opacity: 0.9, // Adjust the opacity as needed
         }}
       ></div>
       {/*<video
@@ -159,28 +161,33 @@ const Login = ({ setToken }) => {
         style={{
           zIndex: '1',
         }}
+        className="d-flex justify-content-center"
       >
-        <CCard
-          className="p-2"
-          style={{
-            background: 'rgba(230, 230, 230, 0.7)',
-            borderRadius: '16px',
-            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(5px)',
-            WebkitBackdropFilter: 'blur(5px)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
-          }}
-        >
-          <CRow>
-            <CCol lg={4} className="align-content-center">
+        <CRow>
+          <CCol md={3}></CCol>
+          <CCol md={6} className="align-content-center">
+            <CCard
+              className="p-4"
+              style={{
+                background: 'rgba(230, 230, 230, 0.7)',
+                borderRadius: '16px',
+                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+                backdropFilter: 'blur(5px)',
+                WebkitBackdropFilter: 'blur(5px)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+              }}
+            >
+              <CImage src={appname[0]?.company_logo} fluid width={600} height={400} />
               <CCardBody>
-                <CCardImage src={appname[0]?.company_logo} className="p-2 " />
-                <h5 style={{ fontFamily: 'proxima-nova', textTransform: 'uppercase' }}>
+                {/*<h5 style={{ fontFamily: 'proxima-nova', textTransform: 'uppercase' }}>
                   {appname[0]?.company_name}
                 </h5>
                 <h6 style={{ fontFamily: 'proxima-nova', textTransform: 'uppercase' }}>
                   ( {appname[0]?.company_short_name} )
-                </h6>
+                </h6>*/}
+                <CCardTitle className="my-4 text-center text-primary">
+                  {appname[0]?.company_system_name}
+                </CCardTitle>
                 <CForm onSubmit={handleSubmit}>
                   <p className="text-medium-emphasis">Sign In to your account</p>
                   <CAlert
@@ -228,38 +235,10 @@ const Login = ({ setToken }) => {
                   </CRow>
                 </CForm>
               </CCardBody>
-            </CCol>
-            <CCol
-              lg={8}
-              className=" d-flex flex-column align-content-center justify-content-center p-4"
-            >
-              <h4>Terms of Service</h4>
-              <ol>
-                <li>
-                  <strong>Acceptance of Terms:</strong> By accessing or using <i>ITRANS</i>, you
-                  agree to be bound by these Terms of Service, including any additional terms and
-                  conditions and policies referenced herein.
-                </li>
-                <li>
-                  <strong>Use of the Service:</strong> <i>ITRANS</i> is provided solely for your
-                  organizational use. You agree not to use <i>ITRANS</i> for any illegal or
-                  unauthorized purpose.
-                </li>
-                <li>
-                  <strong>User Accounts:</strong> You may receive an account to access certain
-                  features of <i>ITRANS</i>. You are responsible for maintaining the confidentiality
-                  of your account credentials and for all activities that occur under your account.
-                </li>
-                <li>
-                  <strong>Privacy:</strong> Your use of <i>ITRANS</i> is subject to our Privacy
-                  Policy, which governs how we collect, use, and disclose your personal information.
-                  By using <i>ITRANS</i>, you consent to the collection and use of your information
-                  as described in our Privacy Policy.
-                </li>
-              </ol>
-            </CCol>
-          </CRow>
-        </CCard>
+            </CCard>
+          </CCol>
+          <CCol md={3}></CCol>
+        </CRow>
       </CContainer>
     </div>
   )

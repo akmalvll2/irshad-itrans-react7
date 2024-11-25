@@ -46,7 +46,7 @@ const TrainingCreate = ({ visible, setVisible, createTraining, clusterlist }) =>
                   type="text"
                   name="trainingname"
                   className="mb-3"
-                  label="Training Name"
+                  label="Training Title"
                   placeholder="eg. Organizational Training"
                   onChange={handleInputChange}
                   required
