@@ -28,6 +28,11 @@ import {
   CModalHeader,
   CModalFooter,
   CModalTitle,
+  CBadge,
+  CDropdown,
+  CDropdownToggle,
+  CDropdownMenu,
+  CDropdownItem,
 } from '@coreui/react'
 
 //icon
@@ -86,9 +91,12 @@ const MapJobCompetency = ({
         createnewjobcompetency(val)
       })
       alert(' Successfully mapped ')
+      console.log(tableRows)
       setVisible(!visible)
     } catch (err) {
       console.log(err)
+    } finally {
+      setTableRows([])
     }
   }
 
@@ -117,7 +125,7 @@ const MapJobCompetency = ({
                       <CTableRow>
                         <CTableHeaderCell>No</CTableHeaderCell>
                         <CTableHeaderCell>Competency</CTableHeaderCell>
-                        <CTableHeaderCell>Expected Level</CTableHeaderCell>
+                        <CTableHeaderCell>RCL</CTableHeaderCell>
                         <CTableHeaderCell></CTableHeaderCell>
                       </CTableRow>
                     </CTableHead>
@@ -128,7 +136,10 @@ const MapJobCompetency = ({
                           return (
                             <CTableRow key={key}>
                               <CTableDataCell>{key + 1}</CTableDataCell>
-                              <CTableDataCell>{val.competency_name}</CTableDataCell>
+                              <CTableDataCell>
+                                <CBadge color={val.cluster_color}>{val.cluster_name}</CBadge>{' '}
+                                {val.competency_name}
+                              </CTableDataCell>
                               <CTableDataCell>
                                 {val.position_competency_expected_level}
                               </CTableDataCell>
@@ -153,6 +164,42 @@ const MapJobCompetency = ({
                                 .length}
                           </CTableDataCell>
                           <CTableDataCell>
+                            {/*<CDropdown popper>
+                              <CDropdownToggle color="light">
+                                {tableRows[index].competencyid
+                                  ? competencydata?.find(
+                                      (i) => i.competency_id === tableRows[index].competencyid,
+                                    ).competency_name
+                                  : '..Competency..'}
+                              </CDropdownToggle>
+                              <CDropdownMenu
+                                className="dropdown-menu-sm"
+                                style={{
+                                  maxHeight: '200px', // Set max height for scrolling
+                                  maxWidth: '600px',
+                                  overflowY: 'auto', // Enable vertical scrolling
+                                  overflowX: 'auto',
+                                  zIndex: 1050, // Ensure it floats above content
+                                }}
+                              >
+                                {competencydata?.map((val, key) => {
+                                  return (
+                                    <CDropdownItem
+                                      key={key}
+                                      as="button"
+                                      onClick={() =>
+                                        handleCompetencyChange(index, val.competency_id)
+                                      }
+                                    >
+                                      <CBadge size="sm" color={val.cluster_color}>
+                                        {val.cluster_name}
+                                      </CBadge>{' '}
+                                      {val.competency_name}
+                                    </CDropdownItem>
+                                  )
+                                })}
+                              </CDropdownMenu>
+                            </CDropdown>*/}
                             <CFormSelect
                               size="sm"
                               defaultValue={''}
@@ -163,7 +210,7 @@ const MapJobCompetency = ({
                               {competencydata?.map((val, key) => {
                                 return (
                                   <option key={key} value={val.competency_id}>
-                                    {val.competency_name}
+                                    {val.competency_name} ({val.cluster_name})
                                   </option>
                                 )
                               })}

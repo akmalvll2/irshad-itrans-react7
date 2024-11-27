@@ -231,9 +231,18 @@ const Report = () => {
                 active={activeKey === 3}
                 onClick={() => setActiveKey(3)}
               >
-                Generate Report (Test)
+                Matrix
               </CNavLink>
             </CNavItem>
+            {/*<CNavItem>
+              <CNavLink
+                style={{ cursor: 'pointer', color: activeKey === 3 ? 'black' : 'gray' }}
+                active={activeKey === 3}
+                onClick={() => setActiveKey(3)}
+              >
+                Generate Report (Test)
+              </CNavLink>
+            </CNavItem>*/}
           </CNav>
           {/*userType?.role === 'admin' ? (
             <CNav variant="tabs" className="card-header-tabs float-end">
@@ -302,10 +311,13 @@ const Report = () => {
             <ReportExample1 />
           </CTabPane>
           <CTabPane visible={activeKey === 3}>
+            <ReportDepartment1 />
+          </CTabPane>
+          {/*<CTabPane visible={activeKey === 3}>
             <CContainer>
               <ReportExample2 />
             </CContainer>
-          </CTabPane>
+          </CTabPane>*/}
           {/*<CTabPane visible={activeKey === 2}>
               <ReportTable1
                 stafflist={stafflist}

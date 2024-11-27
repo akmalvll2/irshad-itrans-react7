@@ -19,6 +19,7 @@ import {
   CCarouselCaption,
   CImage,
   CCardTitle,
+  CSpinner,
 } from '@coreui/react'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
@@ -157,89 +158,99 @@ const Login = ({ setToken }) => {
         <source src={video1} type="video/mp4" />
         Your browser does not support the video tag.
       </video>*/}
-      <CContainer
-        style={{
-          zIndex: '1',
-        }}
-        className="d-flex justify-content-center"
-      >
-        <CRow>
-          <CCol md={3}></CCol>
-          <CCol md={6} className="align-content-center">
-            <CCard
-              className="p-4"
-              style={{
-                background: 'rgba(230, 230, 230, 0.7)',
-                borderRadius: '16px',
-                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-                backdropFilter: 'blur(5px)',
-                WebkitBackdropFilter: 'blur(5px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-              }}
-            >
-              <CImage src={appname[0]?.company_logo} fluid width={600} height={400} />
-              <CCardBody>
-                {/*<h5 style={{ fontFamily: 'proxima-nova', textTransform: 'uppercase' }}>
-                  {appname[0]?.company_name}
-                </h5>
-                <h6 style={{ fontFamily: 'proxima-nova', textTransform: 'uppercase' }}>
-                  ( {appname[0]?.company_short_name} )
-                </h6>*/}
-                <CCardTitle className="my-4 text-center text-primary">
-                  {appname[0]?.company_system_name}
-                </CCardTitle>
-                <CForm onSubmit={handleSubmit}>
-                  <p className="text-medium-emphasis">Sign In to your account</p>
-                  <CAlert
-                    color="danger"
-                    dismissible
-                    visible={errLogin}
-                    onClose={() => setErrLogin(false)}
-                  >
-                    Wrong username or password
-                  </CAlert>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
-                    <CFormInput
-                      placeholder="Username"
-                      autoComplete="username"
-                      onChange={(e) => setUsername(e.target.value.trim())}
-                      required
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      placeholder="Password"
-                      autoComplete="current-password"
-                      onChange={(e) => setPassword(e.target.value.trim())}
-                      required
-                    />
-                  </CInputGroup>
-                  <CRow>
-                    <CCol xs={6}>
-                      <CButton color="primary" className="px-4" type="submit">
-                        Login
-                      </CButton>
-                    </CCol>
-                    {/*<CCol xs={6} className="text-right">
-                          <CButton color="link" className="px-0">
-                            Forgot password?
-                          </CButton>
-              </CCol>*/}
-                  </CRow>
-                </CForm>
-              </CCardBody>
-            </CCard>
-          </CCol>
-          <CCol md={3}></CCol>
-        </CRow>
-      </CContainer>
+      {appname[0] ? (
+        <CContainer
+          style={{
+            zIndex: '1',
+          }}
+          className="d-flex justify-content-center"
+        >
+          <CRow className=" d-flex justify-content-center">
+            <CCol lg={8} md={8} sm={12} className="align-content-center">
+              <CCard
+                className="p-4"
+                style={{
+                  background: 'rgba(230, 230, 230, 0.7)',
+                  borderRadius: '16px',
+                  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+                  backdropFilter: 'blur(5px)',
+                  WebkitBackdropFilter: 'blur(5px)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                }}
+              >
+                <CImage src={appname[0]?.company_logo} fluid width={600} height={400} />
+
+                <CCardBody>
+                  {/*<h5 style={{ fontFamily: 'proxima-nova', textTransform: 'uppercase' }}>
+                {appname[0]?.company_name}
+              </h5>
+              <h6 style={{ fontFamily: 'proxima-nova', textTransform: 'uppercase' }}>
+                ( {appname[0]?.company_short_name} )
+              </h6>*/}
+                  <CCardTitle className="my-4 text-center text-primary">
+                    {appname[0]?.company_system_name}
+                  </CCardTitle>
+                  <CForm onSubmit={handleSubmit}>
+                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <CAlert
+                      color="danger"
+                      dismissible
+                      visible={errLogin}
+                      onClose={() => setErrLogin(false)}
+                    >
+                      Wrong username or password
+                    </CAlert>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilUser} />
+                      </CInputGroupText>
+                      <CFormInput
+                        placeholder="Username"
+                        autoComplete="username"
+                        onChange={(e) => setUsername(e.target.value.trim())}
+                        required
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-4">
+                      <CInputGroupText>
+                        <CIcon icon={cilLockLocked} />
+                      </CInputGroupText>
+                      <CFormInput
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        onChange={(e) => setPassword(e.target.value.trim())}
+                        required
+                      />
+                    </CInputGroup>
+                    <CRow>
+                      <CCol xs={6}>
+                        <CButton color="primary" className="px-4" type="submit">
+                          Login
+                        </CButton>
+                      </CCol>
+                      {/*<CCol xs={6} className="text-right">
+                        <CButton color="link" className="px-0">
+                          Forgot password?
+                        </CButton>
+            </CCol>*/}
+                    </CRow>
+                  </CForm>
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
+        </CContainer>
+      ) : (
+        <CContainer
+          style={{
+            zIndex: '1',
+          }}
+          className="d-flex justify-content-center"
+        >
+          <CSpinner color="light" />
+        </CContainer>
+      )}
     </div>
   )
 }
