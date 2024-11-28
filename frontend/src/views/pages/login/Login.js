@@ -50,12 +50,15 @@ const Login = ({ setToken }) => {
   const [errLogin, setErrLogin] = useState(false)
   const [appname, setappname] = useState([])
   const [logoSrc, setLogoSrc] = useState('logo-itrans.png')
+  const [loginLoading, setLoginLoading] = useState(false)
 
   const logoPath = require(`../../../assets/${logoSrc}`)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      setLoginLoading(true)
+
       const adminResponse = await axios.post(
         `${config.REACT_APP_API_ENDPOINT}/authentication/adminauthentication`,
         {
@@ -87,6 +90,8 @@ const Login = ({ setToken }) => {
       }
     } catch (err) {
       alert(err)
+    } finally {
+      setLoginLoading(false)
     }
   }
 
@@ -225,7 +230,15 @@ const Login = ({ setToken }) => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4" type="submit">
+                        <CButton
+                          color="primary"
+                          className="px-4"
+                          type="submit"
+                          disabled={loginLoading ? true : false}
+                        >
+                          {loginLoading ? (
+                            <CSpinner size="sm" color="light" className="align-middle" />
+                          ) : null}{' '}
                           Login
                         </CButton>
                       </CCol>

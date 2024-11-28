@@ -160,7 +160,7 @@ const Report = () => {
     fetchAllCompetency()
   }, [isChange])
 
-  const [activeKey, setActiveKey] = useState(1)
+  const [activeKey, setActiveKey] = useState(3)
 
   const selectedCompany = company[0]
 
@@ -207,7 +207,7 @@ const Report = () => {
         >
           <CIcon icon={cilLibrary} /> REPORT AND ANALYSIS
           <CNav variant="tabs" className="card-header-tabs float-end">
-            <CNavItem>
+            {/*<CNavItem>
               <CNavLink
                 style={{ cursor: 'pointer', color: activeKey === 1 ? 'black' : 'gray' }}
                 active={activeKey === 1}
@@ -224,7 +224,7 @@ const Report = () => {
               >
                 Training Recommendation
               </CNavLink>
-            </CNavItem>
+            </CNavItem>*/}
             <CNavItem>
               <CNavLink
                 style={{ cursor: 'pointer', color: activeKey === 3 ? 'black' : 'gray' }}
@@ -304,12 +304,12 @@ const Report = () => {
           ) : null*/}
         </CCardHeader>
         <CTabContent>
-          <CTabPane visible={activeKey === 1}>
+          {/*<CTabPane visible={activeKey === 1}>
             <ReportDepartment2 />
           </CTabPane>
           <CTabPane visible={activeKey === 2}>
             <ReportExample1 />
-          </CTabPane>
+          </CTabPane>*/}
           <CTabPane visible={activeKey === 3}>
             <ReportDepartment1 />
           </CTabPane>

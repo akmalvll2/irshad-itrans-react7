@@ -29,20 +29,16 @@ const TrainingCreate = ({ visible, setVisible, createTraining, clusterlist }) =>
   }
   return (
     <>
-      <CModal
-        backdrop="static"
-        visible={visible}
-        onClose={() => setVisible(false)}
-        aria-labelledby="StaticBackdropExampleLabel"
-      >
+      <CModal backdrop="static" visible={visible} onClose={() => setVisible(false)}>
         <CForm onSubmit={handleSubmit}>
-          <CModalHeader>
+          <CModalHeader className=" bg-light">
             <CModalTitle id="StaticBackdropExampleLabel">New Training</CModalTitle>
           </CModalHeader>
           <CModalBody>
             {clusterlist.length > 0 ? (
               <>
                 <CFormInput
+                  size="sm"
                   type="text"
                   name="trainingname"
                   className="mb-3"
@@ -52,6 +48,7 @@ const TrainingCreate = ({ visible, setVisible, createTraining, clusterlist }) =>
                   required
                 />
                 <CFormInput
+                  size="sm"
                   type="text"
                   name="trainingdescription"
                   className="mb-3"
@@ -80,7 +77,7 @@ const TrainingCreate = ({ visible, setVisible, createTraining, clusterlist }) =>
               </>
             )}
           </CModalBody>
-          <CModalFooter>
+          <CModalFooter className=" bg-light">
             <CButton
               size="sm"
               color="primary"
